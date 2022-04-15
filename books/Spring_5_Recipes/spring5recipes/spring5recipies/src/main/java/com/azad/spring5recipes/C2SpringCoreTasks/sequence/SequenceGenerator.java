@@ -20,6 +20,9 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public class SequenceGenerator {
 	
+//	@Autowired
+//	private PrefixGenerator[] prefixGenerators;
+	
 	private String prefix;
 	private String suffix;
 	private int initial;
@@ -44,6 +47,11 @@ public class SequenceGenerator {
 		StringBuilder builder = new StringBuilder();
 		builder.append(prefix).append(initial).append(counter.getAndIncrement()).append(suffix);
 		return builder.toString();
+	}
+
+	public void setPrefixGenerator(DatePrefixGenerator datePrefixGenerator) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }
