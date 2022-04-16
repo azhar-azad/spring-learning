@@ -44,6 +44,15 @@
  * The value returned from processTaco() is prefixed with "redirect:", indicating that this is a redirect view. 
  * More specifically, it indicates that after processTaco() completes, the user’s browser 
  * should be redirected to the relative path /orders/current.
+ * 
+ * @Valid
+ * The @Valid annotation tells Spring MVC to perform validation on the submitted Taco 
+ * object after it’s bound to the submitted form data and before the processTaco() 
+ * method is called.
+ * 
+ * Errors
+ * If there are any validation errors, the details of those errors will be 
+ * captured in an Errors object that’s passed into processTaco().
  * */
 
 package tacos.web;
@@ -52,8 +61,11 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import javax.validation.Valid;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -109,7 +121,11 @@ public class DesignTacoController {
 	}
 	
 	@PostMapping
-	public String processTaco(Taco taco, @ModelAttribute TacoOrder tacoOrder) {
+	public String processTaco(@Valid Taco taco, Errors errors, @ModelAttribute TacoOrder tacoOrder) {
+		if (errors.hasErrors()) {
+			return "design";
+		}
+		
 		tacoOrder.addTaco(taco);
 		log.info("Processing taco: {}", taco);
 		
