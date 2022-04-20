@@ -1,0 +1,98 @@
+<!--
+	@{}
+	Thymeleaf’s @{} operator is used to produce a context-relative path to the static artifacts that these tags are referencing.
+	Static content in a Spring Boot application is served from the /static directory at the root of the classpath.
+	
+	th:text
+	The th:text attribute is a Thymeleaf namespace attribute that performs a replacement.
+	
+	th:each
+	Iterates over a collection of elements, rendering the HTML once for each item in the collection.
+	
+	th:field
+	Sets the <input> element’s name attribute and is used to remember whether or not the check box is checked.
+	
+	th:value
+	The check box uses Thymeleaf’s th:value to set the rendered <input> element’s value attribute 
+	to the value found in the ingredient’s id property.
+	
+	When rendered with actual model data, one iteration of that <div> loop might look like this:
+	<div>
+		<input name="ingredients" type="checkbox" value="FLTO" />
+		<span>Flour Tortilla</span><br/>
+	</div>
+-->
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+		xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<title>Taco Cloud</title>
+	<link rel="stylesheet" th:href="@{/styles.css}" />
+</head>
+
+<body>
+	<h1>Design your taco!</h1>
+	<img th:src="@{/images/TacoCloud.jpg}" height="200px" width="200px" />
+	
+	<form method="POST" th:object="${taco}">
+		<div class="grid">
+			<div class="ingredient-group" id="wraps">
+				<h3>Designate your wrap:</h3>
+				<div th:each="ingredient: ${wrap}">
+					<input type="checkbox" th:field="*{ingredients}" th:value="${ingredient.id}" />
+					<span th:text="${ingredient.name}">INGREDIENT NAME PLACEHOLDER</span>
+					<br />
+				</div>
+			</div>
+			
+			<div class="ingredient-group" id="proteins">
+				<h3>Pick your protein:</h3>
+				<div th:each="ingredient: ${protein}">
+					<input type="checkbox" th:field="*{ingredients}" th:value="${ingredient.id}" />
+					<span th:text="${ingredient.name}">INGREDIENT NAME PLACEHOLDER</span>
+					<br />
+				</div>
+			</div>
+			
+			<div class="ingredient-group" id="cheeses">
+				<h3>Choose your cheese:</h3>
+				<div th:each="ingredient: ${cheese}">
+					<input type="checkbox" th:field="*{ingredients}" th:value="${ingredient.id}" />
+					<span th:text="${ingredient.name}">INGREDIENT NAME PLACEHOLDER</span>
+					<br />
+				</div>
+			</div>
+			
+			<div class="ingredient-group" id="veggies">
+				<h3>Determine your veggies:</h3>
+				<div th:each="ingredient: ${veggies}">
+					<input type="checkbox" th:field="*{ingredients}" th:value="${ingredient.id}" />
+					<span th:text="${ingredient.name}">INGREDIENT NAME PLACEHOLDER</span>
+					<br />
+				</div>
+			</div>
+			
+			<div class="ingredient-group" id="sauces">
+				<h3>Select your sauce:</h3>
+				<div th:each="ingredient: ${sauce}">
+					<input type="checkbox" th:field="*{ingredients}" th:value="${ingredient.id}" />
+					<span th:text="${ingredient.name}">INGREDIENT NAME PLACEHOLDER</span>
+					<br />
+				</div>
+			</div>
+		</div>
+		
+		<div>
+			<h3>Name your taco creation:</h3>
+			<input type="text" th:field="*{name}" />
+			<span class="validationError" th:if="${#fields.hasErrors('name')}" th:errors="*{name}">
+				Name Error Placeholder
+			</span>
+			<br />
+			<button>Submit Your Taco</button>
+		</div>
+	</form>
+</body>
+</html>
