@@ -1,0 +1,10 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    password: N3v3r4#Mysql
+    url: jdbc:mysql://localhost:3306/simcity_db?useSSl=false
+    username: root
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true

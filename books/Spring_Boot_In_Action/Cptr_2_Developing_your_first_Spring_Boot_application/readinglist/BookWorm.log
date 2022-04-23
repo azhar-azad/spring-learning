@@ -1,0 +1,53 @@
+2022-04-21 13:22:28.645  WARN 3173530 --- [restartedMain] com.zaxxer.hikari.util.DriverDataSource  : Registered driver with driverClassName=com.mysql.jdbc.Driver was not found, trying direct instantiation.
+2022-04-21 13:22:29.786  WARN 3173530 --- [restartedMain] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2022-04-21 13:22:29.891 DEBUG 3173530 --- [restartedMain] edFilterInvocationSecurityMetadataSource : Adding web access control expression [hasRole('READER')] for Ant [pattern='/']
+2022-04-21 13:22:29.893 DEBUG 3173530 --- [restartedMain] edFilterInvocationSecurityMetadataSource : Adding web access control expression [permitAll] for Ant [pattern='/**']
+2022-04-21 13:22:29.902  INFO 3173530 --- [restartedMain] o.s.s.web.DefaultSecurityFilterChain     : Will not secure any request
+2022-04-21 13:23:00.571  WARN 3177643 --- [restartedMain] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2022-04-21 13:23:00.690 DEBUG 3177643 --- [restartedMain] edFilterInvocationSecurityMetadataSource : Adding web access control expression [hasRole('READER')] for Ant [pattern='/']
+2022-04-21 13:23:00.692 DEBUG 3177643 --- [restartedMain] edFilterInvocationSecurityMetadataSource : Adding web access control expression [permitAll] for Ant [pattern='/**']
+2022-04-21 13:23:00.698  INFO 3177643 --- [restartedMain] o.s.s.web.DefaultSecurityFilterChain     : Will not secure any request
+2022-04-21 13:23:20.965  WARN 3177643 --- [restartedMain] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2022-04-21 13:23:20.978 DEBUG 3177643 --- [restartedMain] edFilterInvocationSecurityMetadataSource : Adding web access control expression [hasRole('READER')] for Ant [pattern='/']
+2022-04-21 13:23:20.978 DEBUG 3177643 --- [restartedMain] edFilterInvocationSecurityMetadataSource : Adding web access control expression [permitAll] for Ant [pattern='/**']
+2022-04-21 13:23:20.980  INFO 3177643 --- [restartedMain] o.s.s.web.DefaultSecurityFilterChain     : Will not secure any request
+2022-04-21 13:23:27.875  WARN 3181221 --- [restartedMain] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2022-04-21 13:23:27.994 DEBUG 3181221 --- [restartedMain] edFilterInvocationSecurityMetadataSource : Adding web access control expression [hasRole('READER')] for Ant [pattern='/']
+2022-04-21 13:23:27.995 DEBUG 3181221 --- [restartedMain] edFilterInvocationSecurityMetadataSource : Adding web access control expression [permitAll] for Ant [pattern='/**']
+2022-04-21 13:23:28.001  INFO 3181221 --- [restartedMain] o.s.s.web.DefaultSecurityFilterChain     : Will not secure any request
+2022-04-21 13:23:42.526 DEBUG 3181221 --- [http-nio-8080-exec-1] o.s.security.web.FilterChainProxy        : Securing GET /azad
+2022-04-21 13:23:42.530 DEBUG 3181221 --- [http-nio-8080-exec-1] s.s.w.c.SecurityContextPersistenceFilter : Set SecurityContextHolder to empty SecurityContext
+2022-04-21 13:23:42.534 DEBUG 3181221 --- [http-nio-8080-exec-1] o.s.s.w.a.AnonymousAuthenticationFilter  : Set SecurityContextHolder to anonymous SecurityContext
+2022-04-21 13:23:42.535 DEBUG 3181221 --- [http-nio-8080-exec-1] o.s.s.w.session.SessionManagementFilter  : Request requested invalid session id B4DD2B20E24BDC8A4DF181D62266CF90
+2022-04-21 13:23:42.542 DEBUG 3181221 --- [http-nio-8080-exec-1] o.s.s.w.a.i.FilterSecurityInterceptor    : Authorized filter invocation [GET /azad] with attributes [permitAll]
+2022-04-21 13:23:42.543 DEBUG 3181221 --- [http-nio-8080-exec-1] o.s.security.web.FilterChainProxy        : Secured GET /azad
+2022-04-21 13:23:42.956 DEBUG 3181221 --- [http-nio-8080-exec-1] w.c.HttpSessionSecurityContextRepository : Did not store anonymous SecurityContext
+2022-04-21 13:23:42.959 DEBUG 3181221 --- [http-nio-8080-exec-1] w.c.HttpSessionSecurityContextRepository : Did not store anonymous SecurityContext
+2022-04-21 13:23:42.960 DEBUG 3181221 --- [http-nio-8080-exec-1] s.s.w.c.SecurityContextPersistenceFilter : Cleared SecurityContextHolder to complete request
+2022-04-21 13:23:42.982 DEBUG 3181221 --- [http-nio-8080-exec-2] o.s.security.web.FilterChainProxy        : Securing GET /style.css
+2022-04-21 13:23:42.982 DEBUG 3181221 --- [http-nio-8080-exec-2] s.s.w.c.SecurityContextPersistenceFilter : Set SecurityContextHolder to empty SecurityContext
+2022-04-21 13:23:42.982 DEBUG 3181221 --- [http-nio-8080-exec-2] o.s.s.w.a.AnonymousAuthenticationFilter  : Set SecurityContextHolder to anonymous SecurityContext
+2022-04-21 13:23:42.983 DEBUG 3181221 --- [http-nio-8080-exec-2] o.s.s.w.session.SessionManagementFilter  : Request requested invalid session id B4DD2B20E24BDC8A4DF181D62266CF90
+2022-04-21 13:23:42.983 DEBUG 3181221 --- [http-nio-8080-exec-2] o.s.s.w.a.i.FilterSecurityInterceptor    : Authorized filter invocation [GET /style.css] with attributes [permitAll]
+2022-04-21 13:23:42.983 DEBUG 3181221 --- [http-nio-8080-exec-2] o.s.security.web.FilterChainProxy        : Secured GET /style.css
+2022-04-21 13:23:42.991 DEBUG 3181221 --- [http-nio-8080-exec-2] w.c.HttpSessionSecurityContextRepository : Did not store anonymous SecurityContext
+2022-04-21 13:23:42.993 DEBUG 3181221 --- [http-nio-8080-exec-2] w.c.HttpSessionSecurityContextRepository : Did not store anonymous SecurityContext
+2022-04-21 13:23:42.993 DEBUG 3181221 --- [http-nio-8080-exec-2] s.s.w.c.SecurityContextPersistenceFilter : Cleared SecurityContextHolder to complete request
+2022-04-21 13:24:00.491 DEBUG 3181221 --- [http-nio-8080-exec-3] o.s.security.web.FilterChainProxy        : Securing GET /azad
+2022-04-21 13:24:00.491 DEBUG 3181221 --- [http-nio-8080-exec-3] s.s.w.c.SecurityContextPersistenceFilter : Set SecurityContextHolder to empty SecurityContext
+2022-04-21 13:24:00.492 DEBUG 3181221 --- [http-nio-8080-exec-3] o.s.s.w.a.AnonymousAuthenticationFilter  : Set SecurityContextHolder to anonymous SecurityContext
+2022-04-21 13:24:00.492 DEBUG 3181221 --- [http-nio-8080-exec-3] o.s.s.w.session.SessionManagementFilter  : Request requested invalid session id B4DD2B20E24BDC8A4DF181D62266CF90
+2022-04-21 13:24:00.493 DEBUG 3181221 --- [http-nio-8080-exec-3] o.s.s.w.a.i.FilterSecurityInterceptor    : Authorized filter invocation [GET /azad] with attributes [permitAll]
+2022-04-21 13:24:00.493 DEBUG 3181221 --- [http-nio-8080-exec-3] o.s.security.web.FilterChainProxy        : Secured GET /azad
+2022-04-21 13:24:00.504 DEBUG 3181221 --- [http-nio-8080-exec-3] w.c.HttpSessionSecurityContextRepository : Did not store anonymous SecurityContext
+2022-04-21 13:24:00.505 DEBUG 3181221 --- [http-nio-8080-exec-3] w.c.HttpSessionSecurityContextRepository : Did not store anonymous SecurityContext
+2022-04-21 13:24:00.505 DEBUG 3181221 --- [http-nio-8080-exec-3] s.s.w.c.SecurityContextPersistenceFilter : Cleared SecurityContextHolder to complete request
+2022-04-21 13:24:00.531 DEBUG 3181221 --- [http-nio-8080-exec-4] o.s.security.web.FilterChainProxy        : Securing GET /style.css
+2022-04-21 13:24:00.531 DEBUG 3181221 --- [http-nio-8080-exec-4] s.s.w.c.SecurityContextPersistenceFilter : Set SecurityContextHolder to empty SecurityContext
+2022-04-21 13:24:00.532 DEBUG 3181221 --- [http-nio-8080-exec-4] o.s.s.w.a.AnonymousAuthenticationFilter  : Set SecurityContextHolder to anonymous SecurityContext
+2022-04-21 13:24:00.532 DEBUG 3181221 --- [http-nio-8080-exec-4] o.s.s.w.session.SessionManagementFilter  : Request requested invalid session id B4DD2B20E24BDC8A4DF181D62266CF90
+2022-04-21 13:24:00.532 DEBUG 3181221 --- [http-nio-8080-exec-4] o.s.s.w.a.i.FilterSecurityInterceptor    : Authorized filter invocation [GET /style.css] with attributes [permitAll]
+2022-04-21 13:24:00.532 DEBUG 3181221 --- [http-nio-8080-exec-4] o.s.security.web.FilterChainProxy        : Secured GET /style.css
+2022-04-21 13:24:00.540 DEBUG 3181221 --- [http-nio-8080-exec-4] w.c.HttpSessionSecurityContextRepository : Did not store anonymous SecurityContext
+2022-04-21 13:24:00.542 DEBUG 3181221 --- [http-nio-8080-exec-4] w.c.HttpSessionSecurityContextRepository : Did not store anonymous SecurityContext
+2022-04-21 13:24:00.542 DEBUG 3181221 --- [http-nio-8080-exec-4] s.s.w.c.SecurityContextPersistenceFilter : Cleared SecurityContextHolder to complete request
