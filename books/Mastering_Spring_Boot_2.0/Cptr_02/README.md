@@ -37,7 +37,7 @@
 ### Customizing Spring Boot
 
 
-#### Customizing using Spring Boot properties
+##### Customizing using Spring Boot properties
 
 ```
 # Connection settings
@@ -66,7 +66,7 @@ server.servlet-path=/admin
 
 
 
-#### Replacing generated beans
+##### Replacing generated beans
 
 ```
 @Bean
@@ -76,7 +76,7 @@ public DataSource dataSource() {
 ```
 
 
-#### Disabling specific auto-configuration classes
+######## Disabling specific auto-configuration classes
 
 
 ```
@@ -87,7 +87,7 @@ public DataSource dataSource() {
 ```
 
 
-#### Changing a library's dependencies
+######## Changing a library's dependencies
 
 ```
 <properties>
@@ -143,7 +143,7 @@ public DataSource dataSource() {
 11. Default properties (specified using `SpringApplication.setDefaultProperties`).
 
 
-#### Renaming application.properties in the Spring application
+######## Renaming application.properties in the Spring application
 ```
 package com.dineshonjava.masteringspringboot;
 
@@ -163,7 +163,7 @@ public class MasteringSpringBootApplication {
 > The property filename must be defined as `myapp`, not `myapp.properties`; if we use `myapp.peroerties`, the file would get named as `mysapp.properties.properties`.
 
 
-#### Externally configuring application properties
+##### Externally configuring application properties
 
 
 ```
@@ -189,7 +189,7 @@ accounts.client.logdir=/logs
 accounts.client.timeout=4000
 ```
 
-#### Using the @EnableConfigurationProperties annotation
+##### Using the @EnableConfigurationProperties annotation
 
 ```
 @Configuration
@@ -236,7 +236,7 @@ Use another logging frameworks by adding a dependency
 </dependency>
 ```
 
-#### Logging output
+##### Logging output
 
 ```
 # Use only one of the following properties
@@ -248,7 +248,7 @@ logging.file=accounts.log
 logging.path=/var/log/accounts
 ```
 
-#### Using YAML for configuration
+##### Using YAML for configuration
 
 In `application.properties`:
 
@@ -265,7 +265,7 @@ database:
 	user: admin
 ```
 
-#### Multiple profiles inside a single YAML file
+##### Multiple profiles inside a single YAML file
 
 You can define multiple profile-specific configurations in a single YAML file. Spring Boot provides a `spring.profiles` key to indicate when the document applies.
 
