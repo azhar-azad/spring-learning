@@ -76,7 +76,7 @@ public DataSource dataSource() {
 ```
 
 
-######## Disabling specific auto-configuration classes
+##### Disabling specific auto-configuration classes
 
 
 ```
@@ -87,7 +87,7 @@ public DataSource dataSource() {
 ```
 
 
-######## Changing a library's dependencies
+##### Changing a library's dependencies
 
 ```
 <properties>
@@ -143,7 +143,7 @@ public DataSource dataSource() {
 11. Default properties (specified using `SpringApplication.setDefaultProperties`).
 
 
-######## Renaming application.properties in the Spring application
+##### Renaming application.properties in the Spring application
 ```
 package com.dineshonjava.masteringspringboot;
 
