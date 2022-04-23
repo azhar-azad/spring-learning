@@ -297,7 +297,8 @@ database:
 
 ### Customizing application error pages
 
-
+1. Add a folder named 'error' on the *resources/public* directory.
+2. Create an html page with any name, ex: 404.html, under the *resource/public/error* directory. 
 
 
 
