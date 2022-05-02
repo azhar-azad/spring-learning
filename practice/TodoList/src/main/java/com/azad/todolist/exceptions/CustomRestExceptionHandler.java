@@ -9,6 +9,7 @@ import javax.validation.ConstraintViolationException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.HttpMediaTypeNotSupportedException;
@@ -54,6 +55,35 @@ public class CustomRestExceptionHandler extends ResponseEntityExceptionHandler {
 		return new ResponseEntity<Object>(apiError, new HttpHeaders(), apiError.getStatus());
 	}
 	
+	@ExceptionHandler({ UserAlreadyRegisteredException.class })
+	public ResponseEntity<Object> handleUserAlreadyRegisteredException(UserAlreadyRegisteredException ex, WebRequest request) {
+		
+		String error = "User is already registered";
+		
+		ApiError apiError = new ApiError(HttpStatus.BAD_REQUEST, ex.getLocalizedMessage(), error);
+		return new ResponseEntity<Object>(apiError, new HttpHeaders(), apiError.getStatus());
+	}
+	
+	@ExceptionHandler({ UserNotRegisteredException.class })
+	public ResponseEntity<Object> handleUserNotRegisteredException(UserNotRegisteredException ex, WebRequest request) {
+		
+		String error = "User is not registered";
+		
+		ApiError apiError = new ApiError(HttpStatus.BAD_REQUEST, ex.getLocalizedMessage(), error);
+		return new ResponseEntity<Object>(apiError, new HttpHeaders(), apiError.getStatus());
+	}
+	
+	@ExceptionHandler({ UnauthorizedLoginAttemptException.class })
+	public ResponseEntity<Object> handleUnauthorizedLoginAttemptException(UnauthorizedLoginAttemptException ex, WebRequest request) {
+		
+		String error = "Username or Password not correct";
+		
+		ApiError apiError = new ApiError(HttpStatus.UNAUTHORIZED, ex.getLocalizedMessage(), error);
+		return new ResponseEntity<Object>(apiError, new HttpHeaders(), apiError.getStatus());
+	}
+	
+	
+	
 	
 	@ExceptionHandler({ ClassNotFoundException.class })
 	public ResponseEntity<Object> handleClassNotFoundException(ClassNotFoundException ex, WebRequest request) {
@@ -62,6 +92,15 @@ public class CustomRestExceptionHandler extends ResponseEntityExceptionHandler {
 		
 		ApiError apiError = new ApiError(HttpStatus.INTERNAL_SERVER_ERROR, ex.getLocalizedMessage(), error);
 	    return new ResponseEntity<Object>(apiError, new HttpHeaders(), apiError.getStatus());
+	}
+	
+	@ExceptionHandler({ UsernameNotFoundException.class })
+	public ResponseEntity<Object> handleUsernameNotFoundException(UsernameNotFoundException ex, WebRequest request) {
+		
+		String error = ex.getMessage();
+		
+		ApiError apiError = new ApiError(HttpStatus.NOT_FOUND, ex.getLocalizedMessage(), error);
+		return new ResponseEntity<Object>(apiError, new HttpHeaders(), apiError.getStatus());
 	}
 	
 

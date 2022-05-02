@@ -1,0 +1,12 @@
+spring:
+  datasource:
+    password: N3v3r4#Mysql
+    url: jdbc:mysql://localhost:3306/todolist_db
+    username: root
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true

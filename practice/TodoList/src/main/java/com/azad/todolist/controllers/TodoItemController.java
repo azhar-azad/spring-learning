@@ -26,9 +26,6 @@ import com.azad.todolist.responses.TodoItemResponse;
 import com.azad.todolist.services.TodoItemService;
 import com.azad.todolist.utils.Utils;
 
-import lombok.extern.slf4j.Slf4j;
-
-@Slf4j
 @RestController
 @RequestMapping(path = "/api/v1/todoItems")
 public class TodoItemController {
@@ -42,9 +39,9 @@ public class TodoItemController {
 		this.service = service;
 	}
 
-	@GetMapping(path = "/test")
-	public String todoItemsTest() {
-		return "Service is available";
+	@GetMapping(path = "/heartbeat")
+	public ResponseEntity<String> todoItemsRouteTest() {
+		return new ResponseEntity<>(HttpStatus.OK);
 	}
 
 	@PostMapping

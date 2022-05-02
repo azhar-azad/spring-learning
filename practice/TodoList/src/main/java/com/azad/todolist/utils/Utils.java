@@ -9,6 +9,22 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class Utils {
+	
+	private static String encryptor = "N1b2#3";
+	
+	public static String getEncryptedPassword(String password) {
+		
+		return encryptor + password;
+	}
+	
+	public static String getDecryptedPassword(String encryptedPassword) {
+		
+		if (encryptedPassword.contains(encryptor)) {
+			return encryptedPassword.replace(encryptor, "");
+		}
+		
+		return null;
+	}
 
 	public static boolean sortItemsAreValid(String className, List<String> sortItems) {
 		try {
