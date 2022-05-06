@@ -1,4 +1,4 @@
-package com.azad.simplebankapi.configs;
+package com.azad.simplebankapi.configurations;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
