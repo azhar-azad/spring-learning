@@ -1,5 +1,8 @@
 package com.azad.cineplex.controllers;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.validation.Valid;
 
 import org.modelmapper.ModelMapper;
@@ -10,6 +13,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.azad.cineplex.dto.HallDTO;
@@ -66,4 +70,54 @@ public class HallController {
 		
 		return new ResponseEntity<HallResponse>(hallResponse, HttpStatus.CREATED);
 	}
+	
+	@GetMapping
+	public ResponseEntity<List<HallResponse>> getAllHalls(
+			@Valid @RequestParam(value = "page", defaultValue = "1") int page,
+			@Valid @RequestParam(value = "limit", defaultValue = "25") int limit,
+			@Valid @RequestParam(value = "sort", defaultValue = "") String sort,
+			@Valid @RequestParam(value = "order", defaultValue = "asc") String order) {
+		
+		Utils.printControllerMethodInfo("GET", "/api/v1/halls", "getAllHalls");
+		
+		if (page > 0) {
+			page--;
+		}
+		
+		List<HallDTO> hallDTOs = null;
+		
+		if (sort.isEmpty()) {
+			hallDTOs = hallService.getAll(page, limit);
+		} else {
+			hallDTOs = hallService.getAll(page, limit, sort, order);
+		}
+		
+		if (hallDTOs == null) {
+			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+		}
+		
+		List<HallResponse> hallResponses = new ArrayList<>();
+		hallDTOs.forEach(hallDTO -> hallResponses.add(modelMapper.map(hallDTO, HallResponse.class)));
+		
+		return new ResponseEntity<List<HallResponse>>(hallResponses, HttpStatus.OK);
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 }

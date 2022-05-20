@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class RequestBodyEmptyException extends RuntimeException {
 
-private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1L;
 	
 	public RequestBodyEmptyException(String message) {
 		super(message);

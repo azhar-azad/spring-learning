@@ -1,9 +1,9 @@
 package com.azad.cineplex.services;
 
+import java.util.List;
+
 import com.azad.cineplex.dto.HallDTO;
 
-public interface HallService {
-
-	HallDTO create(HallDTO hallDTO);
+public interface HallService extends GenericService<HallDTO> {
 
 }

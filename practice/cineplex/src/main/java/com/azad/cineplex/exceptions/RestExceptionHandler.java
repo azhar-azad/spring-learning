@@ -23,25 +23,49 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 
 @ControllerAdvice
 public class RestExceptionHandler extends ResponseEntityExceptionHandler {
+	
+	private ResponseEntity<Object> handleCommonException(Exception ex, HttpStatus httpStatus) {
+		
+		ApiError apiError = new ApiError(httpStatus, ex.getLocalizedMessage(), ex.getMessage());
+		return new ResponseEntity<Object>(apiError, new HttpHeaders(), apiError.getStatus());
+	}
+	
 	/**
 	 * Custom Exception handlers
 	 * */
 	@ExceptionHandler({ ResourceCreationFailedException.class })
 	public ResponseEntity<Object> handleResourceCreationFailedException(ResourceCreationFailedException ex, WebRequest request) {
 		
-		String error = ex.getMessage();
+//		String error = ex.getMessage();
+//		
+//		ApiError apiError = new ApiError(HttpStatus.INTERNAL_SERVER_ERROR, ex.getLocalizedMessage(), error);
+//		return new ResponseEntity<Object>(apiError, new HttpHeaders(), apiError.getStatus());
 		
-		ApiError apiError = new ApiError(HttpStatus.BAD_REQUEST, ex.getLocalizedMessage(), error);
-		return new ResponseEntity<Object>(apiError, new HttpHeaders(), apiError.getStatus());
+		return handleCommonException(ex, HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 	
 	@ExceptionHandler({ RequestBodyEmptyException.class })
 	public ResponseEntity<Object> handleRequestBodyEmptyException(RequestBodyEmptyException ex, WebRequest request) {
 		
-		String error = ex.getMessage();
+//		String error = ex.getMessage();
+//		
+//		ApiError apiError = new ApiError(HttpStatus.BAD_REQUEST, ex.getLocalizedMessage(), error);
+//		return new ResponseEntity<Object>(apiError, new HttpHeaders(), apiError.getStatus());
 		
-		ApiError apiError = new ApiError(HttpStatus.BAD_REQUEST, ex.getLocalizedMessage(), error);
-		return new ResponseEntity<Object>(apiError, new HttpHeaders(), apiError.getStatus());
+		return handleCommonException(ex, HttpStatus.BAD_REQUEST);
+	}
+	
+	// InvalidSortItemsException
+	
+	@ExceptionHandler({ InvalidSortItemsException.class })
+	public ResponseEntity<Object> handleInvalidSortItemsException(InvalidSortItemsException ex, WebRequest request) {
+		
+//		String error = ex.getMessage();
+//		
+//		ApiError apiError = new ApiError(HttpStatus.BAD_REQUEST, ex.getLocalizedMessage(), error);
+//		return new ResponseEntity<Object>(apiError, new HttpHeaders(), apiError.getStatus());
+		
+		return handleCommonException(ex, HttpStatus.BAD_REQUEST);
 	}
 	
 
