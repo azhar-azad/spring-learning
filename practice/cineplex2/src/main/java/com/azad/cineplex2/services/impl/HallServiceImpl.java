@@ -17,6 +17,7 @@ import com.azad.cineplex2.exceptions.ResourceCreationFailedException;
 import com.azad.cineplex2.exceptions.ResourceNotFoundException;
 import com.azad.cineplex2.repositories.HallRepository;
 import com.azad.cineplex2.services.HallService;
+import com.azad.cineplex2.utils.AppUtils;
 
 @Service
 public class HallServiceImpl implements HallService {
@@ -59,24 +60,7 @@ public class HallServiceImpl implements HallService {
 	@Override
 	public List<HallDto> getAll(int page, int limit, String sort, String order) {
 		
-		List<String> sortItems = new ArrayList<>();
-		
-		String[] sortItemsArr = sort.split(",");
-		for (String sortItem: sortItemsArr) {
-			sortItems.add(sortItem.toLowerCase().trim());
-		}
-		
-		Sort sortBy = Sort.by(sortItems.get(0));
-		
-		if (sortItems.size() > 1) {
-			for (int i = 1; i < sortItems.size(); i++) {
-				sortBy = sortBy.and(Sort.by(sortItems.get(i)));
-			}
-		} 
-		
-		if (order.equalsIgnoreCase("desc")) {
-			sortBy = sortBy.descending();
-		}
+		Sort sortBy = AppUtils.getSortBy(sort, order);
 		
 		Pageable pageable = PageRequest.of(page, limit, sortBy);
 		
@@ -132,6 +116,18 @@ public class HallServiceImpl implements HallService {
 	@Override
 	public void delete(HallDto hallDto) {
 		// TODO Auto-generated method stub
+	}
+
+	@Override
+	public HallDto getByName(String name) {
+		
+		Hall hall = hallRepository.findByName(name);
+		
+		if (hall == null) {
+			throw new ResourceNotFoundException("Hall", "name");
+		}
+		
+		return modelMapper.map(hall, HallDto.class);
 	}
 
 }

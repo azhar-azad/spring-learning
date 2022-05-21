@@ -44,7 +44,7 @@ public class HallController {
 	@GetMapping(path = "/test")
 	public ResponseEntity<String> hallRouteTest() {
 		
-		AppUtils.printControllerMethodInfo("GET", "/api/v1/halls/test", "test");
+		AppUtils.printControllerMethodInfo("GET", "/api/v1/halls/test", "hallRouteTest");
 		
 		return ResponseEntity.ok().body("{\"status\":\"OK\"}");
 	}
@@ -133,7 +133,7 @@ public class HallController {
 	}
 	
 	@DeleteMapping(path = "/{id}")
-	public ResponseEntity deleteHallById(@Valid @PathVariable Long id) {
+	public ResponseEntity<?> deleteHallById(@Valid @PathVariable Long id) {
 		
 		AppUtils.printControllerMethodInfo("DELETE", "/api/v1/halls/{id}", "deleteHallById");
 		

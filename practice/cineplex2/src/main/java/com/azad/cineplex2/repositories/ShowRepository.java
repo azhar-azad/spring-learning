@@ -3,10 +3,9 @@ package com.azad.cineplex2.repositories;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
 
-import com.azad.cineplex2.entities.Hall;
+import com.azad.cineplex2.entities.Show;
 
 @Repository
-public interface HallRepository extends PagingAndSortingRepository<Hall, Long> {
+public interface ShowRepository extends PagingAndSortingRepository<Show, Long> {
 
-	Hall findByName(String name);
 }

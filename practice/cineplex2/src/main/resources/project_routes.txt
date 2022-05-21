@@ -1,0 +1,75 @@
+# Hall
+	/halls
+		---- -->> GET 		-> / 			-> get all halls
+		---- -->> POST 		-> / 			-> add a new hall
+			Sample body:
+				{
+					"name": string,
+					"serialNo": string,
+					"capacity": integer,
+					"floor": integer
+				}
+		---- -->> GET 		-> /{hall_id}	-> get a hall by id
+		---- -->> PUT 		-> /{hall_id}	-> update a hall by id
+		---- -->> DELETE	-> /{hall_id}	-> delete a hall by id
+		
+
+# Show
+	/shows
+		---- -->> GET 		-> / 			-> get all shows
+		---- -->> POST 		-> / 			-> add a new show
+			Sample body:
+				{
+					"name": string,
+					"slot": string,
+					"hall": [dependent: name]
+				}
+		---- -->> GET 		-> /{show_id}	-> get a show by id
+		---- -->> PUT 		-> /{show_id}	-> update a show by id
+		---- -->> DELETE	-> /{show_id}	-> delete a show by id
+
+# Movie
+	/movies
+		---- -->> GET 		-> / 			-> get all movies
+		---- -->> POST 		-> / 			-> add a new movie
+			Sample body: 
+				{
+					"title": string,
+					"summary": string,
+					"release_year": integer,
+					"genres": string [comma separated list: will be auto generated if not found by: name]
+					"directors": string [comma separated list: will be auto generated if not found by: first_name+last_name],
+					"casts": string [comma separated list: will be auto generated if not found by: first_name+last_name],
+					"producers": string [comma separated list: will be auto generated if not found by: first_name+last_name],
+					"production": string [will be auto generated if not found by: company_name],
+					"distributor": string [will be auto generated if not found by: company_name],
+					"show": [dependent: name]
+				}
+		---- -->> GET 		-> /{movie_id}	-> get a movie by id
+		---- -->> PUT 		-> /{movie_id}	-> update a movie by id
+		---- -->> DELETE	-> /{movie_id}	-> delete a movie by id
+
+# Cast
+	/casts
+		---- -->> GET 	-> / 			-> get all casts
+		---- -->> POST 	-> / 			-> add a cast 
+		---- -->> GET 	-> /{cast_id} 	-> get a cast by cast_id
+		---- -->> PUT 	-> /{cast_id} 	-> update a cast record by cast_id
+		---- -->> DELETE-> /{cast_id} 	-> delete a cast record by cast_id
+	/movies/{movie_id}/casts
+		---- -->> GET -> / -> get all casts for a movie
+		---- -->> POST -> / -> add a cast for a movie
+		---- -->> GET -> /{cast_id} -> get a cast for a movie by cast_id
+		---- -->> PUT -> /{cast_id} -> update a cast record for a movie by cast_id
+		---- -->> DELETE -> /{cast_id} -> delete a cast record for a movie by cast_id
+		
+# Company
+	/companies
+		---- -->> GET -> / -> get all companies
+	/movies/{movie_id}/companies
+		---- -->> GET -> / -> get all companies for a movie
+		---- -->> POST -> / -> add a cast for a movie
+		---- -->> GET -> /{cast_id} -> get a cast for a movie by cast_id
+		---- -->> PUT -> /{cast_id} -> update a cast record for a movie by cast_id
+		---- -->> DELETE -> /{cast_id} -> delete a cast record for a movie by cast_id		 
+		
