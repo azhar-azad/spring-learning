@@ -47,7 +47,7 @@ public class Hall implements Serializable {
 	
 //	@JsonManagedReference
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "hall", cascade = CascadeType.ALL, orphanRemoval = true)
-	@JsonIgnoreProperties("hall")
+//	@JsonIgnoreProperties("hall")
 	private List<Show> shows;
 	
 }
