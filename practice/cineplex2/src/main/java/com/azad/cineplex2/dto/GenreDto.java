@@ -2,7 +2,6 @@ package com.azad.cineplex2.dto;
 
 import java.util.List;
 
-import com.azad.cineplex2.entities.Genre;
 import com.azad.cineplex2.entities.Movie;
 
 import lombok.AllArgsConstructor;
