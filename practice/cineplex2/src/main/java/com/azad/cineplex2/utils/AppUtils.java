@@ -1,7 +1,12 @@
 package com.azad.cineplex2.utils;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.Period;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.data.domain.Sort;
@@ -39,4 +44,34 @@ public class AppUtils {
 		
 		return sortBy;
 	}
+	
+	public static int getAgeFromBirthDate(Date birthDate) {
+		
+		if (birthDate != null) {
+			LocalDate localBirthDate = birthDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+			
+			LocalDate localCurrentDate = LocalDate.now();
+			
+			return Period.between(localBirthDate, localCurrentDate).getYears();
+		}
+		
+		return 0;
+	}
+	
+	public static int getAge(Date birthDate, Date deathDate) {
+		
+		if (birthDate != null && deathDate != null) {
+			LocalDate localBirthDate = birthDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+			
+			LocalDate localDeathDate = deathDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+			
+			return Period.between(localBirthDate, localDeathDate).getYears();
+		}
+		
+		return 0;
+	}
+	
+	
+	
+	
 }

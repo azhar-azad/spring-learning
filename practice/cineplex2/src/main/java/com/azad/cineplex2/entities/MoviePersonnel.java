@@ -1,17 +1,16 @@
 package com.azad.cineplex2.entities;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
-import javax.persistence.ManyToMany;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -32,6 +31,15 @@ public class MoviePersonnel implements Serializable {
 	
 	@Column(nullable = false, unique = true)
 	protected String fullName;
+	
+	@Column(nullable = false)
+	protected Date birthDate;
+	
+	@Column
+	protected Boolean isDead;
+	
+	@Column
+	protected Date deathDate;
 	
 	@Column
 	protected int age;
