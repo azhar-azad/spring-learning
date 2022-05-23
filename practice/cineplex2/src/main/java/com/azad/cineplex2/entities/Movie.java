@@ -56,8 +56,10 @@ public class Movie implements Serializable {
 			inverseJoinColumns = @JoinColumn(name = "director_id"))
 	private List<Director> directors;
 	
-	
-	public void addGenre(Genre genre) {
-		genres.add(genre);
-	}
+	@ManyToMany(fetch = FetchType.LAZY)
+	@JoinTable(
+			name = "movie_cast",
+			joinColumns = @JoinColumn(name = "movie_id"),
+			inverseJoinColumns = @JoinColumn(name = "cast_id"))
+	private List<Cast> casts;
 }

@@ -112,7 +112,8 @@ public class CastServiceImpl implements CastService {
 		if (updatedCastDto.getIsDead() != null) {
 			cast.setIsDead(updatedCastDto.getIsDead());
 		}
-		if (updatedCastDto.getDeathDate() != null && updatedCastDto.getIsDead()) {
+		if (updatedCastDto.getDeathDate() != null) {
+			cast.setIsDead(true);
 			cast.setDeathDate(updatedCastDto.getDeathDate());
 			cast.setAge(AppUtils.getAge(cast.getBirthDate(), cast.getDeathDate()));
 		} else {

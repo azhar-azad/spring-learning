@@ -17,11 +17,11 @@ import lombok.NoArgsConstructor;
 public class MovieRequest {
 
 	@NotNull(message = "Movie title cannot be empty")
-	@Size(min = 1, max = 30, message = "Movie title has to be 1 to 30 characters long")
+	@Size(min = 1, max = 100, message = "Movie title has to be 1 to 30 characters long")
 	private String title;
 	
 	@NotNull(message = "Movie summary cannot be empty")
-	@Size(min = 2, max = 200, message = "Movie summary has to be 1 to 200 characters long")
+	@Size(min = 2, max = 500, message = "Movie summary has to be 1 to 200 characters long")
 	private String summary;
 	
 	@NotNull(message = "Release year cannot be empty")
@@ -34,4 +34,7 @@ public class MovieRequest {
 	
 	private List<String> directorFullNames;
 	private List<Long> directorIds;
+	
+	private List<String> castFullNames;
+	private List<Long> castIds;
 }

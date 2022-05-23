@@ -22,4 +22,6 @@ public class MovieResponse {
 	private List<GenreInfo> genres; 
 	
 	private List<MoviePersonnelInfo> directors;
+	
+	private List<MoviePersonnelInfo> casts;
 }

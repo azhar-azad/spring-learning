@@ -14,11 +14,13 @@ import org.springframework.stereotype.Service;
 import com.azad.cineplex2.dto.GenreDto;
 import com.azad.cineplex2.dto.MovieDto;
 import com.azad.cineplex2.dto.MoviePersonnelDto;
+import com.azad.cineplex2.entities.Cast;
 import com.azad.cineplex2.entities.Director;
 import com.azad.cineplex2.entities.Genre;
 import com.azad.cineplex2.entities.Movie;
 import com.azad.cineplex2.exceptions.ResourceNotFoundException;
 import com.azad.cineplex2.repositories.MovieRepository;
+import com.azad.cineplex2.services.CastService;
 import com.azad.cineplex2.services.DirectorService;
 import com.azad.cineplex2.services.GenreService;
 import com.azad.cineplex2.services.MovieService;
@@ -31,14 +33,16 @@ public class MovieServiceImpl implements MovieService {
 	private MovieRepository movieRepository;
 	private GenreService genreService;
 	private DirectorService directorService;
+	private CastService castService;
 	
 	@Autowired
 	public MovieServiceImpl(ModelMapper modelMapper, MovieRepository movieRepository,
-			GenreService genreService, DirectorService directorService) {
+			GenreService genreService, DirectorService directorService, CastService castService) {
 		this.modelMapper = modelMapper;
 		this.movieRepository = movieRepository;
 		this.genreService = genreService;
 		this.directorService = directorService;
+		this.castService = castService;
 	}
 
 	@Override
@@ -54,6 +58,10 @@ public class MovieServiceImpl implements MovieService {
 		// Get the directors by directorId or directorFullName; if not found, create
 		List<Director> directors = getDirectors(movieDto);
 		movie.setDirectors(directors);
+		
+		// Get the casts by castid or castFullName; if not found, create
+		List<Cast> casts = getCasts(movieDto);
+		movie.setCasts(casts);
 		
 		// save the entity and get the dto
 		MovieDto savedMovieDto = modelMapper.map(movieRepository.save(movie), MovieDto.class);
@@ -130,6 +138,11 @@ public class MovieServiceImpl implements MovieService {
 			movie.setDirectors(directors);
 		}
 		
+		List<Cast> casts = getCasts(updatedMovieDto);
+		if (casts != null && casts.size() != 0) {
+			movie.setCasts(casts);
+		}
+		
 		if (updatedMovieDto.getTitle() != null) {
 			movie.setTitle(updatedMovieDto.getTitle());
 		}
@@ -178,14 +191,14 @@ public class MovieServiceImpl implements MovieService {
 			for (String genreName: movieDto.getGenreNames()) {
 				GenreDto genreDto = null;
 				try {
-					genreDto = genreService.getByName(genreName);
+					genreDto = genreService.getByName(genreName.trim());
 				} catch (ResourceNotFoundException ex) {
 					genreDto = null;
 				}
 				if (genreDto == null) {
 					// Create a new Genre
 					GenreDto newGenreDto = new GenreDto();
-					newGenreDto.setName(genreName);
+					newGenreDto.setName(genreName.trim());
 					genreDto = genreService.create(newGenreDto);
 				}
 				genreDtos.add(genreDto);
@@ -215,7 +228,7 @@ public class MovieServiceImpl implements MovieService {
 			for (String directorFullName: movieDto.getDirectorFullNames()) {
 				MoviePersonnelDto directorDto = null;
 				try {
-					directorDto = directorService.getByFullName(directorFullName);
+					directorDto = directorService.getByFullName(directorFullName.trim());
 				} catch (ResourceNotFoundException ex) {
 					directorDto = null;
 				}
@@ -223,7 +236,7 @@ public class MovieServiceImpl implements MovieService {
 				if (directorDto == null) {
 					// Create a new Director
 					MoviePersonnelDto newDirectorDto = new MoviePersonnelDto();
-					newDirectorDto.setFullName(directorFullName);
+					newDirectorDto.setFullName(directorFullName.trim());
 					directorDto = directorService.create(newDirectorDto); 
 				}
 				directorDtos.add(directorDto);
@@ -238,6 +251,44 @@ public class MovieServiceImpl implements MovieService {
 		}
 		
 		return directors;
+	}
+	
+	private List<Cast> getCasts(MovieDto movieDto) {
+
+		List<MoviePersonnelDto> castDtos = new ArrayList<>();
+		
+		if (movieDto.getCastIds() != null && !movieDto.getCastIds().isEmpty()) {
+			for (Long castId: movieDto.getCastIds()) {
+				// as castId is passed, that cast had to be present on the database
+				castDtos.add(castService.getById(castId)); 
+			}
+		} else if (movieDto.getCastFullNames() != null && !movieDto.getCastFullNames().isEmpty()) {
+			for (String castFullName: movieDto.getCastFullNames()) {
+				MoviePersonnelDto castDto = null;
+				try {
+					castDto = castService.getByFullName(castFullName.trim());
+				} catch (ResourceNotFoundException ex) {
+					castDto = null;
+				}
+				
+				if (castDto == null) {
+					// Create a new Director
+					MoviePersonnelDto newCastDto = new MoviePersonnelDto();
+					newCastDto.setFullName(castFullName.trim());
+					castDto = castService.create(newCastDto); 
+				}
+				castDtos.add(castDto);
+			} 
+		} else {
+			castDtos = null;
+		}
+		
+		List<Cast> casts = new ArrayList<>();
+		if (castDtos != null) {
+			castDtos.forEach(castDto -> casts.add(modelMapper.map(castDto, Cast.class)));	
+		}
+		
+		return casts;
 	}
 
 }

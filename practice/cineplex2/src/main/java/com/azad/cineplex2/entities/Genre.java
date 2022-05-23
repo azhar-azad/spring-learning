@@ -35,8 +35,4 @@ public class Genre implements Serializable {
 	
 	@ManyToMany(mappedBy = "genres", fetch = FetchType.LAZY)
 	private List<Movie> movies;
-	
-	public void addMovie(Movie movie) {
-		this.movies.add(movie);
-	}
 }

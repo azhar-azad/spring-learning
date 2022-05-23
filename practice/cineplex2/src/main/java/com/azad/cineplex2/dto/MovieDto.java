@@ -2,6 +2,7 @@ package com.azad.cineplex2.dto;
 
 import java.util.List;
 
+import com.azad.cineplex2.entities.Cast;
 import com.azad.cineplex2.entities.Director;
 import com.azad.cineplex2.entities.Genre;
 
@@ -26,4 +27,8 @@ public class MovieDto {
 	private List<Director> directors;
 	private List<String> directorFullNames;
 	private List<Long> directorIds;
+	
+	private List<Cast> casts;
+	private List<String> castFullNames;
+	private List<Long> castIds;
 }
