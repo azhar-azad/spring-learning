@@ -109,9 +109,15 @@ public class ShowServiceImpl implements ShowService {
 
 		Show show = showRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Show", id));
 		
-		show.setName(updatedShowDto.getName());
-		show.setShowTime(updatedShowDto.getShowTime());
-		show.setHall(modelMapper.map(hallDto, Hall.class));
+		if (updatedShowDto.getName() != null) {
+			show.setName(updatedShowDto.getName());
+		}
+		if (updatedShowDto.getShowTime() != null) {
+			show.setShowTime(updatedShowDto.getShowTime());			
+		}
+		if (hallDto != null) {
+			show.setHall(modelMapper.map(hallDto, Hall.class));
+		}
 		
 		Show updatedShow = showRepository.save(show);
 		

@@ -112,7 +112,7 @@ public class ShowController {
 	}
 	
 	@PutMapping(path = "/{id}")
-	public ResponseEntity<ShowResponse> updateShowById(@Valid @PathVariable Long id, @Valid @RequestBody ShowRequest showRequest) {
+	public ResponseEntity<ShowResponse> updateShowById(@Valid @PathVariable Long id, @RequestBody ShowRequest showRequest) {
 		
 		AppUtils.printControllerMethodInfo("PUT", "/api/v1/shows/{id}", "updateShowById");
 		

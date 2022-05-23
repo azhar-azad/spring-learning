@@ -3,6 +3,7 @@ package com.azad.cineplex2.dto.responses;
 import java.util.List;
 
 import com.azad.cineplex2.dto.GenreInfo;
+import com.azad.cineplex2.dto.MoviePersonnelInfo;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -19,4 +20,6 @@ public class MovieResponse {
 	private int releaseYear;
 	
 	private List<GenreInfo> genres; 
+	
+	private List<MoviePersonnelInfo> directors;
 }

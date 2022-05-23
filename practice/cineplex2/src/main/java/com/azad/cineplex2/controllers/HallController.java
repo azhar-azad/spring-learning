@@ -115,7 +115,7 @@ public class HallController {
 	}
 	
 	@PutMapping(path = "/{id}")
-	public ResponseEntity<HallResponse> updateHallById(@Valid @PathVariable Long id, @Valid @RequestBody HallRequest hallRequest) {
+	public ResponseEntity<HallResponse> updateHallById(@Valid @PathVariable Long id, @RequestBody HallRequest hallRequest) {
 		
 		AppUtils.printControllerMethodInfo("PUT", "/api/v1/halls/{id}", "updateHallById");
 		

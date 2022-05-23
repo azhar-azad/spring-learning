@@ -89,10 +89,18 @@ public class HallServiceImpl implements HallService {
 
 		Hall hall = hallRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Hall", id));
 		
-		hall.setName(updatedHallDto.getName());
-		hall.setSerialNo(updatedHallDto.getSerialNo());
-		hall.setCapacity(updatedHallDto.getCapacity());
-		hall.setFloor(updatedHallDto.getFloor());
+		if (updatedHallDto.getName() != null) {
+			hall.setName(updatedHallDto.getName());
+		}
+		if (updatedHallDto.getSerialNo() != null) {
+			hall.setSerialNo(updatedHallDto.getSerialNo());
+		}
+		if (updatedHallDto.getCapacity() > 20) {
+			hall.setCapacity(updatedHallDto.getCapacity());
+		}
+		if (updatedHallDto.getFloor() >= 0) {
+			hall.setFloor(updatedHallDto.getFloor());
+		}
 		
 		Hall updatedHall = hallRepository.save(hall);
 		

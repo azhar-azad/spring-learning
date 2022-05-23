@@ -31,4 +31,7 @@ public class MovieRequest {
 	
 	private List<String> genreNames;
 	private List<Long> genreIds;
+	
+	private List<String> directorFullNames;
+	private List<Long> directorIds;
 }

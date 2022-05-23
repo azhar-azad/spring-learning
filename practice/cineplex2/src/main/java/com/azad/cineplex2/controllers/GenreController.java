@@ -115,7 +115,7 @@ public class GenreController {
 	}
 	
 	@PutMapping(path = "/{id}")
-	public ResponseEntity<GenreResponse> updateGenreById(@Valid @PathVariable Long id, @Valid @RequestBody GenreRequest genreRequest) {
+	public ResponseEntity<GenreResponse> updateGenreById(@Valid @PathVariable Long id, @RequestBody GenreRequest genreRequest) {
 		
 		AppUtils.printControllerMethodInfo("PUT", "/api/v1/genres/{id}", "updateGenreById");
 		

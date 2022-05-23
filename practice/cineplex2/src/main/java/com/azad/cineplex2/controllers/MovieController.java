@@ -112,7 +112,7 @@ public class MovieController {
 	}
 	
 	@PutMapping(path = "/{id}")
-	public ResponseEntity<MovieResponse> updateMovieById(@Valid @PathVariable Long id, @Valid @RequestBody MovieRequest movieRequest) {
+	public ResponseEntity<MovieResponse> updateMovieById(@Valid @PathVariable Long id, @RequestBody MovieRequest movieRequest) {
 		
 		AppUtils.printControllerMethodInfo("PUT", "/api/v1/movies/{id}", "updateMovieById");
 		
