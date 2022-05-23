@@ -31,7 +31,7 @@ public class AppUtils {
 		String[] filteredSortItems = new String[sortItems.length];
 		
 		for (int i = 0; i < sortItems.length; i++) {
-			filteredSortItems[i] = sortItems[i].toLowerCase().trim();
+			filteredSortItems[i] = sortItems[i].trim();
 		}
 		
 		Sort sortBy = Sort.by(filteredSortItems);
@@ -45,14 +45,10 @@ public class AppUtils {
 		return sortBy;
 	}
 	
-	public static int getAgeFromBirthDate(Date birthDate) {
+	public static int getAge(Date birthDate) {
 		
 		if (birthDate != null) {
-			LocalDate localBirthDate = birthDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-			
-			LocalDate localCurrentDate = LocalDate.now();
-			
-			return Period.between(localBirthDate, localCurrentDate).getYears();
+			return getAge(birthDate, new Date());
 		}
 		
 		return 0;

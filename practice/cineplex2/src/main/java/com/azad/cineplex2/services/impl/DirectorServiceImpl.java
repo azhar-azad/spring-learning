@@ -45,7 +45,7 @@ public class DirectorServiceImpl implements DirectorService {
 			directorDto.setIsDead(true);
 			directorDto.setAge(AppUtils.getAge(directorDto.getBirthDate(), directorDto.getDeathDate()));
 		} else {
-			directorDto.setAge(AppUtils.getAgeFromBirthDate(directorDto.getBirthDate()));
+			directorDto.setAge(AppUtils.getAge(directorDto.getBirthDate()));
 		}
 
 		Director director = directorRepository.save(modelMapper.map(directorDto, Director.class));
@@ -118,7 +118,7 @@ public class DirectorServiceImpl implements DirectorService {
 			director.setDeathDate(updatedDirectorDto.getDeathDate());
 			director.setAge(AppUtils.getAge(director.getBirthDate(), director.getDeathDate()));
 		} else {
-			director.setAge(AppUtils.getAgeFromBirthDate(director.getBirthDate()));
+			director.setAge(AppUtils.getAge(director.getBirthDate()));
 		}
 		
 		Director updatedDirector = directorRepository.save(director);
