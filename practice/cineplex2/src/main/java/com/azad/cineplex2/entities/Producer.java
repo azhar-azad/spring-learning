@@ -11,5 +11,4 @@ import lombok.NoArgsConstructor;
 public class Producer extends MoviePersonnel {
 
 	private static final long serialVersionUID = 1L;
-
 }
