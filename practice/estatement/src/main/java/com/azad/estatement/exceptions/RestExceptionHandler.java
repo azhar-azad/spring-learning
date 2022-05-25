@@ -6,6 +6,7 @@ import java.util.List;
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -71,6 +72,12 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 	
 	@ExceptionHandler({ ClassNotFoundException.class })
 	public ResponseEntity<Object> handleClassNotFoundException(ClassNotFoundException ex, WebRequest request) {
+		
+		return handleCommonException(ex, HttpStatus.INTERNAL_SERVER_ERROR);
+	}
+	
+	@ExceptionHandler({ DataIntegrityViolationException.class })
+	public ResponseEntity<Object> handleDataIntegrityViolationException(DataIntegrityViolationException ex, WebRequest request) {
 		
 		return handleCommonException(ex, HttpStatus.INTERNAL_SERVER_ERROR);
 	}
