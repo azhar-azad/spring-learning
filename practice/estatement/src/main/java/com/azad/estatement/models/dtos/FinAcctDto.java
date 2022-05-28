@@ -1,7 +1,6 @@
 package com.azad.estatement.models.dtos;
 
-import java.util.List;
-
+import com.azad.estatement.models.FinAccount;
 import com.azad.estatement.models.Organization;
 
 import lombok.AllArgsConstructor;
@@ -11,9 +10,10 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class OrgDto extends Organization {
+public class FinAcctDto extends FinAccount {
 
-	private Long orgId;
-	private List<FinAcctDto> finAccts;
+	private Long acctId;
 	
+	private Organization org;
+	private Long orgId;
 }

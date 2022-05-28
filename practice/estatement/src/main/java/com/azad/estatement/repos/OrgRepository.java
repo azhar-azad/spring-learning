@@ -8,4 +8,5 @@ import com.azad.estatement.models.entities.OrganizationEntity;
 @Repository
 public interface OrgRepository extends PagingAndSortingRepository<OrganizationEntity, Long> {
 
+	OrganizationEntity findByOrgUniquename(String orgUniquename);
 }

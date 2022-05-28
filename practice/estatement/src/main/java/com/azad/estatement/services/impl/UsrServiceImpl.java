@@ -12,26 +12,43 @@ import org.springframework.stereotype.Service;
 
 import com.azad.estatement.exceptions.ResourceCreationFailedException;
 import com.azad.estatement.exceptions.ResourceNotFoundException;
+import com.azad.estatement.models.Organization;
+import com.azad.estatement.models.dtos.OrgDto;
 import com.azad.estatement.models.dtos.UsrDto;
+import com.azad.estatement.models.dtos.UsrMappingDto;
+import com.azad.estatement.models.entities.OrganizationEntity;
 import com.azad.estatement.models.entities.UsrEntity;
+import com.azad.estatement.models.entities.UsrMappingEntity;
+import com.azad.estatement.models.responses.UsrResponsesWithOrg;
+import com.azad.estatement.repos.UsrMappingRepository;
 import com.azad.estatement.repos.UsrRepository;
+import com.azad.estatement.services.OrgService;
 import com.azad.estatement.services.UsrService;
+import com.azad.estatement.utils.ApiUtils;
 import com.azad.estatement.utils.AppUtils;
+import com.azad.estatement.utils.PagingAndSorting;
 
 @Service
 public class UsrServiceImpl implements UsrService {
 	
+	@Autowired
 	private ModelMapper modelMapper;
+	
+	@Autowired
+	private ApiUtils apiUtils;
+	
+	@Autowired
+	private UsrMappingRepository usrMappingRepository;
+
 	private UsrRepository usrRepository;
 	
 	@Autowired
-	public UsrServiceImpl(ModelMapper modelMapper, UsrRepository usrRepository) {
-		this.modelMapper = modelMapper;
+	public UsrServiceImpl(UsrRepository usrRepository) {
 		this.usrRepository = usrRepository;
 	}
 
 	@Override
-	public UsrDto create(UsrDto usrDto) {
+	public UsrDto create(String orgName, UsrDto usrDto) {
 
 		UsrEntity usr = usrRepository.save(modelMapper.map(usrDto, UsrEntity.class));
 		
@@ -39,31 +56,38 @@ public class UsrServiceImpl implements UsrService {
 			throw new ResourceCreationFailedException("Failed to create the new resource; ENTITY: Usr");
 		}
 		
-		return modelMapper.map(usr, UsrDto.class);
+		OrgDto orgDto = modelMapper.map(apiUtils.getOrgByOrgName(orgName), OrgDto.class);
+		
+		UsrMappingEntity usrMapping = new UsrMappingEntity();
+		usrMapping.setCifNum(usrDto.getCifNum());
+		usrMapping.setOrgId(orgDto.getOrgId());
+		usrMapping.setUsrId(usr.getUsrId());
+		
+		UsrMappingDto usrMappingDto = modelMapper.map(usrMappingRepository.save(usrMapping), UsrMappingDto.class);
+		
+		UsrDto savedUsrDto = modelMapper.map(usr, UsrDto.class);
+		savedUsrDto.setCifNum(usrMappingDto.getCifNum());
+		savedUsrDto.setOrg(modelMapper.map(orgDto, Organization.class));
+		
+		return savedUsrDto;
 	}
 
 	@Override
-	public List<UsrDto> getAll(int page, int limit) {
-
-		Pageable pageable = PageRequest.of(page, limit);
+	public List<UsrDto> getAll(String orgName, PagingAndSorting ps) {
+		
+		Pageable pageable = null;
+		
+		if (ps.getSort().isEmpty()) {
+			pageable = PageRequest.of(ps.getPage(), ps.getLimit());
+		} else {
+			Sort sortBy = AppUtils.getSortBy(ps.getSort(), ps.getOrder());
+			pageable = PageRequest.of(ps.getPage(), ps.getLimit(), sortBy);
+		}
+		
+		List<UsrEntity> usrs = usrRepository.findUsrsByOrgName(pageable, orgName);
 		
 		List<UsrDto> usrDtos = new ArrayList<>();
-		usrRepository.findAll(pageable).getContent()
-			.forEach(usr -> usrDtos.add(modelMapper.map(usr, UsrDto.class)));
-		
-		return usrDtos;
-	}
-
-	@Override
-	public List<UsrDto> getAll(int page, int limit, String sort, String order) {
-
-		Sort sortBy = AppUtils.getSortBy(sort, order);
-		
-		Pageable pageable = PageRequest.of(page, limit, sortBy);
-		
-		List<UsrDto> usrDtos = new ArrayList<>();
-		usrRepository.findAll(pageable).getContent()
-			.forEach(usr -> usrDtos.add(modelMapper.map(usr, UsrDto.class)));
+		usrs.forEach(usr -> usrDtos.add(modelMapper.map(usr, UsrDto.class)));
 		
 		return usrDtos;
 	}
@@ -105,7 +129,20 @@ public class UsrServiceImpl implements UsrService {
 
 		UsrEntity usr = usrRepository.findById(usrId).orElseThrow(() -> new ResourceNotFoundException("Usr", usrId));
 		
+		// Delete from usr_mapping table
+		usrMappingRepository.deleteByUsrId(usrId);
+		
 		usrRepository.delete(usr);
+	}
+
+	@Override
+	public UsrDto create(UsrDto usrDto) {
+		return null;
+	}
+
+	@Override
+	public List<UsrDto> getAll(PagingAndSorting ps) {
+		return null;
 	}
 
 }

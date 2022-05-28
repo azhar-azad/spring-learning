@@ -26,6 +26,7 @@ import com.azad.estatement.models.requests.OrgRequest;
 import com.azad.estatement.models.responses.OrgResponse;
 import com.azad.estatement.services.OrgService;
 import com.azad.estatement.utils.AppUtils;
+import com.azad.estatement.utils.PagingAndSorting;
 
 @RestController
 @RequestMapping(path = "/api/v1/organizations")
@@ -76,13 +77,9 @@ public class OrgController {
 			page--;
 		}
 		
-		List<OrgDto> orgDtos = null;
+		PagingAndSorting ps = new PagingAndSorting(page, limit, sort, order);
 		
-		if (sort.isEmpty()) {
-			orgDtos = orgService.getAll(page, limit);
-		} else {
-			orgDtos = orgService.getAll(page, limit, sort, order);
-		}
+		List<OrgDto> orgDtos = orgService.getAll(ps);
 		
 		if (orgDtos == null) {
 			return new ResponseEntity<List<OrgResponse>>(HttpStatus.NO_CONTENT);

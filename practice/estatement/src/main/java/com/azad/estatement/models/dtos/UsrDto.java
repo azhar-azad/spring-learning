@@ -1,5 +1,6 @@
 package com.azad.estatement.models.dtos;
 
+import com.azad.estatement.models.Organization;
 import com.azad.estatement.models.Usr;
 
 import lombok.AllArgsConstructor;
@@ -12,4 +13,6 @@ import lombok.NoArgsConstructor;
 public class UsrDto extends Usr {
 
 	private Long usrId;
+	private String cifNum;
+	private Organization org;
 }

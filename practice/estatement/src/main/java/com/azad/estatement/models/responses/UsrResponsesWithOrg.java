@@ -1,4 +1,4 @@
-package com.azad.estatement.models.dtos;
+package com.azad.estatement.models.responses;
 
 import java.util.List;
 
@@ -11,9 +11,8 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class OrgDto extends Organization {
+public class UsrResponsesWithOrg {
 
-	private Long orgId;
-	private List<FinAcctDto> finAccts;
-	
+	private List<UsrResponse> usrs;
+	private Organization org;
 }

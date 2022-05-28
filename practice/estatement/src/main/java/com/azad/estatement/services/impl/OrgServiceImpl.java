@@ -17,6 +17,7 @@ import com.azad.estatement.models.entities.OrganizationEntity;
 import com.azad.estatement.repos.OrgRepository;
 import com.azad.estatement.services.OrgService;
 import com.azad.estatement.utils.AppUtils;
+import com.azad.estatement.utils.PagingAndSorting;
 
 @Service
 public class OrgServiceImpl implements OrgService {
@@ -44,23 +45,16 @@ public class OrgServiceImpl implements OrgService {
 	}
 
 	@Override
-	public List<OrgDto> getAll(int page, int limit) {
-
-		Pageable pageable = PageRequest.of(page, limit);
+	public List<OrgDto> getAll(PagingAndSorting ps) {
 		
-		List<OrgDto> orgDtos = new ArrayList<>();
-		orgRepository.findAll(pageable).getContent()
-			.forEach(org -> orgDtos.add(modelMapper.map(org, OrgDto.class)));
+		Pageable pageable = null;
 		
-		return orgDtos;
-	}
-
-	@Override
-	public List<OrgDto> getAll(int page, int limit, String sort, String order) {
-
-		Sort sortBy = AppUtils.getSortBy(sort, order);
-		
-		Pageable pageable = PageRequest.of(page, limit, sortBy);
+		if (ps.getSort().isEmpty()) {
+			pageable = PageRequest.of(ps.getPage(), ps.getLimit());
+		} else {
+			Sort sortBy = AppUtils.getSortBy(ps.getSort(), ps.getOrder());
+			pageable = PageRequest.of(ps.getPage(), ps.getLimit(), sortBy);
+		}
 		
 		List<OrgDto> orgDtos = new ArrayList<>();
 		orgRepository.findAll(pageable).getContent()
@@ -104,6 +98,22 @@ public class OrgServiceImpl implements OrgService {
 		OrganizationEntity org = orgRepository.findById(orgId).orElseThrow(() -> new ResourceNotFoundException("Organization", orgId));
 		
 		orgRepository.delete(org);
+	}
+
+	@Override
+	public OrgDto getOrgByOrgName(String orgName) {
+
+		if (orgName == null || orgName.length() == 0 || orgName.equals("")) {
+			throw new RuntimeException("Fetching Org but orgName is empty");
+		}
+		
+		OrgDto orgDto = modelMapper.map(orgRepository.findByOrgUniquename(orgName), OrgDto.class);
+		
+		if (orgDto == null) {
+			throw new ResourceNotFoundException("OrganizationEntity", "orgUniquename");
+		}
+		
+		return orgDto;
 	}
 
 }

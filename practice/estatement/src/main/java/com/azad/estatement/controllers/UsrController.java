@@ -21,82 +21,88 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.azad.estatement.exceptions.InvalidPathVariableException;
 import com.azad.estatement.exceptions.RequestBodyEmptyException;
+import com.azad.estatement.models.Organization;
 import com.azad.estatement.models.dtos.UsrDto;
 import com.azad.estatement.models.requests.UsrRequest;
 import com.azad.estatement.models.responses.UsrResponse;
+import com.azad.estatement.models.responses.UsrResponsesWithOrg;
+import com.azad.estatement.services.OrgService;
 import com.azad.estatement.services.UsrService;
+import com.azad.estatement.utils.ApiUtils;
 import com.azad.estatement.utils.AppUtils;
+import com.azad.estatement.utils.PagingAndSorting;
 
 @RestController
-@RequestMapping(path = "/api/v1/usrs")
+@RequestMapping(path = "/api/v1/{orgName}/usrs")
 public class UsrController {
 
+	@Autowired
 	private ModelMapper modelMapper;
+	
+	@Autowired
+	private ApiUtils apiUtils;
+	
 	private UsrService usrService;
 	
 	@Autowired
-	public UsrController(ModelMapper modelMapper, UsrService usrService) {
-		this.modelMapper = modelMapper;
+	public UsrController(UsrService usrService) {
 		this.usrService = usrService;
 	}
 	
 	@GetMapping(path = "/test")
-	public ResponseEntity<String> usrRouteTest() {
+	public ResponseEntity<String> usrRouteTest(@PathVariable String orgName) {
 		
-		AppUtils.printControllerMethodInfo("GET", "/api/v1/usrs/test", "usrRouteTest");
+		AppUtils.printControllerMethodInfo("GET", "/api/v1/" + orgName + "/usrs/test", "usrRouteTest");
 		
 		return ResponseEntity.ok().body("{\"status\": \"OK\"}");
 	}
 	
 	@PostMapping
-	public ResponseEntity<UsrResponse> createUsr(@Valid @RequestBody UsrRequest usrRequest) {
+	public ResponseEntity<UsrResponse> createUsr(@PathVariable String orgName, @Valid @RequestBody UsrRequest usrRequest) {
 		
-		AppUtils.printControllerMethodInfo("POST", "/api/v1/usrs", "createUsr");
+		AppUtils.printControllerMethodInfo("POST", "/api/v1/" + orgName + "/usrs", "createUsr");
 		
 		if (usrRequest == null) {
 			throw new RequestBodyEmptyException("Request body is empty; ENTITY: Usr");
 		}
 		
-		UsrDto usrDto = usrService.create(modelMapper.map(usrRequest, UsrDto.class));
+		UsrDto usrDto = usrService.create(orgName, modelMapper.map(usrRequest, UsrDto.class));
 		
 		return new ResponseEntity<UsrResponse>(modelMapper.map(usrDto, UsrResponse.class), HttpStatus.CREATED);
 	}
 	
 	@GetMapping
-	public ResponseEntity<List<UsrResponse>> getAllUsrs(
+	public ResponseEntity<UsrResponsesWithOrg> getAllUsrs(
+			@PathVariable String orgName,
 			@Valid @RequestParam(value = "page", defaultValue = "1") int page,
 			@Valid @RequestParam(value = "limit", defaultValue = "25") int limit,
 			@Valid @RequestParam(value = "sort", defaultValue = "") String sort,
 			@Valid @RequestParam(value = "order", defaultValue = "asc") String order) {
 		
-		AppUtils.printControllerMethodInfo("GET", "/api/v1/usrs", "getAllUsrs");
+		AppUtils.printControllerMethodInfo("GET", "/api/v1/" + orgName + "/usrs", "getAllUsrs");
 		
 		if (page > 0) {
 			page--;
 		}
 		
-		List<UsrDto> usrDtos = null;
+		PagingAndSorting ps = new PagingAndSorting(page, limit, sort, order);
 		
-		if (sort.isEmpty()) {
-			usrDtos = usrService.getAll(page, limit);
-		} else {
-			usrDtos = usrService.getAll(page, limit, sort, order);
-		}
+		List<UsrDto> usrDtos = usrService.getAll(orgName, ps);
 		
 		if (usrDtos == null) {
-			return new ResponseEntity<List<UsrResponse>>(HttpStatus.NO_CONTENT);
+			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 		}
 		
 		List<UsrResponse> usrResponses = new ArrayList<>();
 		usrDtos.forEach(usrDto -> usrResponses.add(modelMapper.map(usrDto, UsrResponse.class)));
 		
-		return new ResponseEntity<List<UsrResponse>>(usrResponses, HttpStatus.OK);
+		return new ResponseEntity<UsrResponsesWithOrg>(new UsrResponsesWithOrg(usrResponses, apiUtils.getOrgByOrgName(orgName)), HttpStatus.OK);
 	}
 	
 	@GetMapping(path = "/{usrId}")
-	public ResponseEntity<UsrResponse> getUsrById(@Valid @PathVariable Long usrId) {
+	public ResponseEntity<UsrResponse> getUsrById(@PathVariable String orgName, @Valid @PathVariable Long usrId) {
 		
-		AppUtils.printControllerMethodInfo("GET", "/api/v1/usrs/{usrId}", "getUsrById");
+		AppUtils.printControllerMethodInfo("GET", "/api/v1/" + orgName + "/usrs", "getUsrById");
 		
 		if (usrId < 1) {
 			throw new InvalidPathVariableException("Invalid resource id value passed via URL parameter; ENTITY: Usr; METHOD: GET; ID: " + usrId);
@@ -108,13 +114,16 @@ public class UsrController {
 			return new ResponseEntity<UsrResponse>(HttpStatus.NOT_FOUND);
 		}
 		
-		return new ResponseEntity<UsrResponse>(modelMapper.map(usrDto, UsrResponse.class), HttpStatus.OK);
+		UsrResponse usrResponse = modelMapper.map(usrDto, UsrResponse.class);
+		usrResponse.setOrg(apiUtils.getOrgByOrgName(orgName));
+		
+		return new ResponseEntity<UsrResponse>(usrResponse, HttpStatus.OK);
 	}
 	
 	@PutMapping(path = "/{usrId}")
-	public ResponseEntity<UsrResponse> updateUsrById(@PathVariable Long usrId, @RequestBody UsrRequest usrRequest) {
+	public ResponseEntity<UsrResponse> updateUsrById(@PathVariable String orgName, @PathVariable Long usrId, @RequestBody UsrRequest usrRequest) {
 		
-		AppUtils.printControllerMethodInfo("PUT", "/api/v1/usrs/{usrId}", "updateUsrById");
+		AppUtils.printControllerMethodInfo("PUT", "/api/v1/" + orgName + "/usrs", "updateUsrById");
 		
 		if (usrId < 1) {
 			throw new InvalidPathVariableException("Invalid resource id value passed via URL parameter; ENTITY: Usr; METHOD: PUT; ID: " + usrId);
@@ -126,13 +135,16 @@ public class UsrController {
 		
 		UsrDto usrDto = usrService.updateById(usrId, modelMapper.map(usrRequest, UsrDto.class));
 		
-		return new ResponseEntity<UsrResponse>(modelMapper.map(usrDto, UsrResponse.class), HttpStatus.OK);
+		UsrResponse usrResponse = modelMapper.map(usrDto, UsrResponse.class);
+		usrResponse.setOrg(apiUtils.getOrgByOrgName(orgName));
+		
+		return new ResponseEntity<UsrResponse>(usrResponse, HttpStatus.OK);
 	}
 	
 	@DeleteMapping(path = "/{usrId}")
-	public ResponseEntity<?> deleteUsrById(@Valid @PathVariable Long usrId) {
+	public ResponseEntity<?> deleteUsrById(@PathVariable String orgName, @Valid @PathVariable Long usrId) {
 		
-		AppUtils.printControllerMethodInfo("DELETE", "/api/v1/usrs/{usrId}", "deleteUsrById");
+		AppUtils.printControllerMethodInfo("DELETE", "/api/v1/" + orgName + "/usrs", "deleteUsrById");
 		
 		if (usrId < 1) {
 			throw new InvalidPathVariableException("Invalid resource id value passed via URL parameter; ENTITY: Usr; METHOD: DELETE; ID: " + usrId);
