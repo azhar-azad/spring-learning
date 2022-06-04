@@ -33,4 +33,7 @@ public class AppUserEntity implements Serializable {
 
     @Column(nullable = false)
     private LocalDate dateOfBirth;
+
+    @OneToOne(mappedBy = "appUser")
+    private ProfileEntity profile;
 }

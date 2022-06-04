@@ -18,22 +18,17 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @AllArgsConstructor
 public class AppUser {
-
     @NotNull(message = "Username cannot be empty")
     @Size(min = 4, max = 16)
     private String username;
-
     @Email
     @NotNull(message = "Email cannot be empty")
     @Size(min = 3, max = 30)
     private String email;
-
     @NotNull(message = "First name cannot be empty")
     @Size(min = 2)
     private String firstName;
-
     private String lastName;
-
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
     @JsonSerialize(using = LocalDateSerializer.class)
     @JsonDeserialize(using = LocalDateDeserializer.class)

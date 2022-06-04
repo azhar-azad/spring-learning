@@ -75,7 +75,7 @@ public class AppUserController {
     @GetMapping(path = "/{id}")
     public ResponseEntity<AppUserResponse> getAppUserById(@Valid @PathVariable Long id) {
 
-        appUtils.printControllerMethodInfo("GET", "/api/v1/appUsers/{id}", "getAppUserById");
+        appUtils.printControllerMethodInfo("GET", "/api/v1/appUsers/"+ id, "getAppUserById");
 
         if (id < 1) {
             throw new InvalidPathVariableException("Invalid resource id value for the entity AppUser.");
@@ -92,7 +92,7 @@ public class AppUserController {
     @PutMapping(path = "/{id}")
     public ResponseEntity<AppUserResponse> updateAppUserById(@Valid @PathVariable Long id, @RequestBody AppUserRequest updatedRequest) {
 
-        appUtils.printControllerMethodInfo("PUT", "/api/v1/appUsers/{id}", "updateAppUserById");
+        appUtils.printControllerMethodInfo("PUT", "/api/v1/appUsers/"+ id, "updateAppUserById");
 
         if (id < 1) {
             throw new InvalidPathVariableException("Invalid resource id value for the entity AppUser.");
@@ -112,7 +112,7 @@ public class AppUserController {
     @DeleteMapping(path = "/{id}")
     public ResponseEntity<?> deleteAppUserById(@Valid @PathVariable Long id) {
 
-        appUtils.printControllerMethodInfo("DELETE", "/api/v1/appUsers/{id}", "deleteAppUserById");
+        appUtils.printControllerMethodInfo("DELETE", "/api/v1/appUsers/"+ id, "deleteAppUserById");
 
         if (id < 1) {
             throw new InvalidPathVariableException("Invalid resource id value for the entity AppUser.");

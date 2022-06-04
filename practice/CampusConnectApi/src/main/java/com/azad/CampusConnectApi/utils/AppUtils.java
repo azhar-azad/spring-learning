@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.time.Period;
 import java.time.ZoneId;
 import java.util.Date;
+import java.util.List;
 
 import org.springframework.data.domain.Sort;
 
@@ -52,7 +53,7 @@ public class AppUtils {
 		return 0;
 	}
 	
-	public static int getAge(LocalDate birthDate, LocalDate deathDate) {
+	public int getAge(LocalDate birthDate, LocalDate deathDate) {
 		
 		if (birthDate != null && deathDate != null) {
 			
