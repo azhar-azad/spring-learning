@@ -42,7 +42,7 @@ public class ProfileController {
         }
 
         if (request == null) {
-            throw new RequestBodyEmptyException("Request body is empty for entity AppUser");
+            throw new RequestBodyEmptyException("Request body is empty for entity Profile");
         }
 
         ProfileDto dto = modelMapper.map(request, ProfileDto.class);

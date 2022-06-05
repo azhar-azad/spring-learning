@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -36,4 +37,7 @@ public class AppUserEntity implements Serializable {
 
     @OneToOne(mappedBy = "appUser")
     private ProfileEntity profile;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "appUser", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<PostEntity> posts;
 }
