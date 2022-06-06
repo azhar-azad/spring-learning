@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @Data
@@ -11,6 +12,8 @@ import java.util.List;
 @AllArgsConstructor
 public class Post {
 
+    @NotNull(message = "Post text cannot be empty")
     private String text;
+    
     private List<String> links;
 }
