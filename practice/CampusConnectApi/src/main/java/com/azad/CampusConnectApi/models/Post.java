@@ -12,8 +12,6 @@ import java.util.List;
 @AllArgsConstructor
 public class Post {
 
-    @NotNull(message = "Post text cannot be empty")
     private String text;
-    
     private List<String> links;
 }
