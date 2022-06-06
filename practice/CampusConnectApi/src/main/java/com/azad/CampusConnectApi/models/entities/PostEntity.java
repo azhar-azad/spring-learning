@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Data
@@ -20,6 +21,9 @@ public class PostEntity {
 
     @Column
     private String text;
+
+    @Column(columnDefinition = "DATETIME default CURRENT_TIMESTAMP")
+    private LocalDateTime postedAt;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "app_user_id")

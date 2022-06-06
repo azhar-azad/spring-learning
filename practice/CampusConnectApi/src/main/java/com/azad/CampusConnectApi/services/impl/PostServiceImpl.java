@@ -22,6 +22,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -62,6 +63,7 @@ public class PostServiceImpl implements PostService {
 
         // Set appUser to post mapping (1-to-n) and save post
         PostEntity post = modelMapper.map(requestDto, PostEntity.class);
+        post.setPostedAt(LocalDateTime.now());
         post.setAppUser(appUser);
         post.setLinks(null); // removing links as links are still not saved, so no mapping possible
         PostEntity savedPost = postRepository.save(post);
