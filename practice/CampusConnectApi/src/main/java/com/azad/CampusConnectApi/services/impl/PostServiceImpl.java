@@ -12,6 +12,7 @@ import com.azad.CampusConnectApi.repositories.AppUserRepository;
 import com.azad.CampusConnectApi.repositories.LinkRepository;
 import com.azad.CampusConnectApi.repositories.PostRepository;
 import com.azad.CampusConnectApi.services.PostService;
+import com.azad.CampusConnectApi.utils.ApiUtils;
 import com.azad.CampusConnectApi.utils.AppUtils;
 import com.azad.CampusConnectApi.utils.PagingAndSortingObject;
 import org.modelmapper.ModelMapper;
@@ -26,6 +27,9 @@ import java.util.List;
 
 @Service
 public class PostServiceImpl implements PostService {
+
+    @Autowired
+    private ApiUtils apiUtils;
 
     @Autowired
     private AppUtils appUtils;
@@ -65,18 +69,8 @@ public class PostServiceImpl implements PostService {
         // Delete all links that are not mapped with any post
         linkRepository.deleteLinksWithoutPostIdMapping();
 
-        // Prepare the LinkEntity from linkUrl
-        List<LinkEntity> links = new ArrayList<>();
-        requestDto.getLinks().forEach(linkUrl -> {
-            Link link = new Link(linkUrl);
-            links.add(modelMapper.map(link, LinkEntity.class));
-        });
-
-        // Set post to link mapping (1-to-n) and save links
-        for (LinkEntity link: links) {
-            link.setPost(savedPost);
-            linkRepository.save(link);
-        }
+        // Save the links for this post
+        apiUtils.saveLinksForPost(linkRepository, requestDto.getLinks(), savedPost);
 
         // Return the post data as PostDto
         PostDto savedPostDto = modelMapper.map(savedPost, PostDto.class);
@@ -119,16 +113,7 @@ public class PostServiceImpl implements PostService {
 
             linkRepository.deleteByPostId(post.getId());
 
-            List<LinkEntity> links = new ArrayList<>();
-            updatedRequestDto.getLinks().forEach(linkUrl -> {
-                Link link = new Link(linkUrl);
-                links.add(modelMapper.map(link, LinkEntity.class));
-            });
-
-            for (LinkEntity link: links) {
-                link.setPost(post);
-                linkRepository.save(link);
-            }
+            apiUtils.saveLinksForPost(linkRepository, updatedRequestDto.getLinks(), post);
         }
 
         PostEntity updatedPost = postRepository.save(post);
@@ -212,4 +197,6 @@ public class PostServiceImpl implements PostService {
 
         deleteById(id);
     }
+
+
 }
