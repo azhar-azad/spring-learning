@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -12,26 +13,26 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "post")
-public class PostEntity {
+@Table(name = "comment")
+public class CommentEntity implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(name = "commented_by")
+    private Long commentedByUserId;
+
     @Column
-    private String text;
+    private String commentText;
 
     @Column(columnDefinition = "DATETIME default CURRENT_TIMESTAMP")
-    private LocalDateTime postedAt;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "app_user_id")
-    private AppUserEntity appUser;
+    private LocalDateTime commentedAt;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "post", cascade = CascadeType.ALL)
     private List<LinkEntity> links;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "post", cascade = CascadeType.ALL)
-    private List<CommentEntity> comments;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "post_id")
+    private PostEntity post;
 }

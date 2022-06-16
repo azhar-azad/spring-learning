@@ -18,4 +18,9 @@ public interface LinkRepository extends PagingAndSortingRepository<LinkEntity, L
     @Modifying
     @Query(value = "delete from link where post_id is null", nativeQuery = true)
     void deleteLinksWithoutPostIdMapping();
+
+    @Transactional
+    @Modifying
+    @Query(value = "delete from link where comment_id is null", nativeQuery = true)
+    void deleteLinksWithoutCommentMapping();
 }
