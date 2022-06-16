@@ -1,0 +1,49 @@
+Music Library
+
+Entities:
+1. Song
+2. Artist
+3. Album
+4. AppUser
+
+Entity-Mapping
+
+Song - Artist (n-to-n)
+Song - Album (n-to-1)
+Artist - Album (n-to-n)
+Song - AppUser (n-to-n)
+
+Artist:
+    fullName (req)
+    gender (req)
+    popularity (computed from song's rating)
+    songs (list: Song)
+    albums (list: Album)
+
+Album:
+    albumName (req)
+    released (req)
+    albumRating (computed from song's rating)
+    albumLength (computed from song's runtime)
+    songs (list: Song)
+    artists (list: Artist)
+
+Song:
+    songName (req)
+    runtime (req)
+    rating (req)
+    album (Album)
+    artists (list: Artist)
+
+AppUser:
+    firstName (req)
+    lastName (req)
+    email (req)
+    username (req)
+    password (req)
+    songs (list: Song)
+
+
+
+
+
