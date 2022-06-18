@@ -1,10 +1,10 @@
 package com.azad.musiclibrary.controllers;
 
-import com.azad.musiclibrary.dtos.AppUserDto;
+import com.azad.musiclibrary.models.dtos.AppUserDto;
 import com.azad.musiclibrary.exceptions.InvalidPathVariableException;
 import com.azad.musiclibrary.exceptions.RequestBodyEmptyException;
 import com.azad.musiclibrary.models.requests.AppUserRequest;
-import com.azad.musiclibrary.responses.AppUserResponse;
+import com.azad.musiclibrary.models.responses.AppUserResponse;
 import com.azad.musiclibrary.services.AppUserService;
 import com.azad.musiclibrary.utils.AppUtils;
 import com.azad.musiclibrary.utils.PagingAndSortingObject;

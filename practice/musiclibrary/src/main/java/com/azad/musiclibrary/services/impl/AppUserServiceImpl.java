@@ -1,6 +1,6 @@
 package com.azad.musiclibrary.services.impl;
 
-import com.azad.musiclibrary.dtos.AppUserDto;
+import com.azad.musiclibrary.models.dtos.AppUserDto;
 import com.azad.musiclibrary.exceptions.ResourceNotFoundException;
 import com.azad.musiclibrary.models.entities.AppUserEntity;
 import com.azad.musiclibrary.repositories.AppUserRepository;

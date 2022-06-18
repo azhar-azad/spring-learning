@@ -1,15 +1,15 @@
-package com.azad.musiclibrary.dtos;
+package com.azad.musiclibrary.models.responses;
 
 import com.azad.musiclibrary.models.AppUser;
 
-public class AppUserDto extends AppUser {
+public class AppUserResponse extends AppUser {
 
     private Long id;
 
-    public AppUserDto() {
+    public AppUserResponse() {
     }
 
-    public AppUserDto(String firstName, String lastName, String email, String username, String password, Long id) {
+    public AppUserResponse(String firstName, String lastName, String email, String username, String password, Long id) {
         super(firstName, lastName, email, username, password);
         this.id = id;
     }
