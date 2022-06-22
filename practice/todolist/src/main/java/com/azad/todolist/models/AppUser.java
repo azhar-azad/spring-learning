@@ -1,5 +1,7 @@
 package com.azad.todolist.models;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import javax.validation.constraints.Email;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
@@ -14,8 +16,11 @@ public class AppUser {
     @NotNull(message = "Email cannot be empty")
     @Email(message = "Please provide a valid email address", regexp = "^[a-zA-Z0-9_!#$%&'*+/=?`{|}~^.-]+@[a-zA-Z0-9.-]+$")
     private String email;
+
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @NotNull(message = "Password cannot be empty")
     private String password;
+
     private String role;
 
     private String userId;

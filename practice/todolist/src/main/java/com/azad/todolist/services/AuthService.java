@@ -47,7 +47,7 @@ public class AuthService {
             appUserDto.setRole("ROLE_USER");
         }
 
-        appUserDto.setUserId(appUtils.getRandomString());
+        appUserDto.setUserId(appUtils.getUserId(appUserDto.getEmail()));
 
         // Persisting the User Entity to db
         AppUserEntity appUserEntity = appUserRepo.save(modelMapper.map(appUserDto, AppUserEntity.class));

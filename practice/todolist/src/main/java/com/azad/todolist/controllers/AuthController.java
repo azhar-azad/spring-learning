@@ -1,22 +1,15 @@
 package com.azad.todolist.controllers;
 
 import com.azad.todolist.models.AppUser;
-import com.azad.todolist.models.Roles;
 import com.azad.todolist.models.dtos.AppUserDto;
-import com.azad.todolist.models.entities.AppUserEntity;
 import com.azad.todolist.models.requests.LoginRequest;
-import com.azad.todolist.repos.AppUserRepo;
 import com.azad.todolist.security.JWTUtil;
 import com.azad.todolist.services.AuthService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
