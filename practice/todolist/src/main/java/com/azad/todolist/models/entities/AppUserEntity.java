@@ -13,6 +13,9 @@ public class AppUserEntity /*implements UserDetails*/ {
     private Long id;
 
     @Column(nullable = false)
+    private String userId;
+
+    @Column(nullable = false)
     private String firstName;
 
     @Column(nullable = false)
@@ -36,6 +39,14 @@ public class AppUserEntity /*implements UserDetails*/ {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 
     public String getFirstName() {

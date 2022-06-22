@@ -5,6 +5,7 @@ import com.azad.todolist.models.dtos.AppUserDto;
 import com.azad.todolist.models.entities.AppUserEntity;
 import com.azad.todolist.repos.AppUserRepo;
 import com.azad.todolist.security.JWTUtil;
+import com.azad.todolist.utils.AppUtils;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -14,6 +15,9 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class AuthService {
+
+    @Autowired
+    private AppUtils appUtils;
 
     @Autowired
     private ModelMapper modelMapper;
@@ -42,6 +46,8 @@ public class AuthService {
         if (appUserDto.getRole() == null || !Roles.isValidRole(appUserDto.getRole())) {
             appUserDto.setRole("ROLE_USER");
         }
+
+        appUserDto.setUserId(appUtils.getRandomString());
 
         // Persisting the User Entity to db
         AppUserEntity appUserEntity = appUserRepo.save(modelMapper.map(appUserDto, AppUserEntity.class));

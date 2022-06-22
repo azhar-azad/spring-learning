@@ -18,6 +18,8 @@ public class AppUser {
     private String password;
     private String role;
 
+    private String userId;
+
     public AppUser() {
     }
 
@@ -59,5 +61,13 @@ public class AppUser {
 
     public void setRole(String role) {
         this.role = role;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 }

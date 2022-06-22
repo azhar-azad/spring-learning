@@ -1,11 +1,13 @@
 package com.azad.todolist.repos;
 
 import com.azad.todolist.models.entities.AppUserEntity;
-import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.repository.PagingAndSortingRepository;
 
 import java.util.Optional;
 
-public interface AppUserRepo extends JpaRepository<AppUserEntity, Long> {
+public interface AppUserRepo extends PagingAndSortingRepository<AppUserEntity, Long> {
 
-    public Optional<AppUserEntity> findByEmail(String email);
+    Optional<AppUserEntity> findByEmail(String email);
+
+    Optional<AppUserEntity> findByUserId(String userId);
 }
