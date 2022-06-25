@@ -1,5 +1,7 @@
 package com.azad.todolist.utils;
 
+import com.azad.todolist.models.Roles;
+import com.azad.todolist.models.responses.ApiResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,23 +9,36 @@ import org.springframework.data.domain.Sort;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
-import java.util.Random;
+import java.util.*;
 
 @Component
 public class AppUtils {
 
-    private final Logger log = LoggerFactory.getLogger(AppUtils.class);
+    private final Logger LOG = LoggerFactory.getLogger(AppUtils.class);
 
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    public void printControllerMethodInfo(String httpMethod, String requestPath, String controllerMethodName) {
-        log.info("");
-        log.info(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
-        log.info(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
-        log.info(httpMethod + " " + requestPath + " :::: " + controllerMethodName);
-        log.info(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
-        log.info(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+    public void printControllerMethodInfo(String httpMethod, String requestPath, String controllerMethodName, boolean isPublic, String authorizedFor) {
+        LOG.info("");
+        LOG.info(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+        LOG.info(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+        LOG.info(httpMethod + " " + requestPath + " :::: " + controllerMethodName);
+        if (isPublic)
+            LOG.info("PUBLIC :: No Authentication");
+        else {
+            LOG.info("PRIVATE :: Authenticated & Authorized for {}}", authorizedFor);
+        }
+        LOG.info(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+        LOG.info(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+    }
+
+    public ApiResponse getApiResponse(Boolean isSuccess, String message, List<Object> data) {
+        ApiResponse apiResponse = new ApiResponse();
+        apiResponse.setSuccess(isSuccess);
+        apiResponse.setMessage(message);
+        apiResponse.setData(data);
+        return apiResponse;
     }
 
     public Sort getSortBy(String sort, String order) {

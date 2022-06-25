@@ -10,8 +10,16 @@ import com.azad.todolist.utils.AppUtils;
 import com.azad.todolist.utils.PagingAndSorting;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class AppUserServiceImpl implements AppUserService {
@@ -51,7 +59,7 @@ public class AppUserServiceImpl implements AppUserService {
     }
 
     @Override
-    public AppUserDto getAll(PagingAndSorting ps) {
+    public List<AppUserDto> getAll(PagingAndSorting ps) {
         return null;
     }
 
@@ -77,5 +85,11 @@ public class AppUserServiceImpl implements AppUserService {
                 () -> new ResourceNotFoundException("AppUser", "email"));
 
         return modelMapper.map(appUserEntity, AppUserDto.class);
+    }
+
+    @Override
+    public List<AppUserDto> getAll() {
+
+        return null;
     }
 }

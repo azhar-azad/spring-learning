@@ -10,6 +10,9 @@ public class PagingAndSorting {
     public PagingAndSorting() {
     }
 
+    public PagingAndSorting(int page, int limit, String sort, String order) {
+    }
+
     public int getPage() {
         return page;
     }

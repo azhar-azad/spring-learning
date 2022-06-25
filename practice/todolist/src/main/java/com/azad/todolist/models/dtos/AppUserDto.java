@@ -7,6 +7,7 @@ public class AppUserDto extends AppUser {
     private Long id;
 
     public AppUserDto() {
+        super();
     }
 
     public Long getId() {
