@@ -76,15 +76,15 @@ public class AuthService {
         authManager.authenticate(authInputToken);
     }
 
-    public boolean notAuthorizedForThisRoute(String route) {
+    public boolean notAuthorizedForThisResource(String resourceName) {
 
         String email = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         String userRole = appUserRepo.findByEmail(email).orElseThrow(
                 () -> new ResourceNotFoundException("AppUser", "email")).getRole();
 
-        if (ROUTE_ACCESS_MAP.containsKey(route)) {
-            List<String> eligibleRoles = ROUTE_ACCESS_MAP.get(route);
+        if (ROUTE_ACCESS_MAP.containsKey(resourceName)) {
+            List<String> eligibleRoles = ROUTE_ACCESS_MAP.get(resourceName);
             return !eligibleRoles.contains(userRole);
         }
 
@@ -92,11 +92,11 @@ public class AuthService {
     }
 
     private void initRouteAccessMap() {
-        ROUTE_ACCESS_MAP.put("/api/auth", new ArrayList<String>() {{
+        ROUTE_ACCESS_MAP.put("Auth", new ArrayList<String>() {{
             add(Roles.ROLE_ADMIN.name());
             add(Roles.ROLE_USER.name());
         }});
-        ROUTE_ACCESS_MAP.put("/api/users", new ArrayList<String>() {{
+        ROUTE_ACCESS_MAP.put("AppUser", new ArrayList<String>() {{
             add(Roles.ROLE_ADMIN.name());
         }});
     }

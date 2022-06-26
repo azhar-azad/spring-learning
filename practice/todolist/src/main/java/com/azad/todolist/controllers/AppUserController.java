@@ -35,12 +35,12 @@ public class AppUserController {
     private AuthService authService;
 
     private final AppUserService appUserService;
-    private final String routePath;
+    private final String resource;
 
     @Autowired
     public AppUserController(AppUserService appUserService) {
         this.appUserService = appUserService;
-        this.routePath = "/api/users";
+        this.resource = "AppUser";
     }
 
     /**
@@ -300,7 +300,7 @@ public class AppUserController {
     }
 
     private ResponseEntity<ApiResponse> checkAndGetNotAuthorizedResponse() {
-        if (authService.notAuthorizedForThisRoute(routePath)) {
+        if (authService.notAuthorizedForThisResource(resource)) {
             return new ResponseEntity<>(
                     new ApiResponse(false, "Unauthorized Request", null),
                     HttpStatus.UNAUTHORIZED);
