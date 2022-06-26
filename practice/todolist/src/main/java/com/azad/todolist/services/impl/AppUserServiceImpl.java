@@ -10,7 +10,6 @@ import com.azad.todolist.utils.AppUtils;
 import com.azad.todolist.utils.PagingAndSorting;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -33,7 +32,7 @@ public class AppUserServiceImpl implements AppUserService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    private AppUserRepo appUserRepo;
+    private final AppUserRepo appUserRepo;
 
     @Autowired
     public AppUserServiceImpl(AppUserRepo appUserRepo) {
@@ -60,7 +59,20 @@ public class AppUserServiceImpl implements AppUserService {
 
     @Override
     public List<AppUserDto> getAll(PagingAndSorting ps) {
-        return null;
+
+        Pageable pageable;
+        if (ps.getSort() == null || ps.getSort().equals("")) {
+            pageable = PageRequest.of(ps.getPage(), ps.getLimit());
+        } else {
+            Sort sort = appUtils.getSortBy(ps.getSort(), ps.getOrder());
+            pageable = PageRequest.of(ps.getPage(), ps.getLimit(), sort);
+        }
+
+        List<AppUserEntity> appUserEntities = appUserRepo.findAll(pageable).getContent();
+
+        return appUserEntities.stream()
+                .map(appUserEntity -> modelMapper.map(appUserEntity, AppUserDto.class))
+                .collect(Collectors.toList());
     }
 
     @Override
@@ -88,8 +100,62 @@ public class AppUserServiceImpl implements AppUserService {
     }
 
     @Override
-    public List<AppUserDto> getAll() {
+    public List<AppUserDto> getSearchResult(String searchKey, String searchTerm) {
 
-        return null;
+        List<AppUserEntity> appUserEntities = new ArrayList<>();
+
+        if (searchKey.equalsIgnoreCase("firstName"))
+            appUserEntities = appUserRepo.findByFirstName(searchTerm).orElse(null);
+        else if (searchKey.equalsIgnoreCase("lastName"))
+            appUserEntities = appUserRepo.findByLastName(searchTerm).orElse(null);
+        else if (searchKey.equalsIgnoreCase("email"))
+            appUserEntities.add(appUserRepo.findByEmail(searchTerm).orElse(null));
+        else if (searchKey.equalsIgnoreCase("role"))
+            appUserEntities = appUserRepo.findByRole(searchTerm).orElse(null);
+        else if (searchKey.equalsIgnoreCase("userId"))
+            appUserEntities.add(appUserRepo.findByUserId(searchTerm).orElse(null));
+        else
+            throw new RuntimeException("Invalid search key");
+
+        if (appUserEntities == null || appUserEntities.size() == 0)
+            return null;
+
+        return appUserEntities.stream()
+                .map(appUserEntity -> modelMapper.map(appUserEntity, AppUserDto.class))
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public AppUserDto getByUserId(String userId) {
+
+        AppUserEntity appUserEntity = appUserRepo.findByUserId(userId).orElseThrow(
+                () -> new ResourceNotFoundException("AppUser", "userId"));
+
+        return modelMapper.map(appUserEntity, AppUserDto.class);
+    }
+
+    @Override
+    public AppUserDto updateByUserId(String userId, AppUserDto updatedUserDto) {
+
+        AppUserEntity appUserEntity = appUserRepo.findByUserId(userId).orElseThrow(
+                () -> new ResourceNotFoundException("AppUser", "userId"));
+
+        if (updatedUserDto.getFirstName() != null)
+            appUserEntity.setFirstName(updatedUserDto.getFirstName());
+        if (updatedUserDto.getLastName() != null)
+            appUserEntity.setLastName(updatedUserDto.getLastName());
+        if (updatedUserDto.getEmail() != null)
+            appUserEntity.setEmail((updatedUserDto.getEmail()));
+
+        return modelMapper.map(appUserRepo.save(appUserEntity), AppUserDto.class);
+    }
+
+    @Override
+    public void deleteByUserId(String userId) {
+
+        AppUserEntity appUserEntity = appUserRepo.findByUserId(userId).orElseThrow(
+                () -> new ResourceNotFoundException("AppUser", "userId"));
+
+        appUserRepo.delete(appUserEntity);
     }
 }
