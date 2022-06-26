@@ -3,6 +3,7 @@ package com.azad.todolist.models.entities;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "user")
@@ -29,6 +30,9 @@ public class AppUserEntity /*implements UserDetails*/ {
 
     @Column(nullable = false)
     private String role;
+
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<TaskEntity> tasks;
 
     public AppUserEntity() {
     }
