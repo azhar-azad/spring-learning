@@ -1,6 +1,5 @@
 package com.azad.todolist.utils;
 
-import com.azad.todolist.models.Roles;
 import com.azad.todolist.models.responses.ApiResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,13 +26,13 @@ public class AppUtils {
         if (isPublic)
             LOG.info("PUBLIC :: No Authentication");
         else {
-            LOG.info("PRIVATE :: Authenticated & Authorized for {}}", authorizedFor);
+            LOG.info("PRIVATE :: Authenticated & Authorized for {}", authorizedFor);
         }
         LOG.info(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
         LOG.info(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
     }
 
-    public ApiResponse getApiResponse(Boolean isSuccess, String message, List<Object> data) {
+    public ApiResponse getApiResponse(Boolean isSuccess, String message, List<?> data) {
         ApiResponse apiResponse = new ApiResponse();
         apiResponse.setSuccess(isSuccess);
         apiResponse.setMessage(message);

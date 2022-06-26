@@ -6,9 +6,15 @@ public class ApiResponse {
 
     private Boolean success;
     private String message;
-    private List<Object> data;
+    private List<?> data;
 
     public ApiResponse() {
+    }
+
+    public ApiResponse(Boolean success, String message, List<?> data) {
+        this.success = success;
+        this.message = message;
+        this.data = data;
     }
 
     public Boolean getSuccess() {
@@ -27,11 +33,11 @@ public class ApiResponse {
         this.message = message;
     }
 
-    public List<Object> getData() {
+    public List<?> getData() {
         return data;
     }
 
-    public void setData(List<Object> data) {
+    public void setData(List<?> data) {
         this.data = data;
     }
 }
