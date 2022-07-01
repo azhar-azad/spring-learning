@@ -6,5 +6,4 @@ import com.azad.todolist.utils.PagingAndSorting;
 import java.util.List;
 
 public interface TaskService extends ApiService<TaskDto> {
-    List<TaskDto> getAllByUserId(Long userId, PagingAndSorting ps);
 }

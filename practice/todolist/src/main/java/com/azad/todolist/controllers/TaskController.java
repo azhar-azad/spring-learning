@@ -68,11 +68,7 @@ public class TaskController {
                     HttpStatus.UNAUTHORIZED);
         }
 
-        String email = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        AppUserDto appUserDto = appUserService.getByEmail(email);
-
         TaskDto taskDto = modelMapper.map(taskRequest, TaskDto.class);
-        taskDto.setUserId(appUserDto.getId());
 
         TaskDto savedTaskDto = taskService.create(taskDto);
 
@@ -107,16 +103,14 @@ public class TaskController {
         appUtils.printControllerMethodInfo("GET", "/api/tasks",
                 "getAllTasks", false, "ADMIN, USER");
 
-        String email = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        AppUserDto appUserDto = appUserService.getByEmail(email);
-
         if (page > 0) page--;
         PagingAndSorting ps = new PagingAndSorting(page, limit, sort, order);
 
-        List<TaskDto> taskDtos = taskService.getAllByUserId(appUserDto.getId(), ps);
+        List<TaskDto> taskDtos = taskService.getAll(ps);
 
         if (taskDtos == null || taskDtos.size() == 0) {
-            return new ResponseEntity<>(appUtils.getApiResponse(true, "No Task for User", null), HttpStatus.OK);
+            return new ResponseEntity<>(appUtils.getApiResponse(true, "No Task for User", null),
+                    HttpStatus.OK);
         }
 
         List<TaskResponse> taskResponses = taskDtos.stream()
@@ -134,7 +128,7 @@ public class TaskController {
      * @Route: http://localhost:8080/api/tasks/{id}
      * @Method: GET
      * @Authenticated: YES
-     * @Authorized: YES (Any logged-in user and admin can get any task they own by taskId)
+     * @Authorized: YES (Any logged-in user and admin can get any task by taskId. No owning restriction)
      * */
     @GetMapping(path = "/{id}")
     public ResponseEntity<ApiResponse> getTaskById(@Valid @PathVariable Long id) {
@@ -148,11 +142,8 @@ public class TaskController {
         appUtils.printControllerMethodInfo("GET", "/api/tasks/"+id,
                 "getTaskById", false, "ADMIN, USER");
 
-        // todo: implement how to prevent not owner to get a task
-        // first implement without considering owning restriction
-
         if (id == null || id <= 0) {
-            throw new InvalidPathVariableException("Invalid id is provided");
+            throw new InvalidPathVariableException("Provided ID is invalid: " + id);
         }
 
         TaskDto taskDto = taskService.getByEntityId(id);
@@ -162,4 +153,63 @@ public class TaskController {
                 HttpStatus.OK);
     }
 
+    /**
+     * @Name: updateTaskById
+     * @Desc: Update a single task by entity id
+     * @Route: http://localhost:8080/api/tasks/{id}
+     * @Method: PUT
+     * @Authenticated: YES
+     * @Authorized: YES (Any logged-in user and admin can get any task they own by taskId)
+     * */
+    @PutMapping(path = "/{id}")
+    public ResponseEntity<ApiResponse> updateTaskById(@Valid @PathVariable Long id, @RequestBody Task updateRequest) {
+
+        if (authService.notAuthorizedForThisResource(resourceName)) {
+            return new ResponseEntity<>(
+                    new ApiResponse(false, "Unauthorized Request", null),
+                    HttpStatus.UNAUTHORIZED);
+        }
+
+        appUtils.printControllerMethodInfo("PUT", "/api/tasks/"+id,
+                "updateTaskById", false, "ADMIN, USER");
+
+        if (id == null || id <= 0) {
+            throw new InvalidPathVariableException("Provided ID is invalid: " + id);
+        }
+
+        TaskDto updatedTaskDto = taskService.updateByEntityId(id, modelMapper.map(updateRequest, TaskDto.class));
+
+        return new ResponseEntity<>(new ApiResponse(true, "Task Updated By TaskID",
+                Collections.singletonList(modelMapper.map(updatedTaskDto, TaskResponse.class))),
+                HttpStatus.OK);
+    }
+
+    /**
+     * @Name: deleteTaskById
+     * @Desc: Delete a single task by entity id
+     * @Route: http://localhost:8080/api/tasks/{id}
+     * @Method: DELETE
+     * @Authenticated: YES
+     * @Authorized: YES (Any logged-in user and admin can get any task they own by taskId)
+     * */
+    @DeleteMapping(path = "/{id}")
+    public ResponseEntity<?> deleteTaskById(@Valid @PathVariable Long id) {
+
+        if (authService.notAuthorizedForThisResource(resourceName)) {
+            return new ResponseEntity<>(
+                    new ApiResponse(false, "Unauthorized Request", null),
+                    HttpStatus.UNAUTHORIZED);
+        }
+
+        appUtils.printControllerMethodInfo("PUT", "/api/tasks/"+id,
+                "updateTaskById", false, "ADMIN, USER");
+
+        if (id == null || id <= 0) {
+            throw new InvalidPathVariableException("Provided ID is invalid: " + id);
+        }
+
+        taskService.deleteByEntityId(id);
+
+        return ResponseEntity.noContent().build();
+    }
 }

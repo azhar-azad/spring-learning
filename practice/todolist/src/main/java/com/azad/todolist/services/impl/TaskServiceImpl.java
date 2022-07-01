@@ -2,6 +2,7 @@ package com.azad.todolist.services.impl;
 
 import com.azad.todolist.exceptions.ResourceNotFoundException;
 import com.azad.todolist.models.AppUser;
+import com.azad.todolist.models.Roles;
 import com.azad.todolist.models.dtos.AppUserDto;
 import com.azad.todolist.models.dtos.TaskDto;
 import com.azad.todolist.models.entities.AppUserEntity;
@@ -45,8 +46,7 @@ public class TaskServiceImpl implements TaskService {
     @Override
     public TaskDto create(TaskDto requestDto) {
 
-        Long appUserId = requestDto.getId();
-        AppUserDto ownerDto = appUserService.getByEntityId(appUserId);
+        AppUserDto ownerDto = appUserService.getByEntityId(getTaskOwner().getId());
 
         if (requestDto.getDone() == null) {
             requestDto.setDone(false);
@@ -66,37 +66,6 @@ public class TaskServiceImpl implements TaskService {
 
     @Override
     public List<TaskDto> getAll(PagingAndSorting ps) {
-        return null;
-    }
-
-    @Override
-    public TaskDto getByEntityId(Long id) {
-
-        TaskEntity taskEntity = taskRepo.findById(id).orElseThrow(
-                () -> new ResourceNotFoundException("Task", id));
-
-        String email = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        AppUserDto appUserDto = appUserService.getByEmail(email);
-
-        if (!Objects.equals(taskEntity.getUser().getId(), appUserDto.getId())) {
-            throw new RuntimeException("Not the owner");
-        }
-
-        return modelMapper.map(taskEntity, TaskDto.class);
-    }
-
-    @Override
-    public TaskDto updateByEntityId(Long id, TaskDto updatedDto) {
-        return null;
-    }
-
-    @Override
-    public void deleteByEntityId(Long id) {
-
-    }
-
-    @Override
-    public List<TaskDto> getAllByUserId(Long userId, PagingAndSorting ps) {
 
         Pageable pageable;
         if (ps.getSort() == null || ps.getSort().equals("")) {
@@ -106,9 +75,7 @@ public class TaskServiceImpl implements TaskService {
             pageable = PageRequest.of(ps.getPage(), ps.getLimit(), sort);
         }
 
-        AppUserDto ownerDto = appUserService.getByEntityId(userId);
-
-        List<TaskEntity> taskEntities = taskRepo.findByUserId(pageable, ownerDto.getId()).orElse(null);
+        List<TaskEntity> taskEntities = taskRepo.findByUserId(getTaskOwner().getId(), pageable).orElse(null);
 
         if (taskEntities == null || taskEntities.size() == 0)
             return null;
@@ -116,5 +83,62 @@ public class TaskServiceImpl implements TaskService {
         return taskEntities.stream()
                 .map(taskEntity -> modelMapper.map(taskEntity, TaskDto.class))
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public TaskDto getByEntityId(Long id) {
+
+        TaskEntity taskEntity = getTaskIfOwnerOrAdmin(id);
+
+        return modelMapper.map(taskEntity, TaskDto.class);
+    }
+
+    @Override
+    public TaskDto updateByEntityId(Long id, TaskDto updatedDto) {
+
+        TaskEntity taskEntity = getTaskIfOwnerOrAdmin(id);
+
+        if (updatedDto.getTitle() != null)
+            taskEntity.setTitle(updatedDto.getTitle());
+        if (updatedDto.getDescription() != null)
+            taskEntity.setDescription(updatedDto.getDescription());
+        if (updatedDto.getExpired() != null)
+            taskEntity.setExpired(updatedDto.getExpired());
+        if (updatedDto.getDone() != null)
+            taskEntity.setDone(updatedDto.getDone());
+
+        TaskEntity updatedTaskEntity = taskRepo.save(taskEntity);
+
+        return modelMapper.map(updatedTaskEntity, TaskDto.class);
+    }
+
+    @Override
+    public void deleteByEntityId(Long id) {
+
+        TaskEntity taskEntity = getTaskIfOwnerOrAdmin(id);
+
+        taskRepo.delete(taskEntity);
+    }
+
+
+    private TaskEntity getTaskIfOwnerOrAdmin(Long id) {
+        TaskEntity taskEntity = taskRepo.findById(id).orElseThrow(
+                () -> new ResourceNotFoundException("Task", id));
+
+        AppUserDto owner = getTaskOwner();
+        if (!Objects.equals(taskEntity.getUser().getId(), owner.getId())
+                && !owner.getRole().equalsIgnoreCase(Roles.ROLE_ADMIN.name())) {
+            // not the owner nor admin
+            throw new RuntimeException("Not the owner");
+        }
+
+        return taskEntity;
+    }
+
+    private AppUserDto getTaskOwner() {
+
+        String email = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        return appUserService.getByEmail(email);
     }
 }

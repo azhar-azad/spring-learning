@@ -12,7 +12,7 @@ import java.util.Optional;
 @Repository
 public interface TaskRepo extends PagingAndSortingRepository<TaskEntity, Long> {
 
-    Optional<List<TaskEntity>> findByUserId(Pageable pageable, Long userId);
+    Optional<List<TaskEntity>> findByUserId(Long userId, Pageable pageable);
 
     Optional<TaskEntity> findByTaskId(String taskId);
 }
