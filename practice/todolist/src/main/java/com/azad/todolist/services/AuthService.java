@@ -4,11 +4,14 @@ import com.azad.todolist.exceptions.ResourceNotFoundException;
 import com.azad.todolist.models.Roles;
 import com.azad.todolist.models.dtos.AppUserDto;
 import com.azad.todolist.models.entities.AppUserEntity;
+import com.azad.todolist.models.responses.ApiResponse;
 import com.azad.todolist.repos.AppUserRepo;
 import com.azad.todolist.security.JWTUtil;
 import com.azad.todolist.utils.AppUtils;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -98,6 +101,10 @@ public class AuthService {
         }});
         ROUTE_ACCESS_MAP.put("AppUser", new ArrayList<String>() {{
             add(Roles.ROLE_ADMIN.name());
+        }});
+        ROUTE_ACCESS_MAP.put("Task", new ArrayList<String>() {{
+            add(Roles.ROLE_ADMIN.name());
+            add(Roles.ROLE_USER.name());
         }});
     }
 }

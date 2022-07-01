@@ -1,5 +1,6 @@
 package com.azad.todolist.models.entities;
 
+import org.hibernate.annotations.CreationTimestamp;
 import org.springframework.data.annotation.CreatedDate;
 
 import javax.persistence.*;
@@ -14,7 +15,7 @@ public class TaskEntity {
     private Long id;
 
     @Column(nullable = false)
-    private String todoId;
+    private String taskId;
 
     @Column(nullable = false, length = 20)
     private String title;
@@ -23,7 +24,7 @@ public class TaskEntity {
     private String description;
 
     @Column(nullable = false)
-    @CreatedDate
+    @CreationTimestamp
     private LocalDate created;
 
     @Column
@@ -47,12 +48,12 @@ public class TaskEntity {
         this.id = id;
     }
 
-    public String getTodoId() {
-        return todoId;
+    public String getTaskId() {
+        return taskId;
     }
 
-    public void setTodoId(String todoId) {
-        this.todoId = todoId;
+    public void setTaskId(String taskId) {
+        this.taskId = taskId;
     }
 
     public String getTitle() {
@@ -93,5 +94,13 @@ public class TaskEntity {
 
     public void setDone(Boolean done) {
         isDone = done;
+    }
+
+    public AppUserEntity getUser() {
+        return user;
+    }
+
+    public void setUser(AppUserEntity user) {
+        this.user = user;
     }
 }

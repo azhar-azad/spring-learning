@@ -93,7 +93,15 @@ public class AppUserEntity /*implements UserDetails*/ {
         this.role = role;
     }
 
-//    @Override
+    public List<TaskEntity> getTasks() {
+        return tasks;
+    }
+
+    public void setTasks(List<TaskEntity> tasks) {
+        this.tasks = tasks;
+    }
+
+    //    @Override
 //    public Collection<? extends GrantedAuthority> getAuthorities() {
 //        return null;
 //    }

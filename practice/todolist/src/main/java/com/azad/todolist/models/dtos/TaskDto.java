@@ -6,7 +6,8 @@ import com.azad.todolist.models.Task;
 public class TaskDto extends Task {
 
     private Long id;
-    private AppUser appUser;
+    private AppUser user;
+    private String userId;
 
     public TaskDto() {
     }
@@ -19,11 +20,19 @@ public class TaskDto extends Task {
         this.id = id;
     }
 
-    public AppUser getAppUser() {
-        return appUser;
+    public AppUser getUser() {
+        return user;
     }
 
-    public void setAppUser(AppUser appUser) {
-        this.appUser = appUser;
+    public void setUser(AppUser user) {
+        this.user = user;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 }

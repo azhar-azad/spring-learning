@@ -35,12 +35,12 @@ public class AppUserController {
     private AuthService authService;
 
     private final AppUserService appUserService;
-    private final String resource;
+    private final String resourceName;
 
     @Autowired
     public AppUserController(AppUserService appUserService) {
         this.appUserService = appUserService;
-        this.resource = "AppUser";
+        this.resourceName = "AppUser";
     }
 
     /**
@@ -128,9 +128,10 @@ public class AppUserController {
 
         appUtils.printControllerMethodInfo("POST", "/api/users", "createAppUser", false, "ADMIN");
 
-        ResponseEntity<ApiResponse> notAuthorizedResponse = checkAndGetNotAuthorizedResponse();
-        if (notAuthorizedResponse != null) {
-            return notAuthorizedResponse;
+        if (authService.notAuthorizedForThisResource(resourceName)) {
+            return new ResponseEntity<>(
+                    new ApiResponse(false, "Unauthorized Request", null),
+                    HttpStatus.UNAUTHORIZED);
         }
 
         AppUserDto savedAppUserDto = appUserService.create(modelMapper.map(appUserRequest, AppUserDto.class));
@@ -157,9 +158,10 @@ public class AppUserController {
 
         appUtils.printControllerMethodInfo("GET", "/api/users", "getAllUsers", false, "ADMIN");
 
-        ResponseEntity<ApiResponse> notAuthorizedResponse = checkAndGetNotAuthorizedResponse();
-        if (notAuthorizedResponse != null) {
-            return notAuthorizedResponse;
+        if (authService.notAuthorizedForThisResource(resourceName)) {
+            return new ResponseEntity<>(
+                    new ApiResponse(false, "Unauthorized Request", null),
+                    HttpStatus.UNAUTHORIZED);
         }
 
         if (page > 0) page--;
@@ -196,9 +198,10 @@ public class AppUserController {
         appUtils.printControllerMethodInfo("GET", "/api/users/search", "searchUser",
                 false, "ADMIN");
 
-        ResponseEntity<ApiResponse> notAuthorizedResponse = checkAndGetNotAuthorizedResponse();
-        if (notAuthorizedResponse != null) {
-            return notAuthorizedResponse;
+        if (authService.notAuthorizedForThisResource(resourceName)) {
+            return new ResponseEntity<>(
+                    new ApiResponse(false, "Unauthorized Request", null),
+                    HttpStatus.UNAUTHORIZED);
         }
 
         List<AppUserDto> appUserDtos = appUserService.getSearchResult(key, value);
@@ -230,9 +233,10 @@ public class AppUserController {
         appUtils.printControllerMethodInfo("GET", "/api/users/"+userId, "getUserByUserId",
                 false, "ADMIN");
 
-        ResponseEntity<ApiResponse> notAuthorizedResponse = checkAndGetNotAuthorizedResponse();
-        if (notAuthorizedResponse != null) {
-            return notAuthorizedResponse;
+        if (authService.notAuthorizedForThisResource(resourceName)) {
+            return new ResponseEntity<>(
+                    new ApiResponse(false, "Unauthorized Request", null),
+                    HttpStatus.UNAUTHORIZED);
         }
 
         AppUserDto appUserDto = appUserService.getByUserId(userId);
@@ -262,9 +266,10 @@ public class AppUserController {
         if (updateUserRequest == null)
             throw new RequestBodyEmptyException("Update request body is empty");
 
-        ResponseEntity<ApiResponse> notAuthorizedResponse = checkAndGetNotAuthorizedResponse();
-        if (notAuthorizedResponse != null) {
-            return notAuthorizedResponse;
+        if (authService.notAuthorizedForThisResource(resourceName)) {
+            return new ResponseEntity<>(
+                    new ApiResponse(false, "Unauthorized Request", null),
+                    HttpStatus.UNAUTHORIZED);
         }
 
         AppUserDto appUserDto = appUserService.updateByUserId(userId, modelMapper.map(updateUserRequest, AppUserDto.class));
@@ -289,22 +294,14 @@ public class AppUserController {
         appUtils.printControllerMethodInfo("DELETE", "/api/users/"+userId, "deleteUserByUserId",
                 false, "ADMIN");
 
-        ResponseEntity<ApiResponse> notAuthorizedResponse = checkAndGetNotAuthorizedResponse();
-        if (notAuthorizedResponse != null) {
-            return notAuthorizedResponse;
+        if (authService.notAuthorizedForThisResource(resourceName)) {
+            return new ResponseEntity<>(
+                    new ApiResponse(false, "Unauthorized Request", null),
+                    HttpStatus.UNAUTHORIZED);
         }
 
         appUserService.deleteByUserId(userId);
 
         return ResponseEntity.noContent().build();
-    }
-
-    private ResponseEntity<ApiResponse> checkAndGetNotAuthorizedResponse() {
-        if (authService.notAuthorizedForThisResource(resource)) {
-            return new ResponseEntity<>(
-                    new ApiResponse(false, "Unauthorized Request", null),
-                    HttpStatus.UNAUTHORIZED);
-        }
-        return null;
     }
 }

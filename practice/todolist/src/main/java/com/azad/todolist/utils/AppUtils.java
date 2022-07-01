@@ -5,6 +5,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
@@ -75,8 +77,26 @@ public class AppUtils {
         else userId += encodedEmailId + getRandomString();
 
         userId = userId.replace('/', '_');
+        userId = userId.replace('.', '_');
 
         return userId;
+    }
+
+    public String getTodoId(String title) {
+
+        String encodedTitle = passwordEncoder.encode(title);
+
+        String todoId = "";
+
+        if (encodedTitle.length() >= 8)
+            todoId += encodedTitle.substring(encodedTitle.length() - 8) + getRandomString();
+
+        else todoId += encodedTitle + getRandomString();
+
+        todoId = todoId.replace('/', '_');
+        todoId = todoId.replace('.', '_');
+
+        return todoId;
     }
 
     private String getRandomString() {
