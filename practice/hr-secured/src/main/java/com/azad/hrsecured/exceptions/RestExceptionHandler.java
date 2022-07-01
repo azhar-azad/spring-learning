@@ -9,7 +9,7 @@ import javax.validation.ConstraintViolationException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-//import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.HttpMediaTypeNotSupportedException;
@@ -148,15 +148,15 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 	    return new ResponseEntity<Object>(apiError, new HttpHeaders(), apiError.getStatus());
 	}
 
-//	@ExceptionHandler({ UsernameNotFoundException.class })
-//	public ResponseEntity<Object> handleUsernameNotFoundException(
-//			UsernameNotFoundException ex, WebRequest request) {
-//
-//		String error = ex.getMessage();
-//
-//		ApiError apiError = new ApiError(HttpStatus.UNAUTHORIZED, String.valueOf(ex.getCause()), error);
-//		return new ResponseEntity<>(apiError, new HttpHeaders(), apiError.getStatus());
-//	}
+	@ExceptionHandler({ UsernameNotFoundException.class })
+	public ResponseEntity<Object> handleUsernameNotFoundException(
+			UsernameNotFoundException ex, WebRequest request) {
+
+		String error = ex.getMessage();
+
+		ApiError apiError = new ApiError(HttpStatus.UNAUTHORIZED, String.valueOf(ex.getCause()), error);
+		return new ResponseEntity<>(apiError, new HttpHeaders(), apiError.getStatus());
+	}
 	
 	/**
 	 * HttpRequestMethodNotSupportedException - This exception occurs when we send a requested with an unsupported HTTP method.
