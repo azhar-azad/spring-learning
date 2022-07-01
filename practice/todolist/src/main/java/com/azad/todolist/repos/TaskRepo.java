@@ -12,8 +12,7 @@ import java.util.Optional;
 @Repository
 public interface TaskRepo extends PagingAndSortingRepository<TaskEntity, Long> {
 
-    @Query(value = "select * from task where user_id = :userId", nativeQuery = true)
-    Optional<List<TaskEntity>> findAllByUserId(Pageable pageable, Long userId);
+    Optional<List<TaskEntity>> findByUserId(Pageable pageable, Long userId);
 
     Optional<TaskEntity> findByTaskId(String taskId);
 }

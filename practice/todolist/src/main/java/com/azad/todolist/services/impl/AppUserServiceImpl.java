@@ -50,8 +50,6 @@ public class AppUserServiceImpl implements AppUserService {
             requestDto.setRole("ROLE_USER");
         }
 
-        requestDto.setUserId(appUtils.getUserId(requestDto.getEmail()));
-
         AppUserEntity appUserEntity = appUserRepo.save(modelMapper.map(requestDto, AppUserEntity.class));
 
         return modelMapper.map(appUserEntity, AppUserDto.class);
@@ -76,18 +74,37 @@ public class AppUserServiceImpl implements AppUserService {
     }
 
     @Override
-    public AppUserDto getByEntityId(String entityId) {
-        return null;
+    public AppUserDto getByEntityId(Long entityId) {
+
+        AppUserEntity appUserEntity = appUserRepo.findById(entityId).orElseThrow(
+                () -> new ResourceNotFoundException("AppUser", "entityId"));
+
+        return modelMapper.map(appUserEntity, AppUserDto.class);
     }
 
     @Override
-    public AppUserDto updateByEntityId(String entityId, AppUserDto updatedDto) {
-        return null;
+    public AppUserDto updateByEntityId(Long entityId, AppUserDto updatedDto) {
+
+        AppUserEntity appUserEntity = appUserRepo.findById(entityId).orElseThrow(
+                () -> new ResourceNotFoundException("AppUser", "entityId"));
+
+        if (updatedDto.getFirstName() != null)
+            appUserEntity.setFirstName(updatedDto.getFirstName());
+        if (updatedDto.getLastName() != null)
+            appUserEntity.setLastName(updatedDto.getLastName());
+        if (updatedDto.getEmail() != null)
+            appUserEntity.setEmail((updatedDto.getEmail()));
+
+        return modelMapper.map(appUserRepo.save(appUserEntity), AppUserDto.class);
     }
 
     @Override
-    public void deleteByEntityId(String entityId) {
+    public void deleteByEntityId(Long entityId) {
 
+        AppUserEntity appUserEntity = appUserRepo.findById(entityId).orElseThrow(
+                () -> new ResourceNotFoundException("AppUser", "entityId"));
+
+        appUserRepo.delete(appUserEntity);
     }
 
     @Override
@@ -112,8 +129,6 @@ public class AppUserServiceImpl implements AppUserService {
             appUserEntities.add(appUserRepo.findByEmail(searchTerm).orElse(null));
         else if (searchKey.equalsIgnoreCase("role"))
             appUserEntities = appUserRepo.findByRole(searchTerm).orElse(null);
-        else if (searchKey.equalsIgnoreCase("userId"))
-            appUserEntities.add(appUserRepo.findByUserId(searchTerm).orElse(null));
         else
             throw new RuntimeException("Invalid search key");
 
@@ -127,35 +142,15 @@ public class AppUserServiceImpl implements AppUserService {
 
     @Override
     public AppUserDto getByUserId(String userId) {
-
-        AppUserEntity appUserEntity = appUserRepo.findByUserId(userId).orElseThrow(
-                () -> new ResourceNotFoundException("AppUser", "userId"));
-
-        return modelMapper.map(appUserEntity, AppUserDto.class);
+        return null;
     }
 
     @Override
     public AppUserDto updateByUserId(String userId, AppUserDto updatedUserDto) {
-
-        AppUserEntity appUserEntity = appUserRepo.findByUserId(userId).orElseThrow(
-                () -> new ResourceNotFoundException("AppUser", "userId"));
-
-        if (updatedUserDto.getFirstName() != null)
-            appUserEntity.setFirstName(updatedUserDto.getFirstName());
-        if (updatedUserDto.getLastName() != null)
-            appUserEntity.setLastName(updatedUserDto.getLastName());
-        if (updatedUserDto.getEmail() != null)
-            appUserEntity.setEmail((updatedUserDto.getEmail()));
-
-        return modelMapper.map(appUserRepo.save(appUserEntity), AppUserDto.class);
+        return null;
     }
 
     @Override
     public void deleteByUserId(String userId) {
-
-        AppUserEntity appUserEntity = appUserRepo.findByUserId(userId).orElseThrow(
-                () -> new ResourceNotFoundException("AppUser", "userId"));
-
-        appUserRepo.delete(appUserEntity);
     }
 }

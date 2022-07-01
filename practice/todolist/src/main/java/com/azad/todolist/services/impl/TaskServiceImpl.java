@@ -45,14 +45,12 @@ public class TaskServiceImpl implements TaskService {
     @Override
     public TaskDto create(TaskDto requestDto) {
 
-        String appUserId = requestDto.getUserId();
-        AppUserDto ownerDto = appUserService.getByUserId(appUserId);
+        Long appUserId = requestDto.getId();
+        AppUserDto ownerDto = appUserService.getByEntityId(appUserId);
 
         if (requestDto.getDone() == null) {
             requestDto.setDone(false);
         }
-
-        requestDto.setTodoId(appUtils.getTodoId(requestDto.getTitle()));
 
         TaskEntity taskEntity = modelMapper.map(requestDto, TaskEntity.class);
         taskEntity.setUser(modelMapper.map(ownerDto, AppUserEntity.class));
@@ -61,7 +59,7 @@ public class TaskServiceImpl implements TaskService {
 
         TaskDto savedTaskDto = modelMapper.map(savedTaskEntity, TaskDto.class);
         savedTaskDto.setUser(modelMapper.map(ownerDto, AppUser.class));
-        savedTaskDto.setUserId(ownerDto.getUserId());
+        savedTaskDto.setUserId(ownerDto.getId());
 
         return savedTaskDto;
     }
@@ -72,48 +70,10 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public TaskDto getByEntityId(String entityId) {
-        return null;
-    }
+    public TaskDto getByEntityId(Long id) {
 
-    @Override
-    public TaskDto updateByEntityId(String entityId, TaskDto updatedDto) {
-        return null;
-    }
-
-    @Override
-    public void deleteByEntityId(String entityId) {
-
-    }
-
-    @Override
-    public List<TaskDto> getAllByUserId(String userId, PagingAndSorting ps) {
-
-        Pageable pageable;
-        if (ps.getSort() == null || ps.getSort().equals("")) {
-            pageable = PageRequest.of(ps.getPage(), ps.getLimit());
-        } else {
-            Sort sort = appUtils.getSortBy(ps.getSort(), ps.getOrder());
-            pageable = PageRequest.of(ps.getPage(), ps.getLimit(), sort);
-        }
-
-        AppUserDto ownerDto = appUserService.getByUserId(userId);
-
-        List<TaskEntity> taskEntities = taskRepo.findAllByUserId(pageable, ownerDto.getId()).orElse(null);
-
-        if (taskEntities == null || taskEntities.size() == 0)
-            return null;
-
-        return taskEntities.stream()
-                .map(taskEntity -> modelMapper.map(taskEntity, TaskDto.class))
-                .collect(Collectors.toList());
-    }
-
-    @Override
-    public TaskDto getByTaskId(String taskId) {
-
-        TaskEntity taskEntity = taskRepo.findByTaskId(taskId).orElseThrow(
-                () -> new ResourceNotFoundException("Task", "taskId"));
+        TaskEntity taskEntity = taskRepo.findById(id).orElseThrow(
+                () -> new ResourceNotFoundException("Task", id));
 
         String email = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         AppUserDto appUserDto = appUserService.getByEmail(email);
@@ -123,5 +83,38 @@ public class TaskServiceImpl implements TaskService {
         }
 
         return modelMapper.map(taskEntity, TaskDto.class);
+    }
+
+    @Override
+    public TaskDto updateByEntityId(Long id, TaskDto updatedDto) {
+        return null;
+    }
+
+    @Override
+    public void deleteByEntityId(Long id) {
+
+    }
+
+    @Override
+    public List<TaskDto> getAllByUserId(Long userId, PagingAndSorting ps) {
+
+        Pageable pageable;
+        if (ps.getSort() == null || ps.getSort().equals("")) {
+            pageable = PageRequest.of(ps.getPage(), ps.getLimit());
+        } else {
+            Sort sort = appUtils.getSortBy(ps.getSort(), ps.getOrder());
+            pageable = PageRequest.of(ps.getPage(), ps.getLimit(), sort);
+        }
+
+        AppUserDto ownerDto = appUserService.getByEntityId(userId);
+
+        List<TaskEntity> taskEntities = taskRepo.findByUserId(pageable, ownerDto.getId()).orElse(null);
+
+        if (taskEntities == null || taskEntities.size() == 0)
+            return null;
+
+        return taskEntities.stream()
+                .map(taskEntity -> modelMapper.map(taskEntity, TaskDto.class))
+                .collect(Collectors.toList());
     }
 }

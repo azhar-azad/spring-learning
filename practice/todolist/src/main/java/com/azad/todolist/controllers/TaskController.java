@@ -72,7 +72,7 @@ public class TaskController {
         AppUserDto appUserDto = appUserService.getByEmail(email);
 
         TaskDto taskDto = modelMapper.map(taskRequest, TaskDto.class);
-        taskDto.setUserId(appUserDto.getUserId());
+        taskDto.setUserId(appUserDto.getId());
 
         TaskDto savedTaskDto = taskService.create(taskDto);
 
@@ -113,7 +113,7 @@ public class TaskController {
         if (page > 0) page--;
         PagingAndSorting ps = new PagingAndSorting(page, limit, sort, order);
 
-        List<TaskDto> taskDtos = taskService.getAllByUserId(appUserDto.getUserId(), ps);
+        List<TaskDto> taskDtos = taskService.getAllByUserId(appUserDto.getId(), ps);
 
         if (taskDtos == null || taskDtos.size() == 0) {
             return new ResponseEntity<>(appUtils.getApiResponse(true, "No Task for User", null), HttpStatus.OK);
@@ -129,15 +129,15 @@ public class TaskController {
     }
 
     /**
-     * @Name: getTaskByTaskId
-     * @Desc: Get a single task by taskId
-     * @Route: http://localhost:8080/api/tasks/{taskid}
+     * @Name: getTaskById
+     * @Desc: Get a single task by entity id
+     * @Route: http://localhost:8080/api/tasks/{id}
      * @Method: GET
      * @Authenticated: YES
      * @Authorized: YES (Any logged-in user and admin can get any task they own by taskId)
      * */
-    @GetMapping(path = "/{taskId}")
-    public ResponseEntity<ApiResponse> getTaskByTaskId(@Valid @PathVariable String taskId) {
+    @GetMapping(path = "/{id}")
+    public ResponseEntity<ApiResponse> getTaskById(@Valid @PathVariable Long id) {
 
         if (authService.notAuthorizedForThisResource(resourceName)) {
             return new ResponseEntity<>(
@@ -145,17 +145,17 @@ public class TaskController {
                     HttpStatus.UNAUTHORIZED);
         }
 
-        appUtils.printControllerMethodInfo("GET", "/api/tasks/"+taskId,
-                "getTaskByTaskId", false, "ADMIN, USER");
+        appUtils.printControllerMethodInfo("GET", "/api/tasks/"+id,
+                "getTaskById", false, "ADMIN, USER");
 
         // todo: implement how to prevent not owner to get a task
         // first implement without considering owning restriction
 
-        if (taskId == null || taskId.length() == 0) {
-            throw new InvalidPathVariableException("No taskId is provided");
+        if (id == null || id <= 0) {
+            throw new InvalidPathVariableException("Invalid id is provided");
         }
 
-        TaskDto taskDto = taskService.getByTaskId(taskId);
+        TaskDto taskDto = taskService.getByEntityId(id);
 
         return new ResponseEntity<>(new ApiResponse(true, "Task Fetched By TaskID",
                 Collections.singletonList(modelMapper.map(taskDto, TaskResponse.class))),

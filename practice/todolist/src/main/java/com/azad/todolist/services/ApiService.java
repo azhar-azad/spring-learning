@@ -8,7 +8,7 @@ public interface ApiService<T> {
 
     T create(T requestDto);
     List<T> getAll(PagingAndSorting ps);
-    T getByEntityId(String entityId);
-    T updateByEntityId(String entityId, T updatedDto);
-    void deleteByEntityId(String entityId);
+    T getByEntityId(Long entityId);
+    T updateByEntityId(Long entityId, T updatedDto);
+    void deleteByEntityId(Long entityId);
 }

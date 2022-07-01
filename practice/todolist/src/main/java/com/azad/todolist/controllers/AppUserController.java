@@ -84,7 +84,7 @@ public class AppUserController {
 
         AppUserDto appUserDto = appUserService.getByEmail(email);
 
-        appUserDto = appUserService.updateByUserId(appUserDto.getUserId(), modelMapper.map(updatedRequest, AppUserDto.class));
+        appUserDto = appUserService.updateByEntityId(appUserDto.getId(), modelMapper.map(updatedRequest, AppUserDto.class));
 
         return new ResponseEntity<>(
                 new ApiResponse(true, "Updated User",
@@ -110,7 +110,7 @@ public class AppUserController {
 
         AppUserDto appUserDto = appUserService.getByEmail(email);
 
-        appUserService.deleteByUserId(appUserDto.getUserId());
+        appUserService.deleteByEntityId(appUserDto.getId());
 
         return ResponseEntity.noContent().build();
     }
@@ -221,16 +221,16 @@ public class AppUserController {
 
     /**
      * @Name: getUserByUserId
-     * @Desc: Get user by userId
-     * @Route: http://localhost:8080/api/users/{userId}
+     * @Desc: Get user by entity id
+     * @Route: http://localhost:8080/api/users/{id}
      * @Method: GET
      * @Authenticated: YES
      * @Authorized: YES (Only Admins can search for a user by his/her userId)
      * */
-    @GetMapping(path = "/{userId}")
-    public ResponseEntity<ApiResponse> getUserByUserId(@Valid @PathVariable String userId) {
+    @GetMapping(path = "/{id}")
+    public ResponseEntity<ApiResponse> getUserById(@Valid @PathVariable Long id) {
 
-        appUtils.printControllerMethodInfo("GET", "/api/users/"+userId, "getUserByUserId",
+        appUtils.printControllerMethodInfo("GET", "/api/users/"+id, "getUserById",
                 false, "ADMIN");
 
         if (authService.notAuthorizedForThisResource(resourceName)) {
@@ -239,7 +239,7 @@ public class AppUserController {
                     HttpStatus.UNAUTHORIZED);
         }
 
-        AppUserDto appUserDto = appUserService.getByUserId(userId);
+        AppUserDto appUserDto = appUserService.getByEntityId(id);
 
         return new ResponseEntity<>(
                 new ApiResponse(true, "Fetch User",
@@ -248,19 +248,19 @@ public class AppUserController {
     }
 
     /**
-     * @Name: updateUserByUserId
-     * @Desc: Update user by userId
-     * @Route: http://localhost:8080/api/users/{userId}
+     * @Name: updateUserById
+     * @Desc: Update user by entity id
+     * @Route: http://localhost:8080/api/users/{id}
      * @Method: PUT
      * @Authenticated: YES
      * @Authorized: YES (Only Admins and the owner can update)
      * */
-    @PutMapping(path = "/{userId}")
-    public ResponseEntity<ApiResponse> updateUserByUserId(
-            @Valid @PathVariable String userId,
+    @PutMapping(path = "/{id}")
+    public ResponseEntity<ApiResponse> updateUserById(
+            @Valid @PathVariable Long id,
             @RequestBody AppUser updateUserRequest) {
 
-        appUtils.printControllerMethodInfo("PUT", "/api/users/"+userId, "updateUserByUserId",
+        appUtils.printControllerMethodInfo("PUT", "/api/users/"+id, "updateUserById",
                 false, "ADMIN");
 
         if (updateUserRequest == null)
@@ -272,7 +272,7 @@ public class AppUserController {
                     HttpStatus.UNAUTHORIZED);
         }
 
-        AppUserDto appUserDto = appUserService.updateByUserId(userId, modelMapper.map(updateUserRequest, AppUserDto.class));
+        AppUserDto appUserDto = appUserService.updateByEntityId(id, modelMapper.map(updateUserRequest, AppUserDto.class));
 
         return new ResponseEntity<>(
                 new ApiResponse(true, "Updated User",
@@ -281,17 +281,17 @@ public class AppUserController {
     }
 
     /**
-     * @Name: deleteUserByUserId
-     * @Desc: Delete user by userId
-     * @Route: http://localhost:8080/api/users/{userId}
+     * @Name: deleteUserById
+     * @Desc: Delete user by entity id
+     * @Route: http://localhost:8080/api/users/{id}
      * @Method: DELETE
      * @Authenticated: YES
      * @Authorized: YES (Only Admins and the owner can delete)
      * */
-    @DeleteMapping(path = "/{userId}")
-    public ResponseEntity<?> deleteUserByUserId(@Valid @PathVariable String userId) {
+    @DeleteMapping(path = "/{id}")
+    public ResponseEntity<?> deleteUserById(@Valid @PathVariable Long id) {
 
-        appUtils.printControllerMethodInfo("DELETE", "/api/users/"+userId, "deleteUserByUserId",
+        appUtils.printControllerMethodInfo("DELETE", "/api/users/"+id, "deleteUserById",
                 false, "ADMIN");
 
         if (authService.notAuthorizedForThisResource(resourceName)) {
@@ -300,7 +300,7 @@ public class AppUserController {
                     HttpStatus.UNAUTHORIZED);
         }
 
-        appUserService.deleteByUserId(userId);
+        appUserService.deleteByEntityId(id);
 
         return ResponseEntity.noContent().build();
     }

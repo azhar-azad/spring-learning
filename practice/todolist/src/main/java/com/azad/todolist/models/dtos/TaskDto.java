@@ -7,7 +7,7 @@ public class TaskDto extends Task {
 
     private Long id;
     private AppUser user;
-    private String userId;
+    private Long userId;
 
     public TaskDto() {
     }
@@ -28,11 +28,11 @@ public class TaskDto extends Task {
         this.user = user;
     }
 
-    public String getUserId() {
+    public Long getUserId() {
         return userId;
     }
 
-    public void setUserId(String userId) {
+    public void setUserId(Long userId) {
         this.userId = userId;
     }
 }

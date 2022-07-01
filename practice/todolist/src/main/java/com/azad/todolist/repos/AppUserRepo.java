@@ -10,8 +10,6 @@ public interface AppUserRepo extends PagingAndSortingRepository<AppUserEntity, L
 
     Optional<AppUserEntity> findByEmail(String email);
 
-    Optional<AppUserEntity> findByUserId(String userId);
-
     Optional<List<AppUserEntity>> findByFirstName(String firstName);
 
     Optional<List<AppUserEntity>> findByLastName(String lastName);

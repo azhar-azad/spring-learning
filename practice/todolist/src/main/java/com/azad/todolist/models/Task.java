@@ -12,8 +12,6 @@ import java.time.LocalDate;
 
 public class Task {
 
-    private String todoId;
-
     @NotNull(message = "Task title cannot be empty")
     @Size(min = 2, max = 20, message = "Task title should be between 2 to 20 characters")
     private String title;
@@ -30,14 +28,6 @@ public class Task {
     private Boolean isDone;
 
     public Task() {
-    }
-
-    public String getTodoId() {
-        return todoId;
-    }
-
-    public void setTodoId(String todoId) {
-        this.todoId = todoId;
     }
 
     public String getTitle() {
