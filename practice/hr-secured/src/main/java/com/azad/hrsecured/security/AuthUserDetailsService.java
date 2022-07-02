@@ -22,15 +22,8 @@ public class AuthUserDetailsService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
 
-        // Fetch User from database
-        Optional<UserEntity> optionalUser = userRepo.findByEmail(email);
-
-        // No user found
-        if (!optionalUser.isPresent())
-            throw new UsernameNotFoundException("Could not find User with email: " + email);
-
-        // Return a User Details object using the fetched User information
-        UserEntity userEntity = optionalUser.get();
+        UserEntity userEntity =userRepo.findByEmail(email).orElseThrow(
+                () -> new RuntimeException("Could not find User with email: " + email));
 
         if (userEntity.getRole().equalsIgnoreCase("ROLE_ADMIN")) {
             return new org.springframework.security.core.userdetails.User(
