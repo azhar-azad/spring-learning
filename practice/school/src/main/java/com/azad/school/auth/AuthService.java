@@ -79,6 +79,7 @@ public class AuthService {
     private String getRegisteredStudentEmail(RegistrationRequest request) {
 
         StudentEntity studentEntity = modelMapper.map(request, StudentEntity.class);
+        studentEntity.setRole(Role.ROLE_STUDENT.name());
 
         return modelMapper
                 .map(studentRepo.save(studentEntity), StudentDto.class)
@@ -88,6 +89,7 @@ public class AuthService {
     private String getRegisteredTeacherEmail(RegistrationRequest request) {
 
         TeacherEntity teacherEntity = modelMapper.map(request, TeacherEntity.class);
+        teacherEntity.setRole(Role.ROLE_TEACHER.name());
 
         return modelMapper
                 .map(teacherRepo.save(teacherEntity), TeacherDto.class)

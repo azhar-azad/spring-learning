@@ -23,16 +23,22 @@ public class AuthUserDetailsService implements UserDetailsService {
         UserEntity userEntity = userRepo.findByEmail(email).orElseThrow(
                 () -> new RuntimeException("Could not find User with email: " + email));
 
-        if (userEntity.getRole().equalsIgnoreCase("ROLE_ADMIN")) {
-            return new org.springframework.security.core.userdetails.User(
-                    email,
-                    userEntity.getPassword(),
-                    Collections.singletonList(new SimpleGrantedAuthority("ROLE_ADMIN")));
+        switch (userEntity.getRole()) {
+            case "ROLE_ADMIN":
+                return getUserDetails(email, userEntity.getPassword(), "ROLE_ADMIN");
+            case "ROLE_STUDENT":
+                return getUserDetails(email, userEntity.getPassword(), "ROLE_STUDENT");
+            case "ROLE_TEACHER":
+                return getUserDetails(email, userEntity.getPassword(), "ROLE_TEACHER");
+            default:
+                return getUserDetails(email, userEntity.getPassword(), "ROLE_USER");
         }
+    }
 
+    private UserDetails getUserDetails(String email, String password, String roleName) {
         return new org.springframework.security.core.userdetails.User(
                 email,
-                userEntity.getPassword(),
-                Collections.singletonList(new SimpleGrantedAuthority("ROLE_USER")));
+                password,
+                Collections.singletonList(new SimpleGrantedAuthority(roleName)));
     }
 }
