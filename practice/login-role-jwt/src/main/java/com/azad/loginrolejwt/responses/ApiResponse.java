@@ -1,17 +1,20 @@
 package com.azad.loginrolejwt.responses;
 
 import java.util.List;
+import java.util.Map;
 
 public class ApiResponse {
 
     private Boolean success;
     private String message;
-    private List<?> data;
+
+    private Map<String, List<?>> data;
+//    private List<?> data;
 
     public ApiResponse() {
     }
 
-    public ApiResponse(Boolean success, String message, List<?> data) {
+    public ApiResponse(Boolean success, String message, Map<String, List<?>> data) {
         this.success = success;
         this.message = message;
         this.data = data;
@@ -33,11 +36,11 @@ public class ApiResponse {
         this.message = message;
     }
 
-    public List<?> getData() {
+    public Map<String, List<?>> getData() {
         return data;
     }
 
-    public void setData(List<?> data) {
+    public void setData(Map<String, List<?>> data) {
         this.data = data;
     }
 }

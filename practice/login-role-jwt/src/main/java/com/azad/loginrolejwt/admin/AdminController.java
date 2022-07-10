@@ -34,7 +34,8 @@ public class AdminController {
 
         Role role = adminService.saveRole(request);
 
-        return new ResponseEntity<>(new ApiResponse(true, "Role Created", Collections.singletonList(role)),
+        return new ResponseEntity<>(new ApiResponse(true, "Role Created",
+                Collections.singletonMap("roles", Collections.singletonList(role))),
                 HttpStatus.CREATED);
     }
 
@@ -47,12 +48,13 @@ public class AdminController {
 
         Authority authority = adminService.saveAuthority(request);
 
-        return new ResponseEntity<>(new ApiResponse(true, "Authority Created", Collections.singletonList(authority)),
+        return new ResponseEntity<>(new ApiResponse(true, "Authority Created",
+                Collections.singletonMap("authorities", Collections.singletonList(authority))),
                 HttpStatus.CREATED);
     }
 
-    @PutMapping(path = "/update/user/disable")
-    public ResponseEntity<ApiResponse> disableUser() {
+    @PutMapping(path = "/update/user/{userId}/disable")
+    public ResponseEntity<ApiResponse> disableUser(@Valid @PathVariable Long userId) {
 
         return null;
     }
