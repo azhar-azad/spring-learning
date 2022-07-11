@@ -1,14 +1,14 @@
-package com.azad.onlineed.security.auth;
+package com.azad.onlineed.security.requests;
 
 import com.azad.onlineed.models.User;
 
 import java.util.Set;
 
-public class AuthRequest extends User {
+public class RegistrationRequest extends User {
 
     private Set<String> roles;
 
-    public AuthRequest() {
+    public RegistrationRequest() {
     }
 
     public Set<String> getRoles() {

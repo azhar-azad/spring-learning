@@ -2,6 +2,8 @@ package com.azad.onlineed.security.auth;
 
 import com.azad.onlineed.models.dtos.UserDto;
 import com.azad.onlineed.security.jwt.JWTUtil;
+import com.azad.onlineed.security.requests.LoginRequest;
+import com.azad.onlineed.security.requests.RegistrationRequest;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -34,7 +36,7 @@ public class AuthController {
     }
 
     @PostMapping(path = "/register")
-    public ResponseEntity<Map<String, String>> registerUser(@Valid @RequestBody AuthRequest registrationRequest) {
+    public ResponseEntity<Map<String, String>> registerUser(@Valid @RequestBody RegistrationRequest registrationRequest) {
 
         UserDto userDto = modelMapper.map(registrationRequest, UserDto.class);
 
@@ -44,7 +46,7 @@ public class AuthController {
     }
 
     @PostMapping(path = "/login")
-    public ResponseEntity<Map<String, String>> loginUser(@Valid @RequestBody AuthRequest loginRequest) {
+    public ResponseEntity<Map<String, String>> loginUser(@Valid @RequestBody LoginRequest loginRequest) {
 
         try {
             authService.authenticateUser(loginRequest.getEmail(), loginRequest.getPassword());

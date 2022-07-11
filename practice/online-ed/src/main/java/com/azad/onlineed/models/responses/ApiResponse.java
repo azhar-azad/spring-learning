@@ -1,4 +1,4 @@
-package com.azad.onlineed.responses;
+package com.azad.onlineed.models.responses;
 
 import java.util.List;
 import java.util.Map;

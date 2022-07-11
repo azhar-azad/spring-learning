@@ -1,21 +1,40 @@
 package com.azad.onlineed.models.dtos;
 
+import com.azad.onlineed.models.Role;
 import com.azad.onlineed.models.User;
 
 import java.util.Set;
 
 public class UserDto extends User {
 
-    private Set<String> roles;
+    private Long id;
+    private Set<Role> roles;
+    private Set<String> roleNames;
 
     public UserDto() {
     }
 
-    public Set<String> getRoles() {
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Set<Role> getRoles() {
         return roles;
     }
 
-    public void setRoles(Set<String> roles) {
+    public void setRoles(Set<Role> roles) {
         this.roles = roles;
+    }
+
+    public Set<String> getRoleNames() {
+        return roleNames;
+    }
+
+    public void setRoleNames(Set<String> roleNames) {
+        this.roleNames = roleNames;
     }
 }

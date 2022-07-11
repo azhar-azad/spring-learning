@@ -1,6 +1,8 @@
 package com.azad.onlineed.security.entities;
 
 import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "authorities")
@@ -13,6 +15,9 @@ public class AuthorityEntity {
 
     @Column(nullable = false, unique = true)
     private String authorityName;
+
+    @ManyToMany(mappedBy = "authorities", fetch = FetchType.LAZY)
+    private Set<RoleEntity> roles = new HashSet<>();
 
     public AuthorityEntity() {
     }
@@ -27,5 +32,13 @@ public class AuthorityEntity {
 
     public void setAuthorityName(String authorityName) {
         this.authorityName = authorityName;
+    }
+
+    public Set<RoleEntity> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(Set<RoleEntity> roles) {
+        this.roles = roles;
     }
 }

@@ -1,6 +1,5 @@
 package com.azad.onlineed.utils;
 
-import com.azad.onlineed.responses.ApiResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -12,6 +12,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -41,8 +42,9 @@ public class AuthService {
         String encodedPass = passwordEncoder.encode(userDto.getPassword());
         userDto.setPassword(encodedPass);
 
-        Set<String> rolesFromReq = userDto.getRoles();
-        rolesFromReq.add("USER"); // by default, USER role is added.
+        Set<String> rolesFromReq = new HashSet<>();
+        if (userDto.getRoleNames() == null)
+            rolesFromReq.add("USER"); // by default, USER role is added.
 
         Set<RoleEntity> rolesFromDb = rolesFromReq.stream()
                 .map(roleName -> roleRepo.findByRoleName(roleName.toUpperCase()).orElseThrow(
@@ -53,7 +55,7 @@ public class AuthService {
         userEntity.setEnabled(true);
         userEntity.setRoles(rolesFromDb);
 
-        return modelMapper.map(userEntity, UserDto.class);
+        return modelMapper.map(userRepo.save(userEntity), UserDto.class);
     }
 
     public void authenticateUser(String email, String password) {

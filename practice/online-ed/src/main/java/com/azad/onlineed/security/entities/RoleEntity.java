@@ -16,7 +16,7 @@ public class RoleEntity {
     @Column(nullable = false, unique = true)
     private String roleName;
 
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
             name = "roles_authorities",
             joinColumns = @JoinColumn(name = "role_id"),
