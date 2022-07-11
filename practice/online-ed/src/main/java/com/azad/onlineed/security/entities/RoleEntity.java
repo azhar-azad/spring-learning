@@ -1,7 +1,9 @@
 package com.azad.onlineed.security.entities;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -15,6 +17,9 @@ public class RoleEntity {
 
     @Column(nullable = false, unique = true)
     private String roleName;
+
+    @ManyToMany(cascade = CascadeType.ALL, mappedBy = "roles", fetch = FetchType.LAZY)
+    private List<UserEntity> users = new ArrayList<>();
 
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
@@ -36,6 +41,14 @@ public class RoleEntity {
 
     public void setRoleName(String roleName) {
         this.roleName = roleName;
+    }
+
+    public List<UserEntity> getUsers() {
+        return users;
+    }
+
+    public void setUsers(List<UserEntity> users) {
+        this.users = users;
     }
 
     public Set<AuthorityEntity> getAuthorities() {
