@@ -6,6 +6,7 @@ import java.util.Set;
 
 @Entity
 @Table(name = "users")
+@Inheritance(strategy = InheritanceType.JOINED)
 public class UserEntity {
 
     @Id

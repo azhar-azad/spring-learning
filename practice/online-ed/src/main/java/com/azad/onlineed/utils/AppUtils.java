@@ -79,23 +79,6 @@ public class AppUtils {
         return userId;
     }
 
-    public String getTodoId(String title) {
-
-        String encodedTitle = passwordEncoder.encode(title);
-
-        String todoId = "";
-
-        if (encodedTitle.length() >= 8)
-            todoId += encodedTitle.substring(encodedTitle.length() - 8) + getRandomString();
-
-        else todoId += encodedTitle + getRandomString();
-
-        todoId = todoId.replace('/', '_');
-        todoId = todoId.replace('.', '_');
-
-        return todoId;
-    }
-
     private String getRandomString() {
 
         int leftLimit= 48; // numeral '0'

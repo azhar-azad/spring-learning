@@ -1,7 +1,9 @@
 package com.azad.onlineed.security.auth;
 
 import com.azad.onlineed.models.dtos.UserDto;
+import com.azad.onlineed.models.entities.StudentEntity;
 import com.azad.onlineed.repos.RoleRepo;
+import com.azad.onlineed.repos.StudentRepo;
 import com.azad.onlineed.repos.UserRepo;
 import com.azad.onlineed.security.entities.RoleEntity;
 import com.azad.onlineed.security.entities.UserEntity;
@@ -28,6 +30,9 @@ public class AuthService {
     @Autowired
     private AuthenticationManager authenticationManager;
 
+    @Autowired
+    private StudentRepo studentRepo;
+
     private final UserRepo userRepo;
     private final RoleRepo roleRepo;
 
@@ -42,14 +47,21 @@ public class AuthService {
         String encodedPass = passwordEncoder.encode(userDto.getPassword());
         userDto.setPassword(encodedPass);
 
-        Set<String> rolesFromReq = new HashSet<>();
-        if (userDto.getRoleNames() == null)
-            rolesFromReq.add("USER"); // by default, USER role is added.
+        Set<String> rolesFromReq = userDto.getRoleNames();
+        rolesFromReq.add("USER"); // by default, USER role is added.
 
         Set<RoleEntity> rolesFromDb = rolesFromReq.stream()
                 .map(roleName -> roleRepo.findByRoleName(roleName.toUpperCase()).orElseThrow(
                         () -> new RuntimeException("Role not found with name: " + roleName)))
                 .collect(Collectors.toSet());
+
+        if (rolesFromReq.contains("STUDENT")) {
+            StudentEntity studentEntity = modelMapper.map(userDto, StudentEntity.class);
+            studentEntity.setEnabled(true);
+            studentEntity.setRoles(rolesFromDb);
+
+            return modelMapper.map(studentRepo.save(studentEntity), UserDto.class);
+        }
 
         UserEntity userEntity = modelMapper.map(userDto, UserEntity.class);
         userEntity.setEnabled(true);

@@ -11,6 +11,8 @@ public class UserDto extends User {
     private Set<Role> roles;
     private Set<String> roleNames;
 
+    private String username; // for student entity
+
     public UserDto() {
     }
 
@@ -36,5 +38,13 @@ public class UserDto extends User {
 
     public void setRoleNames(Set<String> roleNames) {
         this.roleNames = roleNames;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 }
