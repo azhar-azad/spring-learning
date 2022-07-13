@@ -1,9 +1,7 @@
 package com.azad.onlineed.services.impl;
 
 import com.azad.onlineed.models.dtos.StudentDto;
-import com.azad.onlineed.models.dtos.UserDto;
 import com.azad.onlineed.repos.StudentRepo;
-import com.azad.onlineed.security.auth.AuthService;
 import com.azad.onlineed.services.StudentService;
 import com.azad.onlineed.utils.PagingAndSorting;
 import org.modelmapper.ModelMapper;

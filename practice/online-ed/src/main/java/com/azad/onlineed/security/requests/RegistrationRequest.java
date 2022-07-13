@@ -8,7 +8,9 @@ public class RegistrationRequest extends User {
 
     private Set<String> roleNames;
 
-    private String username; // for student entity
+    private String username; // for both student and instructor entity
+
+    private int experience; // for instructor entity
 
     public RegistrationRequest() {
     }
@@ -27,5 +29,13 @@ public class RegistrationRequest extends User {
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    public int getExperience() {
+        return experience;
+    }
+
+    public void setExperience(int experience) {
+        this.experience = experience;
     }
 }

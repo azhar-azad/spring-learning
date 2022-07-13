@@ -1,7 +1,9 @@
 package com.azad.onlineed.security.auth;
 
 import com.azad.onlineed.models.dtos.UserDto;
+import com.azad.onlineed.models.entities.InstructorEntity;
 import com.azad.onlineed.models.entities.StudentEntity;
+import com.azad.onlineed.repos.InstructorRepo;
 import com.azad.onlineed.repos.RoleRepo;
 import com.azad.onlineed.repos.StudentRepo;
 import com.azad.onlineed.repos.UserRepo;
@@ -33,6 +35,9 @@ public class AuthService {
     @Autowired
     private StudentRepo studentRepo;
 
+    @Autowired
+    private InstructorRepo instructorRepo;
+
     private final UserRepo userRepo;
     private final RoleRepo roleRepo;
 
@@ -61,6 +66,14 @@ public class AuthService {
             studentEntity.setRoles(rolesFromDb);
 
             return modelMapper.map(studentRepo.save(studentEntity), UserDto.class);
+        }
+
+        if (rolesFromReq.contains("INSTRUCTOR")) {
+            InstructorEntity instructorEntity = modelMapper.map(userDto, InstructorEntity.class);
+            instructorEntity.setEnabled(true);
+            instructorEntity.setRoles(rolesFromDb);
+
+            return modelMapper.map(instructorRepo.save(instructorEntity), UserDto.class);
         }
 
         UserEntity userEntity = modelMapper.map(userDto, UserEntity.class);
