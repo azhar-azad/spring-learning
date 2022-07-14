@@ -49,7 +49,7 @@ public class AuthService {
             String username = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
             MemberEntity memberEntity = memberRepo.findByUsername(username).orElseThrow(
-                    () -> new RuntimeException("Member not found with the username: " + username));
+                    () -> new RuntimeException("Member not found with username: " + username));
 
             boolean isAdmin = false;
             for (RoleEntity roleEntity: memberEntity.getRoles()) {
@@ -60,7 +60,7 @@ public class AuthService {
             }
 
             if (!isAdmin) {
-                throw new RuntimeException("Only admins can create a new Admin Member");
+                throw new RuntimeException("Only admins can create a new Admin Member. '" + username + "' is not an Admin");
             }
         }
 
