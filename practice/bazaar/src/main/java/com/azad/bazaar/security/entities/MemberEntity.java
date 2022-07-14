@@ -1,8 +1,12 @@
 package com.azad.bazaar.security.entities;
 
 
+import com.azad.bazaar.models.entities.ItemEntity;
+
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -32,6 +36,9 @@ public class MemberEntity {
     private boolean enabled;
     private boolean expired;
     private boolean locked;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "addedBy", cascade = CascadeType.ALL)
+    private List<ItemEntity> itemsAdded = new ArrayList<>();
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
@@ -117,5 +124,13 @@ public class MemberEntity {
 
     public void setRoles(Set<RoleEntity> roles) {
         this.roles = roles;
+    }
+
+    public List<ItemEntity> getItemsAdded() {
+        return itemsAdded;
+    }
+
+    public void setItemsAdded(List<ItemEntity> itemsAdded) {
+        this.itemsAdded = itemsAdded;
     }
 }
