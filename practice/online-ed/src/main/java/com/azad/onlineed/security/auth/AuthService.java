@@ -90,4 +90,8 @@ public class AuthService {
 
         authenticationManager.authenticate(authenticationToken);
     }
+
+    public UserDto getLoggedInUserInfo() {
+        return null;
+    }
 }

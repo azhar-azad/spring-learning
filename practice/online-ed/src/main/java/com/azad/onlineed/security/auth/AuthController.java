@@ -1,6 +1,8 @@
 package com.azad.onlineed.security.auth;
 
 import com.azad.onlineed.models.dtos.UserDto;
+import com.azad.onlineed.models.responses.ApiResponse;
+import com.azad.onlineed.security.entities.UserEntity;
 import com.azad.onlineed.security.jwt.JWTUtil;
 import com.azad.onlineed.security.requests.LoginRequest;
 import com.azad.onlineed.security.requests.RegistrationRequest;
@@ -9,10 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.Collections;
@@ -57,6 +57,14 @@ public class AuthController {
             return new ResponseEntity<>(Collections.singletonMap("Authentication Error", ex.getLocalizedMessage()),
                     HttpStatus.UNAUTHORIZED);
         }
+    }
+
+    @GetMapping(path = "/me")
+    public ResponseEntity<ApiResponse> getUserInfo() {
+
+        UserDto userDto = authService.getLoggedInUserInfo();
+
+        return null;
     }
 
     private ResponseEntity<Map<String, String>> generateTokenAndSend(String email, HttpStatus statusToSend) {
