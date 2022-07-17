@@ -94,7 +94,7 @@ public class Item {
         this.assignedTo = assignedTo;
     }
 
-    public LocalDateTime getAddedAt() {
+    public LocalDateTime getAddedAt() {;
         return addedAt;
     }
 

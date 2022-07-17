@@ -1,6 +1,7 @@
 package com.azad.bazaar.models.entities;
 
 import com.azad.bazaar.security.entities.MemberEntity;
+import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -36,11 +37,15 @@ public class ItemEntity {
     @Column
     private String assignedTo;
 
-    @Column(columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
+    @Column(nullable = false, updatable = false)
+    @CreationTimestamp
     private LocalDateTime addedAt;
 
     @Column
     private LocalDate boughtAt;
+
+    @Column
+    private String boughtBy;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "added_by")

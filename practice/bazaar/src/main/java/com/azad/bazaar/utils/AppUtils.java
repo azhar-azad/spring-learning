@@ -2,12 +2,13 @@ package com.azad.bazaar.utils;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.Random;
+import java.util.stream.Collectors;
 
 @Component
 public class AppUtils {
@@ -30,14 +31,10 @@ public class AppUtils {
 
     public Sort getSortBy(String sort, String order) {
 
-        String[] sortItems = sort.split(",");
-        String[] filteredSortItems = new String[sortItems.length];
+        List<String> sortItems = Arrays.stream(sort.split(","))
+                .map(String::trim).collect(Collectors.toList());
 
-        for (int i = 0; i < sortItems.length; i++) {
-            filteredSortItems[i] = sortItems[i].trim();
-        }
-
-        Sort sortBy = Sort.by(filteredSortItems);
+        Sort sortBy = Sort.by(sortItems.stream().toArray(String[]::new));
 
         if (order.equalsIgnoreCase("desc")) {
             sortBy = sortBy.descending();

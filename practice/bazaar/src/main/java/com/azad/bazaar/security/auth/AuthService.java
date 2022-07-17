@@ -38,7 +38,7 @@ public class AuthService {
         this.roleRepo = roleRepo;
     }
 
-    public MemberDto registerMember(MemberDto memberDto) {
+    public MemberDto registerMember(MemberDto memberDto) throws RuntimeException {
 
         String encodedPass = passwordEncoder.encode(memberDto.getPassword());
         memberDto.setPassword(encodedPass);
@@ -46,13 +46,11 @@ public class AuthService {
         Set<String> roleNamesFromReq = memberDto.getRoleNames();
 
         if (roleNamesFromReq.contains("ADMIN")) {
-            String username = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
-            MemberEntity memberEntity = memberRepo.findByUsername(username).orElseThrow(
-                    () -> new RuntimeException("Member not found with username: " + username));
+            MemberEntity loggedInMember = getLoggedInMember();
 
             boolean isAdmin = false;
-            for (RoleEntity roleEntity: memberEntity.getRoles()) {
+            for (RoleEntity roleEntity: loggedInMember.getRoles()) {
                 if (roleEntity.getRoleName().equalsIgnoreCase("ADMIN")) {
                     isAdmin = true;
                     break;
@@ -60,7 +58,8 @@ public class AuthService {
             }
 
             if (!isAdmin) {
-                throw new RuntimeException("Only admins can create a new Admin Member. '" + username + "' is not an Admin");
+                throw new RuntimeException("Only admins can create a new Admin Member. '"
+                        + loggedInMember.getUsername() + "' is not an Admin");
             }
         }
 
@@ -84,5 +83,16 @@ public class AuthService {
                 new UsernamePasswordAuthenticationToken(username, password);
 
         authenticationManager.authenticate(authenticationToken);
+    }
+
+    public MemberEntity getLoggedInMember() {
+        String username = getLoggedInUsername();
+
+        return memberRepo.findByUsername(username).orElseThrow(
+                () -> new RuntimeException("Member not found with username: " + username));
+    }
+
+    public String getLoggedInUsername() {
+        return (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
     }
 }
