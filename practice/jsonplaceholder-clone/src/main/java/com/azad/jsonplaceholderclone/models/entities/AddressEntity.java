@@ -26,7 +26,7 @@ public class AddressEntity {
     private String zipcode;
 
     @OneToOne(mappedBy = "address")
-    private MemberEntity member;
+    private MemberProfileEntity memberProfile;
 
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "geo_id", referencedColumnName = "geo_id")
@@ -71,12 +71,12 @@ public class AddressEntity {
         this.zipcode = zipcode;
     }
 
-    public MemberEntity getMember() {
-        return member;
+    public MemberProfileEntity getMemberProfile() {
+        return memberProfile;
     }
 
-    public void setMember(MemberEntity member) {
-        this.member = member;
+    public void setMemberProfile(MemberProfileEntity memberProfile) {
+        this.memberProfile = memberProfile;
     }
 
     public GeoEntity getGeo() {

@@ -2,6 +2,7 @@ package com.azad.jsonplaceholderclone.security.entities;
 
 import com.azad.jsonplaceholderclone.models.entities.AddressEntity;
 import com.azad.jsonplaceholderclone.models.entities.CompanyEntity;
+import com.azad.jsonplaceholderclone.models.entities.MemberProfileEntity;
 
 import javax.persistence.*;
 
@@ -26,20 +27,6 @@ public class MemberEntity {
     @Column(nullable = false)
     private String password;
 
-    @Column
-    private String phone;
-
-    @Column
-    private String website;
-
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinColumn(name = "company_id", referencedColumnName = "company_id")
-    private CompanyEntity company;
-
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinColumn(name = "address_id", referencedColumnName = "address_id")
-    private AddressEntity address;
-
     private boolean enabled;
     private boolean expired;
     private boolean locked;
@@ -47,6 +34,10 @@ public class MemberEntity {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "role_id")
     private RoleEntity role = new RoleEntity();
+
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "profile_id", referencedColumnName = "profile_id")
+    private MemberProfileEntity memberProfile;
 
     public MemberEntity() {
     }
@@ -87,22 +78,6 @@ public class MemberEntity {
         this.password = password;
     }
 
-    public String getPhone() {
-        return phone;
-    }
-
-    public void setPhone(String phone) {
-        this.phone = phone;
-    }
-
-    public String getWebsite() {
-        return website;
-    }
-
-    public void setWebsite(String website) {
-        this.website = website;
-    }
-
     public boolean isEnabled() {
         return enabled;
     }
@@ -135,19 +110,11 @@ public class MemberEntity {
         this.role = role;
     }
 
-    public CompanyEntity getCompany() {
-        return company;
+    public MemberProfileEntity getMemberProfile() {
+        return memberProfile;
     }
 
-    public void setCompany(CompanyEntity company) {
-        this.company = company;
-    }
-
-    public AddressEntity getAddress() {
-        return address;
-    }
-
-    public void setAddress(AddressEntity address) {
-        this.address = address;
+    public void setMemberProfile(MemberProfileEntity memberProfile) {
+        this.memberProfile = memberProfile;
     }
 }

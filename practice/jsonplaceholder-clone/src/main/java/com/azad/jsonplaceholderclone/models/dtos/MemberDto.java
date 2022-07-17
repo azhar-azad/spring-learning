@@ -1,9 +1,6 @@
 package com.azad.jsonplaceholderclone.models.dtos;
 
-import com.azad.jsonplaceholderclone.models.Address;
-import com.azad.jsonplaceholderclone.models.Company;
-import com.azad.jsonplaceholderclone.models.Member;
-import com.azad.jsonplaceholderclone.models.Role;
+import com.azad.jsonplaceholderclone.models.*;
 
 public class MemberDto extends Member {
 

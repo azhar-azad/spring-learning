@@ -23,7 +23,7 @@ public class CompanyEntity {
     private String bs;
 
     @OneToOne(mappedBy = "company")
-    private MemberEntity member;
+    private MemberProfileEntity memberProfile;
 
     public CompanyEntity() {
     }
@@ -56,11 +56,11 @@ public class CompanyEntity {
         this.bs = bs;
     }
 
-    public MemberEntity getMember() {
-        return member;
+    public MemberProfileEntity getMemberProfile() {
+        return memberProfile;
     }
 
-    public void setMember(MemberEntity member) {
-        this.member = member;
+    public void setMemberProfile(MemberProfileEntity memberProfile) {
+        this.memberProfile = memberProfile;
     }
 }
