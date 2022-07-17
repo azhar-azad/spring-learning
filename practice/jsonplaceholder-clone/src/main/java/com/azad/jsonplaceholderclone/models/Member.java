@@ -27,6 +27,10 @@ public class Member {
     private String phone;
     private String website;
 
+    private Address address;
+
+    private Company company;
+
     public Member() {
     }
 
@@ -76,5 +80,21 @@ public class Member {
 
     public void setWebsite(String website) {
         this.website = website;
+    }
+
+    public Address getAddress() {
+        return address;
+    }
+
+    public void setAddress(Address address) {
+        this.address = address;
+    }
+
+    public Company getCompany() {
+        return company;
+    }
+
+    public void setCompany(Company company) {
+        this.company = company;
     }
 }

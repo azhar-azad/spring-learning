@@ -1,5 +1,8 @@
 package com.azad.jsonplaceholderclone.security.entities;
 
+import com.azad.jsonplaceholderclone.models.entities.AddressEntity;
+import com.azad.jsonplaceholderclone.models.entities.CompanyEntity;
+
 import javax.persistence.*;
 
 @Entity
@@ -28,6 +31,14 @@ public class MemberEntity {
 
     @Column
     private String website;
+
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "company_id", referencedColumnName = "company_id")
+    private CompanyEntity company;
+
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "address_id", referencedColumnName = "address_id")
+    private AddressEntity address;
 
     private boolean enabled;
     private boolean expired;
@@ -122,5 +133,21 @@ public class MemberEntity {
 
     public void setRole(RoleEntity role) {
         this.role = role;
+    }
+
+    public CompanyEntity getCompany() {
+        return company;
+    }
+
+    public void setCompany(CompanyEntity company) {
+        this.company = company;
+    }
+
+    public AddressEntity getAddress() {
+        return address;
+    }
+
+    public void setAddress(AddressEntity address) {
+        this.address = address;
     }
 }
