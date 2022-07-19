@@ -1,12 +1,12 @@
 package com.azad.jsonplaceholderclone.models.dtos;
 
 import com.azad.jsonplaceholderclone.models.Company;
-import com.azad.jsonplaceholderclone.models.Member;
+import com.azad.jsonplaceholderclone.models.MemberProfile;
 
 public class CompanyDto extends Company {
 
     private Long id;
-    private Member member;
+    private MemberProfile memberProfile;
 
     public CompanyDto() {
     }
@@ -19,11 +19,11 @@ public class CompanyDto extends Company {
         this.id = id;
     }
 
-    public Member getMember() {
-        return member;
+    public MemberProfile getMemberProfile() {
+        return memberProfile;
     }
 
-    public void setMember(Member member) {
-        this.member = member;
+    public void setMemberProfile(MemberProfile memberProfile) {
+        this.memberProfile = memberProfile;
     }
 }

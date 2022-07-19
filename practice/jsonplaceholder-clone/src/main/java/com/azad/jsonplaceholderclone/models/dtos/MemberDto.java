@@ -8,9 +8,7 @@ public class MemberDto extends Member {
     private Role role;
     private String roleName;
 
-    private Company company;
-
-    private Address address;
+    private MemberProfile memberProfile;
 
     public MemberDto() {
     }
@@ -39,23 +37,11 @@ public class MemberDto extends Member {
         this.role = role;
     }
 
-    @Override
-    public Company getCompany() {
-        return company;
+    public MemberProfile getMemberProfile() {
+        return memberProfile;
     }
 
-    @Override
-    public void setCompany(Company company) {
-        this.company = company;
-    }
-
-    @Override
-    public Address getAddress() {
-        return address;
-    }
-
-    @Override
-    public void setAddress(Address address) {
-        this.address = address;
+    public void setMemberProfile(MemberProfile memberProfile) {
+        this.memberProfile = memberProfile;
     }
 }

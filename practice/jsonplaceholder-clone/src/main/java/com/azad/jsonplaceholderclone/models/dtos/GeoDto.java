@@ -6,6 +6,7 @@ import com.azad.jsonplaceholderclone.models.Geo;
 public class GeoDto extends Geo {
 
     private Long id;
+
     private Address address;
 
     public GeoDto() {

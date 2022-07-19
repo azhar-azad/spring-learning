@@ -1,7 +1,5 @@
 package com.azad.jsonplaceholderclone.security.entities;
 
-import com.azad.jsonplaceholderclone.models.entities.AddressEntity;
-import com.azad.jsonplaceholderclone.models.entities.CompanyEntity;
 import com.azad.jsonplaceholderclone.models.entities.MemberProfileEntity;
 
 import javax.persistence.*;

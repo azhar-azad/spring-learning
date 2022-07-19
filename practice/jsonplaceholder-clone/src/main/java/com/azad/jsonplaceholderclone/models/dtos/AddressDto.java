@@ -1,14 +1,13 @@
 package com.azad.jsonplaceholderclone.models.dtos;
 
 import com.azad.jsonplaceholderclone.models.Address;
-import com.azad.jsonplaceholderclone.models.Geo;
-import com.azad.jsonplaceholderclone.models.Member;
+import com.azad.jsonplaceholderclone.models.MemberProfile;
 
 public class AddressDto extends Address {
 
     private Long id;
-    private Member member;
-    private Geo geo;
+
+    private MemberProfile memberProfile;
 
     public AddressDto() {
     }
@@ -21,21 +20,11 @@ public class AddressDto extends Address {
         this.id = id;
     }
 
-    public Member getMember() {
-        return member;
+    public MemberProfile getMemberProfile() {
+        return memberProfile;
     }
 
-    public void setMember(Member member) {
-        this.member = member;
-    }
-
-    @Override
-    public Geo getGeo() {
-        return geo;
-    }
-
-    @Override
-    public void setGeo(Geo geo) {
-        this.geo = geo;
+    public void setMemberProfile(MemberProfile memberProfile) {
+        this.memberProfile = memberProfile;
     }
 }

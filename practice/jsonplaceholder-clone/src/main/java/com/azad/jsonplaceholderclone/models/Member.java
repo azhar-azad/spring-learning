@@ -24,12 +24,6 @@ public class Member {
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @NotNull(message = "Password cannot be empty")
     private String password;
-    private String phone;
-    private String website;
-
-    private Address address;
-
-    private Company company;
 
     public Member() {
     }
@@ -64,37 +58,5 @@ public class Member {
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    public String getPhone() {
-        return phone;
-    }
-
-    public void setPhone(String phone) {
-        this.phone = phone;
-    }
-
-    public String getWebsite() {
-        return website;
-    }
-
-    public void setWebsite(String website) {
-        this.website = website;
-    }
-
-    public Address getAddress() {
-        return address;
-    }
-
-    public void setAddress(Address address) {
-        this.address = address;
-    }
-
-    public Company getCompany() {
-        return company;
-    }
-
-    public void setCompany(Company company) {
-        this.company = company;
     }
 }
