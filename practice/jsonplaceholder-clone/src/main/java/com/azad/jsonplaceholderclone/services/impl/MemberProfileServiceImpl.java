@@ -118,4 +118,12 @@ public class MemberProfileServiceImpl implements MemberProfileService {
     public void deleteById(Long id) {
 
     }
+
+    @Override
+    public MemberProfileDto getLoggedInProfile() {
+
+        MemberEntity memberEntity = authService.getLoggedInMember();
+
+        return modelMapper.map(memberEntity.getMemberProfile(), MemberProfileDto.class);
+    }
 }

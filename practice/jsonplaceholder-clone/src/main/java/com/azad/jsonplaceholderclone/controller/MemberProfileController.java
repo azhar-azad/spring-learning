@@ -6,15 +6,13 @@ import com.azad.jsonplaceholderclone.models.MemberProfile;
 import com.azad.jsonplaceholderclone.models.dtos.MemberProfileDto;
 import com.azad.jsonplaceholderclone.models.responses.ApiResponse;
 import com.azad.jsonplaceholderclone.models.responses.MemberProfileResponse;
+import com.azad.jsonplaceholderclone.repos.MemberProfileRepository;
 import com.azad.jsonplaceholderclone.services.MemberProfileService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.Collections;
@@ -41,5 +39,15 @@ public class MemberProfileController {
         return new ResponseEntity<>(new ApiResponse(true, "Profile Created",
                 Collections.singletonMap("profile", modelMapper.map(memberProfileDto, MemberProfileResponse.class))),
                 HttpStatus.CREATED);
+    }
+
+    @GetMapping(path = "/me")
+    public ResponseEntity<ApiResponse> getMyProfile() {
+
+        MemberProfileDto memberProfileDto = memberProfileService.getLoggedInProfile();
+
+        return new ResponseEntity<>(new ApiResponse(true, "Profile Fetched",
+                Collections.singletonMap("profile", modelMapper.map(memberProfileDto, MemberProfileResponse.class))),
+                HttpStatus.OK);
     }
 }
