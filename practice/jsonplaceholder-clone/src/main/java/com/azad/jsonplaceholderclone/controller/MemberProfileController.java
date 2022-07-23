@@ -46,6 +46,10 @@ public class MemberProfileController {
 
         MemberProfileDto memberProfileDto = memberProfileService.getLoggedInProfile();
 
+        if (memberProfileDto == null) {
+            return new ResponseEntity<>(new ApiResponse(true, "No Profile Created", null), HttpStatus.NOT_FOUND);
+        }
+
         return new ResponseEntity<>(new ApiResponse(true, "Profile Fetched",
                 Collections.singletonMap("profile", modelMapper.map(memberProfileDto, MemberProfileResponse.class))),
                 HttpStatus.OK);

@@ -35,7 +35,7 @@ public class AppSecurityConfigs extends WebSecurityConfigurerAdapter {
                 .and()
                 .authorizeHttpRequests()
                 .antMatchers("/api/auth/**").permitAll()
-                .antMatchers("/api/users/profile/**").authenticated() // todo: use role based auth
+                .antMatchers("/api/users/**").authenticated() // todo: use role based auth
                 .and()
                 .exceptionHandling()
                 .authenticationEntryPoint((request, response, authException) ->

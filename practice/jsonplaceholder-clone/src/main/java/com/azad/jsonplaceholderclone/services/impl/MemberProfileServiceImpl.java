@@ -124,6 +124,11 @@ public class MemberProfileServiceImpl implements MemberProfileService {
 
         MemberEntity memberEntity = authService.getLoggedInMember();
 
+        MemberProfileEntity memberProfileEntity = memberEntity.getMemberProfile();
+        if (memberProfileEntity == null) {
+            return null;
+        }
+
         return modelMapper.map(memberEntity.getMemberProfile(), MemberProfileDto.class);
     }
 }
