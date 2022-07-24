@@ -51,7 +51,7 @@ public class TodoController {
     }
 
     @PostMapping(path = "/batch")
-    public ResponseEntity<List<TodoResponse>> createMultipleTodos(@RequestBody List<Todo> todos) {
+    public ResponseEntity<List<TodoResponse>> createBatchTodos(@RequestBody List<Todo> todos) {
 
         List<TodoDto> todoDtos = todos.stream()
                 .map(todo -> modelMapper.map(todo, TodoDto.class))
@@ -65,6 +65,6 @@ public class TodoController {
                 .map(todoDto -> modelMapper.map(todoDto, TodoResponse.class))
                 .collect(Collectors.toList());
 
-        return new ResponseEntity<>(todoResponses, HttpStatus.OK);
+        return new ResponseEntity<>(todoResponses, HttpStatus.CREATED);
     }
 }
