@@ -68,7 +68,7 @@ public class TodoServiceImpl implements TodoService {
         return allTodosFromDb.stream()
                 .map(todoEntity -> {
                     TodoDto todoDto =  modelMapper.map(todoEntity, TodoDto.class);
-                    todoDto.setUserId(todoEntity.getId());
+                    todoDto.setUserId(todoEntity.getMember().getId());
                     return todoDto;
                 })
                 .collect(Collectors.toList());
