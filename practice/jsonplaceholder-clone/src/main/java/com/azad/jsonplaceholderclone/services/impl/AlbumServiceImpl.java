@@ -68,7 +68,7 @@ public class AlbumServiceImpl implements AlbumService {
         return allAlbumsFromDb.stream()
                 .map(albumEntity -> {
                     AlbumDto albumDto = modelMapper.map(albumEntity, AlbumDto.class);
-                    albumDto.setUserId(albumEntity.getId());
+                    albumDto.setUserId(albumEntity.getMember().getId());
                     return albumDto;
                 })
                 .collect(Collectors.toList());
