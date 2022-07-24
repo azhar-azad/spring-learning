@@ -2,11 +2,15 @@ package com.azad.jsonplaceholderclone.models.dtos;
 
 import com.azad.jsonplaceholderclone.models.*;
 
+import java.util.List;
+
 public class MemberDto extends Member {
 
     private Long id;
     private Role role;
     private String roleName;
+
+    private List<Todo> todos;
 
     public MemberDto() {
     }
@@ -33,5 +37,13 @@ public class MemberDto extends Member {
 
     public void setRole(Role role) {
         this.role = role;
+    }
+
+    public List<Todo> getTodos() {
+        return todos;
+    }
+
+    public void setTodos(List<Todo> todos) {
+        this.todos = todos;
     }
 }

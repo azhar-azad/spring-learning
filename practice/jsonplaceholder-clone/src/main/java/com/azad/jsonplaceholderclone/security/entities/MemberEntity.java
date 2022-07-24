@@ -2,8 +2,10 @@ package com.azad.jsonplaceholderclone.security.entities;
 
 import com.azad.jsonplaceholderclone.models.entities.AddressEntity;
 import com.azad.jsonplaceholderclone.models.entities.CompanyEntity;
+import com.azad.jsonplaceholderclone.models.entities.TodoEntity;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "users")
@@ -47,6 +49,9 @@ public class MemberEntity {
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "company_id", referencedColumnName = "company_id")
     private CompanyEntity company;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "member", cascade = CascadeType.ALL)
+    private List<TodoEntity> todos;
 
     public MemberEntity() {
     }
@@ -149,5 +154,13 @@ public class MemberEntity {
 
     public void setCompany(CompanyEntity company) {
         this.company = company;
+    }
+
+    public List<TodoEntity> getTodos() {
+        return todos;
+    }
+
+    public void setTodos(List<TodoEntity> todos) {
+        this.todos = todos;
     }
 }

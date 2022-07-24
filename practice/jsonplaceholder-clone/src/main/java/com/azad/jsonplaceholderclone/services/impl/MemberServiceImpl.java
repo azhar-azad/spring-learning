@@ -43,7 +43,7 @@ public class MemberServiceImpl implements MemberService {
         if (ps.getSort().isEmpty())
             pageable = PageRequest.of(ps.getPage(), ps.getLimit());
         else
-            pageable = PageRequest.of(ps.getPage(), ps.getLimit(), appUtils.getSortBy(ps.getSort(), ps.getOrder()));
+            pageable = PageRequest.of(ps.getPage(), ps.getLimit(), appUtils.getSortAndOrder(ps.getSort(), ps.getOrder()));
 
         List<MemberEntity> allMembersFromDb = memberRepository.findAll(pageable).getContent();
         if (allMembersFromDb.size() == 0)
