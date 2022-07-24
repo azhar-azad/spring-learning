@@ -29,7 +29,7 @@ public class AppUtils {
         LOG.info(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
     }
 
-    public Sort getSortBy(String sort, String order) {
+    public Sort getSortAndOrder(String sort, String order) {
 
         List<String> sortItems = Arrays.stream(sort.split(","))
                 .map(String::trim).collect(Collectors.toList());
