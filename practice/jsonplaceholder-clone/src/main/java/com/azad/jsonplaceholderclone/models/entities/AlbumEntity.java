@@ -3,6 +3,7 @@ package com.azad.jsonplaceholderclone.models.entities;
 import com.azad.jsonplaceholderclone.security.entities.MemberEntity;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "albums")
@@ -19,6 +20,9 @@ public class AlbumEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private MemberEntity member;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "album", cascade = CascadeType.ALL)
+    private List<PhotoEntity> photos;
 
     public AlbumEntity() {
     }
@@ -41,5 +45,13 @@ public class AlbumEntity {
 
     public void setMember(MemberEntity member) {
         this.member = member;
+    }
+
+    public List<PhotoEntity> getPhotos() {
+        return photos;
+    }
+
+    public void setPhotos(List<PhotoEntity> photos) {
+        this.photos = photos;
     }
 }
