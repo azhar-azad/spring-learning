@@ -69,7 +69,7 @@ public class PhotoServiceImpl implements PhotoService {
         return allPhotosFromDb.stream()
                 .map(photoEntity -> {
                     PhotoDto photoDto = modelMapper.map(photoEntity, PhotoDto.class);
-                    photoDto.setAlbumId(photoEntity.getId());
+                    photoDto.setAlbumId(photoEntity.getAlbum().getId());
                     return photoDto;
                 })
                 .collect(Collectors.toList());
