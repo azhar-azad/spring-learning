@@ -1,9 +1,6 @@
 package com.azad.jsonplaceholderclone.security.entities;
 
-import com.azad.jsonplaceholderclone.models.entities.AddressEntity;
-import com.azad.jsonplaceholderclone.models.entities.AlbumEntity;
-import com.azad.jsonplaceholderclone.models.entities.CompanyEntity;
-import com.azad.jsonplaceholderclone.models.entities.TodoEntity;
+import com.azad.jsonplaceholderclone.models.entities.*;
 
 import javax.persistence.*;
 import java.util.List;
@@ -56,6 +53,9 @@ public class MemberEntity {
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "member", cascade = CascadeType.ALL)
     private List<AlbumEntity> albums;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "member", cascade = CascadeType.ALL)
+    private List<PostEntity> posts;
 
     public MemberEntity() {
     }
@@ -174,5 +174,13 @@ public class MemberEntity {
 
     public void setAlbums(List<AlbumEntity> albums) {
         this.albums = albums;
+    }
+
+    public List<PostEntity> getPosts() {
+        return posts;
+    }
+
+    public void setPosts(List<PostEntity> posts) {
+        this.posts = posts;
     }
 }

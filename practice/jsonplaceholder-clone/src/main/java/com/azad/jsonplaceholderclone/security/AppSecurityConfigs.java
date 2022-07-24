@@ -39,6 +39,7 @@ public class AppSecurityConfigs extends WebSecurityConfigurerAdapter {
                 .antMatchers("/todos/**").authenticated()
                 .antMatchers("/albums/**").authenticated()
                 .antMatchers("/photos/**").authenticated()
+                .antMatchers("/posts/**").authenticated()
                 .and()
                 .exceptionHandling()
                 .authenticationEntryPoint((request, response, authException) ->

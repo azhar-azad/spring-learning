@@ -5,6 +5,7 @@ import javax.validation.constraints.Size;
 
 public class Post {
 
+    @NotNull(message = "Post title cannot be empty")
     private String title;
 
     @NotNull(message = "Post body cannot be empty")
