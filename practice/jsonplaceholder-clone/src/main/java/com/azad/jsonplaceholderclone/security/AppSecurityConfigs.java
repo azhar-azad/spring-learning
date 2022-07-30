@@ -40,6 +40,7 @@ public class AppSecurityConfigs extends WebSecurityConfigurerAdapter {
                 .antMatchers("/albums/**").authenticated()
                 .antMatchers("/photos/**").authenticated()
                 .antMatchers("/posts/**").authenticated()
+                .antMatchers("/comments/**").authenticated()
                 .and()
                 .exceptionHandling()
                 .authenticationEntryPoint((request, response, authException) ->

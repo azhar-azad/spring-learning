@@ -3,6 +3,7 @@ package com.azad.jsonplaceholderclone.models.entities;
 import com.azad.jsonplaceholderclone.security.entities.MemberEntity;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "posts")
@@ -22,6 +23,9 @@ public class PostEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private MemberEntity member;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "post", cascade = CascadeType.ALL)
+    private List<CommentEntity> comments;
 
     public PostEntity() {
     }
@@ -52,5 +56,13 @@ public class PostEntity {
 
     public void setMember(MemberEntity member) {
         this.member = member;
+    }
+
+    public List<CommentEntity> getComments() {
+        return comments;
+    }
+
+    public void setComments(List<CommentEntity> comments) {
+        this.comments = comments;
     }
 }
