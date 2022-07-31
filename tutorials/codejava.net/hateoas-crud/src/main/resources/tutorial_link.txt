@@ -1,1 +1,11 @@
 https://codejava.net/frameworks/spring-boot/rest-api-crud-with-hateoas-tutorial
+
+
+You can add an arbitrary link to an entity model object like this:
+    -- entityModel.add(Link.of("https://company.xyz", "Ref"));
+
+The following line adds an arbitrary link to a collection model:
+    -- collectionModel.add(Link.of("http://company.com/api/docs", "docs"));
+
+And add a link with relation follows IANA-based link relation:
+    -- collectionModel.add(Link.of("http://company.com/namhaminh", IanaLinkRelations.AUTHOR));
