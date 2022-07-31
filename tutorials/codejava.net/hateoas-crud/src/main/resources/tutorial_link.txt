@@ -1,0 +1,1 @@
+https://codejava.net/frameworks/spring-boot/rest-api-crud-with-hateoas-tutorial
