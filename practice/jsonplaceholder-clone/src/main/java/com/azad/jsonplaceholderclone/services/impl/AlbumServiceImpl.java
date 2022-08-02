@@ -1,6 +1,7 @@
 package com.azad.jsonplaceholderclone.services.impl;
 
 import com.azad.jsonplaceholderclone.models.dtos.AlbumDto;
+import com.azad.jsonplaceholderclone.models.dtos.MemberDto;
 import com.azad.jsonplaceholderclone.models.entities.AlbumEntity;
 import com.azad.jsonplaceholderclone.repos.AlbumRepository;
 import com.azad.jsonplaceholderclone.security.auth.api.AuthService;
@@ -76,7 +77,10 @@ public class AlbumServiceImpl implements AlbumService {
 
     @Override
     public AlbumDto getById(Long id) {
-        return null;
+        AlbumEntity albumFromDb = albumRepository.findById(id).orElseThrow(
+                () -> new RuntimeException("Album not found with id: " + id));
+
+        return modelMapper.map(albumFromDb, AlbumDto.class);
     }
 
     @Override

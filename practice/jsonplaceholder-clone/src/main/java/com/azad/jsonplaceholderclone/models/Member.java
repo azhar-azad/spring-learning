@@ -1,6 +1,7 @@
 package com.azad.jsonplaceholderclone.models;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import org.springframework.hateoas.RepresentationModel;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
