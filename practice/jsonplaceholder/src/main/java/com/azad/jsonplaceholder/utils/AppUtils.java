@@ -1,4 +1,4 @@
-package com.azad.jsonplaceholderclone.utils;
+package com.azad.jsonplaceholder.utils;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
