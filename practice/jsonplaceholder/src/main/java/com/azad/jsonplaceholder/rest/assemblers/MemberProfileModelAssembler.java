@@ -2,20 +2,18 @@ package com.azad.jsonplaceholder.rest.assemblers;
 
 import com.azad.jsonplaceholder.models.responses.MemberProfileResponse;
 import com.azad.jsonplaceholder.repos.MemberProfileRepository;
-import com.azad.jsonplaceholder.rest.controllers.MemberProfileController;
+import com.azad.jsonplaceholder.rest.controllers.MemberProfileRestController;
 import com.azad.jsonplaceholder.utils.PagingAndSorting;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.IanaLinkRelations;
-import org.springframework.hateoas.RepresentationModel;
 import org.springframework.hateoas.server.RepresentationModelAssembler;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
@@ -40,8 +38,8 @@ public class MemberProfileModelAssembler implements RepresentationModelAssembler
 
         EntityModel<MemberProfileResponse> memberProfileResponseEntityModel = EntityModel.of(entity);
 
-        memberProfileResponseEntityModel.add(linkTo(methodOn(MemberProfileController.class).getMemberProfile(entity.getId())).withSelfRel());
-        memberProfileResponseEntityModel.add(linkTo(methodOn(MemberProfileController.class)
+        memberProfileResponseEntityModel.add(linkTo(methodOn(MemberProfileRestController.class).getMemberProfile(entity.getId())).withSelfRel());
+        memberProfileResponseEntityModel.add(linkTo(methodOn(MemberProfileRestController.class)
                 .getAllMemberProfiles(defaultPage, defaultLimit, "", defaultOrder)).withRel(IanaLinkRelations.COLLECTION));
 
         return memberProfileResponseEntityModel;
@@ -63,7 +61,7 @@ public class MemberProfileModelAssembler implements RepresentationModelAssembler
 
         CollectionModel<EntityModel<MemberProfileResponse>> collectionModel = toCollectionModel(entities);
 
-        collectionModel.add(linkTo(methodOn(MemberProfileController.class)
+        collectionModel.add(linkTo(methodOn(MemberProfileRestController.class)
                 .getAllMemberProfiles(ps.getPage(), ps.getLimit(), ps.getSort(), ps.getOrder())).withSelfRel());
 
         long totalRecords = memberProfileRepository.count();
@@ -79,12 +77,12 @@ public class MemberProfileModelAssembler implements RepresentationModelAssembler
     }
 
     private void addNextLink(CollectionModel<EntityModel<MemberProfileResponse>> collectionModel, PagingAndSorting ps) {
-        collectionModel.add(linkTo(methodOn(MemberProfileController.class)
+        collectionModel.add(linkTo(methodOn(MemberProfileRestController.class)
                 .getAllMemberProfiles(ps.getPage() + 1, ps.getLimit(), ps.getSort(), ps.getOrder())).withRel(IanaLinkRelations.NEXT));
     }
 
     private void addPrevLink(CollectionModel<EntityModel<MemberProfileResponse>> collectionModel, PagingAndSorting ps) {
-        collectionModel.add(linkTo(methodOn(MemberProfileController.class)
+        collectionModel.add(linkTo(methodOn(MemberProfileRestController.class)
                 .getAllMemberProfiles(ps.getPage() - 1, ps.getLimit(), ps.getSort(), ps.getOrder())).withRel(IanaLinkRelations.PREV));
     }
 }

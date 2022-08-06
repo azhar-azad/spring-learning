@@ -20,7 +20,7 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping(path = "/api/v1/profiles")
-public class MemberProfileController {
+public class MemberProfileRestController {
 
     @Autowired
     private ModelMapper modelMapper;
@@ -29,7 +29,7 @@ public class MemberProfileController {
     private final MemberProfileModelAssembler memberProfileModelAssembler;
 
     @Autowired
-    public MemberProfileController(MemberProfileService memberProfileService, MemberProfileModelAssembler memberProfileModelAssembler) {
+    public MemberProfileRestController(MemberProfileService memberProfileService, MemberProfileModelAssembler memberProfileModelAssembler) {
         this.memberProfileService = memberProfileService;
         this.memberProfileModelAssembler = memberProfileModelAssembler;
     }
