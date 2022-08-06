@@ -84,4 +84,23 @@ public class MemberProfileRestController {
 
         return new ResponseEntity<>(memberProfileResponseEntityModel, HttpStatus.OK);
     }
+
+    @PutMapping(path = "/{id}")
+    public ResponseEntity<EntityModel<MemberProfileResponse>> updateMemberProfile(@Valid @PathVariable("id") Long id, @RequestBody MemberProfile memberProfile) {
+
+        MemberProfileDto memberProfileFromService = memberProfileService.updateById(id, modelMapper.map(memberProfile, MemberProfileDto.class));
+
+        MemberProfileResponse memberProfileResponse = modelMapper.map(memberProfileFromService, MemberProfileResponse.class);
+        EntityModel<MemberProfileResponse> memberProfileResponseEntityModel = memberProfileModelAssembler.toModel(memberProfileResponse);
+
+        return new ResponseEntity<>(memberProfileResponseEntityModel, HttpStatus.OK);
+    }
+
+    @DeleteMapping(path = "/{id}")
+    public ResponseEntity<?> deleteMemberProfile(@Valid @PathVariable("id") Long id) {
+
+        memberProfileService.deleteById(id);
+
+        return ResponseEntity.noContent().build();
+    }
 }

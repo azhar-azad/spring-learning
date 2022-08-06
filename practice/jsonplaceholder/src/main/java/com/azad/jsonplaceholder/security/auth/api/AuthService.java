@@ -81,4 +81,13 @@ public class AuthService {
     public String getLoggedInUsername() {
         return (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
     }
+
+    public boolean loggedInUserIsAdmin() {
+
+        MemberEntity loggedInMember = getLoggedInMember();
+
+        String roleName = loggedInMember.getRole().getRoleName();
+
+        return roleName.equalsIgnoreCase("ADMIN");
+    }
 }

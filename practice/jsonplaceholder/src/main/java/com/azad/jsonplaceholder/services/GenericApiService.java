@@ -14,5 +14,5 @@ public interface GenericApiService<T> {
 
     T updateById(Long id, T updatedRequestBody);
 
-    void deleteById();
+    void deleteById(Long id);
 }
