@@ -38,9 +38,14 @@ public class MemberProfileModelAssembler implements RepresentationModelAssembler
 
         EntityModel<MemberProfileResponse> memberProfileResponseEntityModel = EntityModel.of(entity);
 
-        memberProfileResponseEntityModel.add(linkTo(methodOn(MemberProfileRestController.class).getMemberProfile(entity.getId())).withSelfRel());
-        memberProfileResponseEntityModel.add(linkTo(methodOn(MemberProfileRestController.class)
-                .getAllMemberProfiles(defaultPage, defaultLimit, "", defaultOrder)).withRel(IanaLinkRelations.COLLECTION));
+        memberProfileResponseEntityModel.add(linkTo(
+                methodOn(MemberProfileRestController.class)
+                .getMemberProfile(entity.getId()))
+                .withSelfRel());
+        memberProfileResponseEntityModel.add(linkTo(
+                methodOn(MemberProfileRestController.class)
+                .getAllMemberProfiles(defaultPage, defaultLimit, "", defaultOrder))
+                .withRel(IanaLinkRelations.COLLECTION));
 
         return memberProfileResponseEntityModel;
     }
@@ -61,8 +66,10 @@ public class MemberProfileModelAssembler implements RepresentationModelAssembler
 
         CollectionModel<EntityModel<MemberProfileResponse>> collectionModel = toCollectionModel(entities);
 
-        collectionModel.add(linkTo(methodOn(MemberProfileRestController.class)
-                .getAllMemberProfiles(ps.getPage(), ps.getLimit(), ps.getSort(), ps.getOrder())).withSelfRel());
+        collectionModel.add(linkTo(
+                methodOn(MemberProfileRestController.class)
+                .getAllMemberProfiles(ps.getPage(), ps.getLimit(), ps.getSort(), ps.getOrder()))
+                .withSelfRel());
 
         long totalRecords = memberProfileRepository.count();
 
@@ -77,12 +84,16 @@ public class MemberProfileModelAssembler implements RepresentationModelAssembler
     }
 
     private void addNextLink(CollectionModel<EntityModel<MemberProfileResponse>> collectionModel, PagingAndSorting ps) {
-        collectionModel.add(linkTo(methodOn(MemberProfileRestController.class)
-                .getAllMemberProfiles(ps.getPage() + 1, ps.getLimit(), ps.getSort(), ps.getOrder())).withRel(IanaLinkRelations.NEXT));
+        collectionModel.add(linkTo(methodOn(
+                MemberProfileRestController.class)
+                .getAllMemberProfiles(ps.getPage() + 1, ps.getLimit(), ps.getSort(), ps.getOrder()))
+                .withRel(IanaLinkRelations.NEXT));
     }
 
     private void addPrevLink(CollectionModel<EntityModel<MemberProfileResponse>> collectionModel, PagingAndSorting ps) {
-        collectionModel.add(linkTo(methodOn(MemberProfileRestController.class)
-                .getAllMemberProfiles(ps.getPage() - 1, ps.getLimit(), ps.getSort(), ps.getOrder())).withRel(IanaLinkRelations.PREV));
+        collectionModel.add(linkTo(methodOn(
+                MemberProfileRestController.class)
+                .getAllMemberProfiles(ps.getPage() - 1, ps.getLimit(), ps.getSort(), ps.getOrder()))
+                .withRel(IanaLinkRelations.PREV));
     }
 }

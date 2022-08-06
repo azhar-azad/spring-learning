@@ -4,6 +4,7 @@ import com.azad.jsonplaceholder.models.MemberProfile;
 import com.azad.jsonplaceholder.models.dtos.MemberProfileDto;
 import com.azad.jsonplaceholder.models.responses.MemberProfileResponse;
 import com.azad.jsonplaceholder.rest.assemblers.MemberProfileModelAssembler;
+import com.azad.jsonplaceholder.security.auth.api.AuthService;
 import com.azad.jsonplaceholder.services.MemberProfileService;
 import com.azad.jsonplaceholder.utils.PagingAndSorting;
 import org.modelmapper.ModelMapper;
@@ -24,6 +25,8 @@ public class MemberProfileRestController {
 
     @Autowired
     private ModelMapper modelMapper;
+    @Autowired
+    private AuthService authService;
 
     private final MemberProfileService memberProfileService;
     private final MemberProfileModelAssembler memberProfileModelAssembler;
@@ -54,6 +57,10 @@ public class MemberProfileRestController {
             @Valid @RequestParam(value = "sort", defaultValue = "") String sort,
             @Valid @RequestParam(value = "order", defaultValue = "asc") String order) {
 
+        if (!authService.loggedInUserIsAdmin()) {
+            throw new RuntimeException("Only admins can access this api");
+        }
+
         if (page < 0) page = 0;
 
         List<MemberProfileDto> allMemberProfilesFromService = memberProfileService.getAll(
@@ -74,6 +81,10 @@ public class MemberProfileRestController {
     @GetMapping(path = "/{id}")
     public ResponseEntity<EntityModel<MemberProfileResponse>> getMemberProfile(@Valid @PathVariable("id") Long id) {
 
+        if (!authService.loggedInUserIsAdmin()) {
+            throw new RuntimeException("Only admins can access this api");
+        }
+
         MemberProfileDto memberProfileFromService = memberProfileService.getById(id);
         if (memberProfileFromService == null) {
             return ResponseEntity.notFound().build();
@@ -86,7 +97,12 @@ public class MemberProfileRestController {
     }
 
     @PutMapping(path = "/{id}")
-    public ResponseEntity<EntityModel<MemberProfileResponse>> updateMemberProfile(@Valid @PathVariable("id") Long id, @RequestBody MemberProfile memberProfile) {
+    public ResponseEntity<EntityModel<MemberProfileResponse>> updateMemberProfile(
+            @Valid @PathVariable("id") Long id, @RequestBody MemberProfile memberProfile) {
+
+        if (!authService.loggedInUserIsAdmin()) {
+            throw new RuntimeException("Only admins can access this api");
+        }
 
         MemberProfileDto memberProfileFromService = memberProfileService.updateById(id, modelMapper.map(memberProfile, MemberProfileDto.class));
 
@@ -98,6 +114,10 @@ public class MemberProfileRestController {
 
     @DeleteMapping(path = "/{id}")
     public ResponseEntity<?> deleteMemberProfile(@Valid @PathVariable("id") Long id) {
+
+        if (!authService.loggedInUserIsAdmin()) {
+            throw new RuntimeException("Only admins can access this api");
+        }
 
         memberProfileService.deleteById(id);
 

@@ -29,14 +29,10 @@ public class MemberProfileServiceImpl implements MemberProfileService {
 
     @Autowired
     private ModelMapper modelMapper;
-
     @Autowired
     private AppUtils appUtils;
-
     @Autowired
     private AuthService authService;
-
-
 
     private final MemberProfileRepository memberProfileRepository;
 
@@ -61,10 +57,6 @@ public class MemberProfileServiceImpl implements MemberProfileService {
     @Override
     public List<MemberProfileDto> getAll(PagingAndSorting ps) {
 
-        if (!authService.loggedInUserIsAdmin()) {
-            throw new RuntimeException("Only admins can access this api");
-        }
-
         Pageable pageable;
         if (ps.getSort().isEmpty())
             pageable = PageRequest.of(ps.getPage(), ps.getLimit());
@@ -83,10 +75,6 @@ public class MemberProfileServiceImpl implements MemberProfileService {
     @Override
     public MemberProfileDto getById(Long id) {
 
-        if (!authService.loggedInUserIsAdmin()) {
-            throw new RuntimeException("Only admins can access this api");
-        }
-
         MemberProfileEntity memberProfileFromDb = memberProfileRepository.findById(id).orElseThrow(
                 () -> new RuntimeException("Profile not found with id: " + id));
 
@@ -95,10 +83,6 @@ public class MemberProfileServiceImpl implements MemberProfileService {
 
     @Override
     public MemberProfileDto updateById(Long id, MemberProfileDto updatedRequestBody) {
-
-        if (!authService.loggedInUserIsAdmin()) {
-            throw new RuntimeException("Only admins can access this api");
-        }
 
         MemberProfileEntity memberProfileFromDb = memberProfileRepository.findById(id).orElseThrow(
                 () -> new RuntimeException("Profile not found with id: " + id));
@@ -153,10 +137,6 @@ public class MemberProfileServiceImpl implements MemberProfileService {
 
     @Override
     public void deleteById(Long id) {
-
-        if (!authService.loggedInUserIsAdmin()) {
-            throw new RuntimeException("Only admins can access this api");
-        }
 
         MemberProfileEntity memberProfileFromDb = memberProfileRepository.findById(id).orElseThrow(
                 () -> new RuntimeException("Profile not found with id: " + id));
