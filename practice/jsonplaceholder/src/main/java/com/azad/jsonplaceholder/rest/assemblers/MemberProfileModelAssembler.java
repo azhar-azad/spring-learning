@@ -40,7 +40,7 @@ public class MemberProfileModelAssembler implements RepresentationModelAssembler
 
         memberProfileResponseEntityModel.add(linkTo(
                 methodOn(MemberProfileRestController.class)
-                .getMemberProfile(entity.getId()))
+                .getMemberProfile())
                 .withSelfRel());
         memberProfileResponseEntityModel.add(linkTo(
                 methodOn(MemberProfileRestController.class)

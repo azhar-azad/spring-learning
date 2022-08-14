@@ -1,18 +1,18 @@
 package com.azad.jsonplaceholder.security.auth.api;
 
 import com.azad.jsonplaceholder.models.dtos.MemberDto;
+import com.azad.jsonplaceholder.models.responses.MemberResponse;
+import com.azad.jsonplaceholder.rest.assemblers.MemberModelAssembler;
 import com.azad.jsonplaceholder.security.auth.requests.LoginRequest;
 import com.azad.jsonplaceholder.security.auth.requests.RegistrationRequest;
 import com.azad.jsonplaceholder.security.jwt.JWTUtil;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.EntityModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.Collections;
@@ -28,6 +28,9 @@ public class AuthController {
     @Autowired
     private JWTUtil jwtUtil;
 
+    @Autowired
+    private MemberModelAssembler memberModelAssembler;
+
     private final AuthService authService;
 
     @Autowired
@@ -40,9 +43,9 @@ public class AuthController {
 
         MemberDto memberDto = modelMapper.map(request, MemberDto.class);
 
-        MemberDto registeredMemberDto = authService.registerMember(memberDto);
+        MemberDto registeredMember = authService.registerMember(memberDto);
 
-        return generateTokenAndSend(registeredMemberDto.getUsername(), HttpStatus.CREATED);
+        return generateTokenAndSend(registeredMember.getUsername(), HttpStatus.CREATED);
     }
 
     @PostMapping(path = "/login")
@@ -56,6 +59,14 @@ public class AuthController {
             return new ResponseEntity<>(Collections.singletonMap("Authentication Error", ex.getLocalizedMessage()),
                     HttpStatus.UNAUTHORIZED);
         }
+    }
+
+    @GetMapping(path = "/me")
+    public ResponseEntity<EntityModel<MemberResponse>> getLoggedInUser() {
+
+        MemberResponse memberResponse = modelMapper.map(authService.getLoggedInMember(), MemberResponse.class);
+
+        return new ResponseEntity<>(memberModelAssembler.toModel(memberResponse), HttpStatus.OK);
     }
 
     private ResponseEntity<Map<String, String>> generateTokenAndSend(String username, HttpStatus statusToSend) {

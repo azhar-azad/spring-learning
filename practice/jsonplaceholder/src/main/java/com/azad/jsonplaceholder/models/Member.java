@@ -25,7 +25,7 @@ public class Member {
     @NotNull(message = "Password cannot be empty")
     private String password;
 
-    private MemberProfile memberProfile;
+//    private MemberProfile memberProfile;
 
     public Member() {
     }
@@ -62,11 +62,11 @@ public class Member {
         this.password = password;
     }
 
-    public MemberProfile getMemberProfile() {
-        return memberProfile;
-    }
-
-    public void setMemberProfile(MemberProfile memberProfile) {
-        this.memberProfile = memberProfile;
-    }
+//    public MemberProfile getMemberProfile() {
+//        return memberProfile;
+//    }
+//
+//    public void setMemberProfile(MemberProfile memberProfile) {
+//        this.memberProfile = memberProfile;
+//    }
 }

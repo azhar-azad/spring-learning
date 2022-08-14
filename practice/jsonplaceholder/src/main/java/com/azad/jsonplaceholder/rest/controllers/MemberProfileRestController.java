@@ -123,4 +123,18 @@ public class MemberProfileRestController {
 
         return ResponseEntity.noContent().build();
     }
+
+    @GetMapping(path = "/me")
+    public ResponseEntity<EntityModel<MemberProfileResponse>> getMemberProfile() {
+
+        MemberProfileDto memberProfileFromService = memberProfileService.getById(authService.getLoggedInMember().getId());
+        if (memberProfileFromService == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        MemberProfileResponse memberProfileResponse = modelMapper.map(memberProfileFromService, MemberProfileResponse.class);
+        EntityModel<MemberProfileResponse> memberProfileResponseEntityModel = memberProfileModelAssembler.toModel(memberProfileResponse);
+
+        return new ResponseEntity<>(memberProfileResponseEntityModel, HttpStatus.OK);
+    }
 }
