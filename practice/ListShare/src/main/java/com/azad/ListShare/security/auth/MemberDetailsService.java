@@ -2,6 +2,7 @@ package com.azad.ListShare.security.auth;
 
 import com.azad.ListShare.models.entities.MemberEntity;
 import com.azad.ListShare.repos.MemberRepository;
+import com.azad.ListShare.security.MemberDetails;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

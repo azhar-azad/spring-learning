@@ -1,4 +1,4 @@
-package com.azad.ListShare.security.auth;
+package com.azad.ListShare.security;
 
 import com.azad.ListShare.models.entities.MemberEntity;
 import org.springframework.security.core.GrantedAuthority;

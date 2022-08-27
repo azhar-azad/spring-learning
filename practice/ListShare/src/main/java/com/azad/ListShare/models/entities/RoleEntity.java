@@ -16,7 +16,7 @@ public class RoleEntity {
     @Column(nullable = false, unique = true)
     private String roleName;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "role", cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "role", cascade = CascadeType.ALL)
     private List<MemberEntity> members = new ArrayList<>();
 
     public RoleEntity() {
