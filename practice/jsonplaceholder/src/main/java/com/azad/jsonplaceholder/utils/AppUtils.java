@@ -1,14 +1,23 @@
 package com.azad.jsonplaceholder.utils;
 
+import com.azad.jsonplaceholder.models.responses.CommentResponse;
+import com.azad.jsonplaceholder.rest.controllers.GenericRestController;
+import com.azad.jsonplaceholder.rest.controllers.PostRestController;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Sort;
+import org.springframework.hateoas.CollectionModel;
+import org.springframework.hateoas.EntityModel;
+import org.springframework.hateoas.IanaLinkRelations;
 import org.springframework.stereotype.Component;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 import java.util.stream.Collectors;
+
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @Component
 public class AppUtils {
@@ -43,20 +52,5 @@ public class AppUtils {
         }
 
         return sortBy;
-    }
-
-    private String getRandomString() {
-
-        int leftLimit= 48; // numeral '0'
-        int rightLimit = 122; // letter 'z'
-        int targetStringLength = 8;
-
-        Random random = new Random();
-
-        return random.ints(leftLimit, rightLimit + 1)
-                .filter(i -> (i <= 57 || i >= 65) && (i <=90 || i >= 97))
-                .limit(targetStringLength)
-                .collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append)
-                .toString();
     }
 }
