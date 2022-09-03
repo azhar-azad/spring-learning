@@ -13,7 +13,7 @@ import javax.validation.constraints.Size;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
-public class List {
+public class CustomList {
 
     @NotNull(message = "List name cannot be empty.")
     @Size(min = 2, max = 30, message = "List name length has to be between 2 to 30 characters.")
@@ -33,7 +33,7 @@ public class List {
     @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     private LocalDateTime modifiedTime;
 
-    public List() {
+    public CustomList() {
     }
 
     public String getListName() {

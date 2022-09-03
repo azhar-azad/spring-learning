@@ -1,6 +1,9 @@
 package com.azad.ListShare.models.entities;
 
+import org.w3c.dom.stylesheets.LinkStyle;
+
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "users")
@@ -23,15 +26,16 @@ public class MemberEntity {
     @Column(nullable = false)
     private String password;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "role_id")
-    private RoleEntity role = new RoleEntity();
-
     private boolean enabled;
     private boolean expired;
     private boolean locked;
 
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "role_id")
+    private RoleEntity role = new RoleEntity();
 
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "member", cascade = CascadeType.ALL)
+    private List<CustomListEntity> lists;
 
     public MemberEntity() {
     }
@@ -102,5 +106,13 @@ public class MemberEntity {
 
     public void setRole(RoleEntity role) {
         this.role = role;
+    }
+
+    public List<CustomListEntity> getLists() {
+        return lists;
+    }
+
+    public void setLists(List<CustomListEntity> lists) {
+        this.lists = lists;
     }
 }
