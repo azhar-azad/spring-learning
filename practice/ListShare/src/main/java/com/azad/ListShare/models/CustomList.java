@@ -44,6 +44,14 @@ public class List {
         this.listName = listName;
     }
 
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
     public LocalDate getCreatedDate() {
         return createdDate;
     }
