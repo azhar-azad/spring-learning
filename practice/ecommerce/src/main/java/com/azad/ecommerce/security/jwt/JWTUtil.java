@@ -28,7 +28,13 @@ public class JWTUtil {
                 .build();
 
         DecodedJWT jwt = verifier.verify(token);
-        return jwt.getClaim("username").asString();
+        if (authenticationBase.equalsIgnoreCase("USERNAME")) {
+            return jwt.getClaim("username").asString();
+        }
+        else if (authenticationBase.equalsIgnoreCase("EMAIL")) {
+            return jwt.getClaim("email").asString();
+        }
+        throw new RuntimeException("Unknown Authentication base. Valid authentication bases are USERNAME or EMAIL");
     }
 
     public String generateJwtToken(String usernameOrEmail) throws IllegalArgumentException, JWTCreationException {
@@ -38,8 +44,7 @@ public class JWTUtil {
         else if (authenticationBase.equalsIgnoreCase("EMAIL")) {
             return generateJwtTokenForEmail(usernameOrEmail);
         }
-        else
-            throw new RuntimeException("Unknown Authentication base. Valid authentication bases are USERNAME or EMAIL");
+        throw new RuntimeException("Unknown Authentication base. Valid authentication bases are USERNAME or EMAIL");
     }
 
     private String generateJwtTokenForUsername(String username) throws IllegalArgumentException, JWTCreationException {
