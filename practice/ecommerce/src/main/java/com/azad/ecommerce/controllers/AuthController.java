@@ -64,17 +64,21 @@ public class AuthController {
             throw new RuntimeException("Invalid login request. No username or email to authenticate.");
 
         try {
-            if (securityUtils.isUsernameBasedAuth())
+            if (securityUtils.isUsernameBasedAuth()) {
                 authService.authenticateUser(request.getUsername(), request.getPassword());
-            else if (securityUtils.isEmailBasedAuth())
+                return generateTokenAndSend(request.getUsername(), HttpStatus.OK);
+            }
+            else if (securityUtils.isEmailBasedAuth()) {
                 authService.authenticateUser(request.getEmail(), request.getPassword());
+                return generateTokenAndSend(request.getEmail(), HttpStatus.OK);
+            }
             throw new RuntimeException("Unknown Authentication base. Valid authentication bases are USERNAME or EMAIL");
         } catch (AuthenticationException ex) {
             return new ResponseEntity<>(Collections.singletonMap("Authentication Error", ex.getLocalizedMessage()), HttpStatus.UNAUTHORIZED);
         }
     }
 
-    @GetMapping(path = "/met")
+    @GetMapping(path = "/me")
     public ResponseEntity<EntityModel<UserResponse>> getLoggedInUser() {
         UserResponse userResponse = modelMapper.map(authService.getLoggedInUser(), UserResponse.class);
 
