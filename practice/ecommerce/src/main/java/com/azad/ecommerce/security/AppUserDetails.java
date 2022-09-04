@@ -1,7 +1,7 @@
 package com.azad.ecommerce.security;
 
 import com.azad.ecommerce.models.entities.UserEntity;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -11,8 +11,8 @@ import java.util.Collections;
 
 public class AppUserDetails implements UserDetails {
 
-    @Value("${authentication_base}")
-    private String authenticationBase;
+    @Autowired
+    private SecurityUtils securityUtils;
 
     private final UserEntity user;
 
@@ -32,9 +32,9 @@ public class AppUserDetails implements UserDetails {
 
     @Override
     public String getUsername() {
-        if (authenticationBase.equalsIgnoreCase("USERNAME"))
+        if (securityUtils.isUsernameBasedAuth())
             return user.getUsername();
-        else if (authenticationBase.equalsIgnoreCase("EMAIL"))
+        else if (securityUtils.isEmailBasedAuth())
             return user.getEmail();
         else
             throw new RuntimeException("Unknown Authentication base. Valid authentication bases are USERNAME or EMAIL");

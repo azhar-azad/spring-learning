@@ -3,8 +3,8 @@ package com.azad.ecommerce.security.auth;
 import com.azad.ecommerce.models.entities.UserEntity;
 import com.azad.ecommerce.repos.UserRepository;
 import com.azad.ecommerce.security.AppUserDetails;
+import com.azad.ecommerce.security.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
@@ -12,8 +12,8 @@ import org.springframework.stereotype.Service;
 @Service
 public class AppUserDetailsService implements org.springframework.security.core.userdetails.UserDetailsService {
 
-    @Value("${authentication_base}")
-    private String authenticationBase;
+    @Autowired
+    private SecurityUtils securityUtils;
 
     @Autowired
     private UserRepository userRepository;
@@ -23,10 +23,10 @@ public class AppUserDetailsService implements org.springframework.security.core.
 
         UserEntity user;
 
-        if (authenticationBase.equalsIgnoreCase("USERNAME")) {
+        if (securityUtils.isUsernameBasedAuth()) {
             user = userRepository.findByUsername(usernameOrEmail).orElseThrow(
                     () -> new RuntimeException("User not found with username: " + usernameOrEmail));
-        } else if (authenticationBase.equalsIgnoreCase("EMAIL")) {
+        } else if (securityUtils.isEmailBasedAuth()) {
             user = userRepository.findByEmail(usernameOrEmail).orElseThrow(
                     () -> new RuntimeException("User not found with email: " + usernameOrEmail));
         } else {

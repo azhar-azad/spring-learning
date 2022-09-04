@@ -6,6 +6,8 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTCreationException;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.interfaces.DecodedJWT;
+import com.azad.ecommerce.security.SecurityUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -14,11 +16,11 @@ import java.util.Date;
 @Component
 public class JWTUtil {
 
-    @Value("${authentication_base}")
-    private String authenticationBase;
-
     @Value("${jwt_secret}")
     private String secret;
+
+    @Autowired
+    private SecurityUtils securityUtils;
 
     public String validateJwtTokenAndRetrieveClaim(String token) throws JWTVerificationException {
 
@@ -28,20 +30,20 @@ public class JWTUtil {
                 .build();
 
         DecodedJWT jwt = verifier.verify(token);
-        if (authenticationBase.equalsIgnoreCase("USERNAME")) {
+        if (securityUtils.isUsernameBasedAuth()) {
             return jwt.getClaim("username").asString();
         }
-        else if (authenticationBase.equalsIgnoreCase("EMAIL")) {
+        else if (securityUtils.isEmailBasedAuth()) {
             return jwt.getClaim("email").asString();
         }
         throw new RuntimeException("Unknown Authentication base. Valid authentication bases are USERNAME or EMAIL");
     }
 
     public String generateJwtToken(String usernameOrEmail) throws IllegalArgumentException, JWTCreationException {
-        if (authenticationBase.equalsIgnoreCase("USERNAME")) {
+        if (securityUtils.isUsernameBasedAuth()) {
             return generateJwtTokenForUsername(usernameOrEmail);
         }
-        else if (authenticationBase.equalsIgnoreCase("EMAIL")) {
+        else if (securityUtils.isEmailBasedAuth()) {
             return generateJwtTokenForEmail(usernameOrEmail);
         }
         throw new RuntimeException("Unknown Authentication base. Valid authentication bases are USERNAME or EMAIL");
