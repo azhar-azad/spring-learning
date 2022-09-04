@@ -1,9 +1,13 @@
 package com.azad.ecommerce.security.auth;
 
 import com.azad.ecommerce.models.dtos.UserDto;
+import com.azad.ecommerce.models.entities.CustomerEntity;
 import com.azad.ecommerce.models.entities.RoleEntity;
+import com.azad.ecommerce.models.entities.SupplierEntity;
 import com.azad.ecommerce.models.entities.UserEntity;
+import com.azad.ecommerce.repos.CustomerRepository;
 import com.azad.ecommerce.repos.RoleRepository;
+import com.azad.ecommerce.repos.SupplierRepository;
 import com.azad.ecommerce.repos.UserRepository;
 import com.azad.ecommerce.security.SecurityUtils;
 import org.modelmapper.ModelMapper;
@@ -19,9 +23,6 @@ import org.springframework.stereotype.Service;
 @Service
 public class AuthService {
 
-//    @Value("${authentication_base}")
-//    private String authenticationBase;
-
     @Autowired
     private SecurityUtils securityUtils;
 
@@ -33,6 +34,12 @@ public class AuthService {
 
     @Autowired
     private AuthenticationManager authManager;
+
+    @Autowired
+    private SupplierRepository supplierRepository;
+
+    @Autowired
+    private CustomerRepository customerRepository;
 
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
@@ -67,7 +74,20 @@ public class AuthService {
         user.setExpired(false);
         user.setLocked(false);
 
-        return modelMapper.map(userRepository.save(user), UserDto.class);
+        UserEntity savedUser = userRepository.save(user);
+
+        if (roleName.equalsIgnoreCase("SUPPLIER")) {
+            SupplierEntity supplier = new SupplierEntity();
+            supplier.setUser(savedUser);
+            supplierRepository.save(supplier);
+        }
+        if (roleName.equalsIgnoreCase("CUSTOMER")) {
+            CustomerEntity customer = new CustomerEntity();
+            customer.setUser(savedUser);
+            customerRepository.save(customer);
+        }
+
+        return modelMapper.map(savedUser, UserDto.class);
     }
 
     public void authenticateUser(String usernameOrEmail, String password) {
