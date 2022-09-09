@@ -30,6 +30,10 @@ public class AddressEntity {
     @JoinColumn(name = "geo_id", referencedColumnName = "geo_id")
     private GeoEntity geo;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "address_type_id")
+    private AddressTypeEntity addressType;
+
     public AddressEntity() {
     }
 
@@ -83,5 +87,21 @@ public class AddressEntity {
 
     public void setGeo(GeoEntity geo) {
         this.geo = geo;
+    }
+
+    public UserProfileEntity getUserProfile() {
+        return userProfile;
+    }
+
+    public void setUserProfile(UserProfileEntity userProfile) {
+        this.userProfile = userProfile;
+    }
+
+    public AddressTypeEntity getAddressType() {
+        return addressType;
+    }
+
+    public void setAddressType(AddressTypeEntity addressType) {
+        this.addressType = addressType;
     }
 }

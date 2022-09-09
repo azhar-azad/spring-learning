@@ -15,6 +15,8 @@ public class Address {
 
     private Geo geo;
 
+    private AddressType type;
+
     public Address() {
     }
 
@@ -56,5 +58,13 @@ public class Address {
 
     public void setGeo(Geo geo) {
         this.geo = geo;
+    }
+
+    public AddressType getType() {
+        return type;
+    }
+
+    public void setType(AddressType type) {
+        this.type = type;
     }
 }
