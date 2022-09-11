@@ -1,0 +1,161 @@
+
+
+    create table genre (
+       genre_id bigint not null auto_increment,
+        genre_name varchar(255) not null,
+        primary key (genre_id)
+    ) engine=InnoDB
+
+
+    create table movie (
+       movie_id bigint not null auto_increment,
+        imdb_id varchar(255),
+        poster_path varchar(255),
+        rating double precision,
+        release_year varchar(255) not null,
+        runtime varchar(255) not null,
+        summary varchar(255) not null,
+        title varchar(255) not null,
+        primary key (movie_id)
+    ) engine=InnoDB
+
+
+    create table movie_series_person (
+       tv_season_id bigint not null,
+        person_id bigint not null,
+        tv_episode_id bigint not null,
+        movie_id bigint not null
+    ) engine=InnoDB
+
+
+    create table person (
+       person_id bigint not null auto_increment,
+        person_name varchar(255) not null,
+        primary key (person_id)
+    ) engine=InnoDB
+
+
+    create table person_role (
+       person_id bigint not null,
+        role_id bigint not null
+    ) engine=InnoDB
+
+
+    create table role (
+       role_id bigint not null auto_increment,
+        role_type varchar(255) not null,
+        primary key (role_id)
+    ) engine=InnoDB
+
+
+    create table title_genre (
+       tv_series_id bigint not null,
+        genre_id bigint not null,
+        movie_id bigint not null
+    ) engine=InnoDB
+
+
+    create table tv_episode (
+       tv_episode_id bigint not null auto_increment,
+        air_date date,
+        episode_summary varchar(255) not null,
+        episode_title varchar(255) not null,
+        imdb_id varchar(255),
+        tv_season_id bigint,
+        primary key (tv_episode_id)
+    ) engine=InnoDB
+
+
+    create table tv_season (
+       tv_season_id bigint not null auto_increment,
+        imdb_id varchar(255),
+        season_number integer not null,
+        season_summary varchar(255) not null,
+        tv_series_id bigint,
+        primary key (tv_season_id)
+    ) engine=InnoDB
+
+
+    create table tv_series (
+       tv_series_id bigint not null auto_increment,
+        end_year varchar(255),
+        imdb_id varchar(255),
+        start_year varchar(255) not null,
+        summary varchar(255) not null,
+        title varchar(255) not null,
+        primary key (tv_series_id)
+    ) engine=InnoDB
+
+
+    alter table person
+       drop index UK_ohl6bjaenvpei97e3n955txgp
+
+
+    alter table person
+       add constraint UK_ohl6bjaenvpei97e3n955txgp unique (person_name)
+
+
+    alter table movie_series_person
+       add constraint FKhtx2w0w80faawl6xopet019bw
+       foreign key (person_id)
+       references person (person_id)
+
+
+    alter table movie_series_person
+       add constraint FK7tovsnaw239a35odp2a25367n
+       foreign key (tv_season_id)
+       references tv_season (tv_season_id)
+
+
+    alter table movie_series_person
+       add constraint FK6oy1k1guojw5tmur118vi8a45
+       foreign key (tv_episode_id)
+       references tv_episode (tv_episode_id)
+
+
+    alter table movie_series_person
+       add constraint FKrvmu8iq40u43oibom4i6b3j18
+       foreign key (movie_id)
+       references movie (movie_id)
+
+
+    alter table person_role
+       add constraint FKs7asxi8amiwjjq1sonlc4rihn
+       foreign key (role_id)
+       references role (role_id)
+
+
+    alter table person_role
+       add constraint FKhyx1efsls0f00lxs6xd4w2b3j
+       foreign key (person_id)
+       references person (person_id)
+
+
+    alter table title_genre
+       add constraint FKabc314lyym0nc2xat2daumb0c
+       foreign key (genre_id)
+       references genre (genre_id)
+
+
+    alter table title_genre
+       add constraint FK4wh36eppmmwh4ys72evcw9cs4
+       foreign key (tv_series_id)
+       references tv_series (tv_series_id)
+
+
+    alter table title_genre
+       add constraint FKtm6s6w7dnt74h0fcjefrtrg8n
+       foreign key (movie_id)
+       references movie (movie_id)
+
+
+    alter table tv_episode
+       add constraint FKao2yvy8aicbp8b12kegijxkis
+       foreign key (tv_season_id)
+       references tv_season (tv_season_id)
+
+
+    alter table tv_season
+       add constraint FKrfmgbp9lij7v1416hbdyskha7
+       foreign key (tv_series_id)
+       references tv_series (tv_series_id)
