@@ -87,6 +87,27 @@
     ) engine=InnoDB
 
 
+    create table authentication_roles (
+       auth_role_id integer not null auto_increment,
+        role_name varchar(255) not null,
+        primary key (auth_role_id)
+    ) engine=InnoDB
+
+
+    create table users (
+       user_id bigint not null auto_increment,
+        email varchar(255) not null,
+        enabled bit not null,
+        expired bit not null,
+        locked bit not null,
+        name varchar(255) not null,
+        password varchar(255) not null,
+        username varchar(255) not null,
+        role_id integer,
+        primary key (user_id)
+    ) engine=InnoDB
+
+
     alter table person
        drop index UK_ohl6bjaenvpei97e3n955txgp
 
@@ -159,3 +180,33 @@
        add constraint FKrfmgbp9lij7v1416hbdyskha7
        foreign key (tv_series_id)
        references tv_series (tv_series_id)
+
+
+    alter table authentication_roles
+       drop index UK_jjoy1dxd93oue133xjjh4hkl4
+
+
+    alter table authentication_roles
+       add constraint UK_jjoy1dxd93oue133xjjh4hkl4 unique (role_name)
+
+
+    alter table users
+       drop index UK_6dotkott2kjsp8vw4d0m25fb7
+
+
+    alter table users
+       add constraint UK_6dotkott2kjsp8vw4d0m25fb7 unique (email)
+
+
+    alter table users
+       drop index UK_r43af9ap4edm43mmtq01oddj6
+
+
+    alter table users
+       add constraint UK_r43af9ap4edm43mmtq01oddj6 unique (username)
+
+
+    alter table users
+       add constraint FKospf4iwurvfq137xdtw5xapru
+       foreign key (role_id)
+       references authentication_roles (auth_role_id)
