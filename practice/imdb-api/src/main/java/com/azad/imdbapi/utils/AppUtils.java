@@ -40,8 +40,6 @@ public class AppUtils {
         return intLimitValue != -1 ? intLimitValue : defaultLimit;
     }
 
-
-
     public Map<String, String> getDefaultReqParamMap() {
         Map<String, String> defaultParamMap = new HashMap<>();
         defaultParamMap.put("page", String.valueOf(defaultPage));
@@ -83,6 +81,8 @@ public class AppUtils {
 
     private int convertStringToInt(String strValue) {
         try {
+            if (strValue == null)
+                return -1;
             if (isNumeric(strValue)) {
                 return Integer.parseInt(strValue);
             }

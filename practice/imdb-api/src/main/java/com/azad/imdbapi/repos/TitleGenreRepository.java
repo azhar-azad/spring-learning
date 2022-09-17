@@ -9,4 +9,8 @@ import java.util.List;
 @Repository
 public interface TitleGenreRepository extends PagingAndSortingRepository<TitleGenreEntity, Long> {
     List<TitleGenreEntity> findByGenreIdAndMovieId(Long genreId, Long movieId);
+
+    List<TitleGenreEntity> findByMovieId(Long movieId);
+
+    List<TitleGenreEntity> findByGenreId(Long genreId);
 }

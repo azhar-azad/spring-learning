@@ -63,6 +63,8 @@ public class MovieRestController {
     /**
      * @Path: /api/v1/movies
      * @Method: GET
+     * @Params: page, limit, sort, order
+     * @Params: genre
      * @Desc: Logged-in users will have access to get all movies
      * @Access: ADMIN, USER
      * */
@@ -74,12 +76,24 @@ public class MovieRestController {
         String sort = params.get("sort");
         String order = params.get("order");
 
-        List<MovieDto> allMoviesFromService = service.getAll(new PagingAndSorting(page > 0 ? page - 1 : page, limit, sort, order));
+        List<MovieDto> allMoviesFromService;
+
+        if (params.containsKey("genre")) {
+            String genreName = params.get("genre");
+            allMoviesFromService = service.getAllByGenre(genreName); // todo: add pagination support to this method
+        } else {
+            allMoviesFromService = service.getAll(new PagingAndSorting(page > 0 ? page - 1 : page, limit, sort, order));
+        }
+
         if (allMoviesFromService == null || allMoviesFromService.size() == 0)
             return ResponseEntity.noContent().build();
 
         List<MovieResponse> movieResponses = allMoviesFromService.stream()
-                .map(movieDto -> modelMapper.map(movieDto, MovieResponse.class))
+                .map(movieDto -> {
+                    MovieResponse movieResponse = modelMapper.map(movieDto, MovieResponse.class);
+                    movieResponse.setGenres(movieDto.getGenres().stream().map(Genre::getGenreName).collect(Collectors.toList()));
+                    return movieResponse;
+                })
                 .collect(Collectors.toList());
 
         CollectionModel<EntityModel<MovieResponse>> responseCollectionModel = assembler.getCollectionModel(movieResponses, params);
