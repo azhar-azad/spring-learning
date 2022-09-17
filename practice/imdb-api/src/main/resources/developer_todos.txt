@@ -1,0 +1,85 @@
+
+###### Endpoint restrictions
+#### Security
+## Implement both username and email based authentication
+## Users can register
+## Users can log in
+
+#### movies/series
+## Only admins can create/delete movies/series
+## Users can view/update movies/series
+
+#### persons
+## Users can create/view/update/delete movies/series peoples
+
+#### roles
+## Users can create/view/update/delete roles
+
+#### genres
+## Only admins can create/delete genres (can be created while creating movies/series)
+
+#### seasons/episodes
+## Users can create/view/update/delete seasons/episodes
+
+
+
+###### Endpoint URLs
+#### Security
+## register         POST         /auth/register     ANY             DONE
+## login            POST         /auth/login        ANY             DONE
+## loggedInUser     GET          /auth/me           AUTHENTICATED   DONE
+
+#### Movies & Genres
+## create           POST        /movies             ADMIN           DONE
+## getAll           GET         /movies             USER
+## getById          GET         /movies/id          USER
+## updateById       PUT         /movies/id          USER
+## deleteById       DELETE      /movies/id          ADMIN
+
+#### Series & Genres
+## create           POST        /series             ADMIN
+## getAll           GET         /series             USER
+## getById          GET         /series/id          USER
+## updateById       PUT         /series/id          USER
+## deleteById       DELETE      /series/id          ADMIN
+
+#### Seasons
+## create           POST        /series/id/seasons             ADMIN
+## getAll           GET         /series/id/seasons             USER
+## getById          GET         /series/id/seasons/id          USER
+## updateById       PUT         /series/id/seasons/id          USER
+## deleteById       DELETE      /series/id/seasons/id          ADMIN
+
+#### Episodes
+## create           POST        /series/id/seasons/id/episodes             ADMIN
+## getAll           GET         /series/id/seasons/id/episodes             USER
+## getById          GET         /series/id/seasons/id/episodes/id          USER
+## updateById       PUT         /series/id/seasons/id/episodes/id          USER
+## deleteById       DELETE      /series/id/seasons/id/episodes/id          ADMIN
+
+#### Persons & Roles
+** MoviePersonRestController
+## create           POST        /movies/id/persons          USER
+## getAll           GET         /movies/id/persons          USER
+## getById          GET         /movies/id/persons/id       USER
+## updateById       PUT         /movies/id/persons/id       USER
+## deleteById       DELETE      /movies/id/persons/id       USER
+** SeriesPersonRestController
+## create           POST        /series/id/persons          USER
+## getAll           GET         /series/id/persons          USER
+## getById          GET         /series/id/persons/id       USER
+## updateById       PUT         /series/id/persons/id       USER
+## deleteById       DELETE      /series/id/persons/id       USER
+** SeasonPersonRestController
+## create           POST        /seasons/id/persons         USER
+## getAll           GET         /seasons/id/persons         USER
+## getById          GET         /seasons/id/persons/id      USER
+## updateById       PUT         /seasons/id/persons/id      USER
+## deleteById       DELETE      /seasons/id/persons/id      USER
+** EpisodePersonRestController
+## create           POST        /episodes/id/persons        USER
+## getAll           GET         /episodes/id/persons        USER
+## getById          GET         /episodes/id/persons/id     USER
+## updateById       PUT         /episodes/id/persons/id     USER
+## deleteById       DELETE      /episodes/id/persons/id     USER
+

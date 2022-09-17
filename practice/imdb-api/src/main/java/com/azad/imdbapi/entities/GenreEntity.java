@@ -15,12 +15,6 @@ public class GenreEntity {
     @Column(name = "genre_name", nullable = false)
     private String genreName;
 
-    @ManyToMany(mappedBy = "genres", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private List<MovieEntity> movies;
-
-    @ManyToMany(mappedBy = "genres", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private List<TVSeriesEntity> tvSeries;
-
     public GenreEntity() {
     }
 
@@ -34,21 +28,5 @@ public class GenreEntity {
 
     public void setGenreName(String genreName) {
         this.genreName = genreName;
-    }
-
-    public List<MovieEntity> getMovies() {
-        return movies;
-    }
-
-    public void setMovies(List<MovieEntity> movies) {
-        this.movies = movies;
-    }
-
-    public List<TVSeriesEntity> getTvSeries() {
-        return tvSeries;
-    }
-
-    public void setTvSeries(List<TVSeriesEntity> tvSeries) {
-        this.tvSeries = tvSeries;
     }
 }

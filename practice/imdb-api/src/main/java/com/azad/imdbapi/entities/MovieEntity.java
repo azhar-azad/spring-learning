@@ -4,7 +4,8 @@ import javax.persistence.*;
 import java.util.List;
 
 @Entity
-@Table(name = "movie")
+@Table(name = "movie",
+        uniqueConstraints = {@UniqueConstraint(name = "uniqueTitleAndReleaseYear", columnNames = {"title", "release_year"})})
 public class MovieEntity {
 
     @Id
@@ -37,13 +38,7 @@ public class MovieEntity {
     @JoinTable(name = "movie_series_person",
             joinColumns = @JoinColumn(name = "movie_id"),
             inverseJoinColumns = @JoinColumn(name = "person_id"))
-    List<PersonEntity> persons;
-
-    @ManyToMany
-    @JoinTable(name = "title_genre",
-            joinColumns = @JoinColumn(name = "movie_id"),
-            inverseJoinColumns = @JoinColumn(name = "genre_id"))
-    List<GenreEntity> genres;
+    private List<PersonEntity> persons;
 
     public MovieEntity() {
     }
@@ -114,13 +109,5 @@ public class MovieEntity {
 
     public void setPersons(List<PersonEntity> persons) {
         this.persons = persons;
-    }
-
-    public List<GenreEntity> getGenres() {
-        return genres;
-    }
-
-    public void setGenres(List<GenreEntity> genres) {
-        this.genres = genres;
     }
 }

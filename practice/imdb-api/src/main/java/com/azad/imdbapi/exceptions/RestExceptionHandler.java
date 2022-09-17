@@ -148,9 +148,9 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
     /**
      * Default Handler to catch all type of logic that deals with all other exceptions that don't have specific handlers.
      * */
-    @ExceptionHandler({ Exception.class })
-    public ResponseEntity<Object> handleAll(Exception ex, WebRequest request) {
-        ApiError apiError = new ApiError(HttpStatus.INTERNAL_SERVER_ERROR, ex.getLocalizedMessage(), "error occured");
-        return new ResponseEntity<Object>(apiError, new HttpHeaders(), apiError.getStatus());
-    }
+//    @ExceptionHandler({ Exception.class })
+//    public ResponseEntity<Object> handleAll(Exception ex, WebRequest request) {
+//        ApiError apiError = new ApiError(HttpStatus.INTERNAL_SERVER_ERROR, ex.getLocalizedMessage(), "error occured");
+//        return new ResponseEntity<Object>(apiError, new HttpHeaders(), apiError.getStatus());
+//    }
 }

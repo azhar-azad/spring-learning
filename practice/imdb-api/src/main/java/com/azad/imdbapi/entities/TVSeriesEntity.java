@@ -27,12 +27,6 @@ public class TVSeriesEntity {
     @Column(name = "imdb_id")
     private String imdbId;
 
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "title_genre",
-            joinColumns = @JoinColumn(name = "tv_series_id"),
-            inverseJoinColumns = @JoinColumn(name = "genre_id"))
-    private List<GenreEntity> genres;
-
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "series", cascade = CascadeType.ALL)
     private List<TVSeasonEntity> seasons;
 
@@ -83,13 +77,6 @@ public class TVSeriesEntity {
         this.imdbId = imdbId;
     }
 
-    public List<GenreEntity> getGenres() {
-        return genres;
-    }
-
-    public void setGenres(List<GenreEntity> genres) {
-        this.genres = genres;
-    }
 
     public List<TVSeasonEntity> getSeasons() {
         return seasons;
