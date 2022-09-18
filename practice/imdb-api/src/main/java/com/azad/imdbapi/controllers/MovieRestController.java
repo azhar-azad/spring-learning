@@ -117,7 +117,10 @@ public class MovieRestController {
         if (movieFromService == null)
             return ResponseEntity.notFound().build();
 
-        EntityModel<MovieResponse> responseEntityModel = assembler.toModel(modelMapper.map(movieFromService, MovieResponse.class));
+        MovieResponse movieResponse = modelMapper.map(movieFromService, MovieResponse.class);
+        movieResponse.setGenres(movieFromService.getGenres().stream().map(Genre::getGenreName).collect(Collectors.toList()));
+
+        EntityModel<MovieResponse> responseEntityModel = assembler.toModel(movieResponse);
 
         return new ResponseEntity<>(responseEntityModel, HttpStatus.OK);
     }

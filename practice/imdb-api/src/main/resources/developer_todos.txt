@@ -32,7 +32,7 @@
 #### Movies & Genres
 ## create           POST        /movies             ADMIN           DONE
 ## getAll           GET         /movies             USER            DONE
-## getById          GET         /movies/id          USER
+## getById          GET         /movies/id          USER            DONE
 ## updateById       PUT         /movies/id          USER
 ## deleteById       DELETE      /movies/id          ADMIN
 

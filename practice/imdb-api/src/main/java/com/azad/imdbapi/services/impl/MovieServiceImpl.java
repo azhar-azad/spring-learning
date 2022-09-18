@@ -85,7 +85,7 @@ public class MovieServiceImpl implements MovieService {
         if (allMoviesFromDb.size() == 0)
             return null;
 
-        return getMovieDtoFromMovieEntity(allMoviesFromDb);
+        return getMovieDtosFromMovieEntities(allMoviesFromDb);
     }
 
     @Override
@@ -103,7 +103,7 @@ public class MovieServiceImpl implements MovieService {
         if (allMoviesFromDbByGenre.size() == 0)
             return null;
 
-        return getMovieDtoFromMovieEntity(allMoviesFromDbByGenre);
+        return getMovieDtosFromMovieEntities(allMoviesFromDbByGenre);
     }
 
     @Override
@@ -119,12 +119,16 @@ public class MovieServiceImpl implements MovieService {
         if (allMoviesFromDbByYear.size() == 0)
             return null;
 
-        return getMovieDtoFromMovieEntity(allMoviesFromDbByYear);
+        return getMovieDtosFromMovieEntities(allMoviesFromDbByYear);
     }
 
     @Override
     public MovieDto getById(Long id) {
-        return null;
+
+        MovieEntity movieFromDb = repository.findById(id).orElseThrow(
+                () -> new RuntimeException("Movie not found with id: " + id));
+
+        return getMovieDtoFromMovieEntity(movieFromDb);
     }
 
     @Override
@@ -165,18 +169,20 @@ public class MovieServiceImpl implements MovieService {
         }
     }
 
-    private List<MovieDto> getMovieDtoFromMovieEntity(List<MovieEntity> movieEntities) {
-        return movieEntities.stream() // stream of all MovieEntity
-                .map(movieEntity -> { // for each movieEntity
-                    MovieDto movieDto = modelMapper.map(movieEntity, MovieDto.class); // convert to MovieDto
-                    movieDto.setGenres(titleGenreRepository.findByMovieId(movieEntity.getId()) // to set Genres get all movie-genre for this movie
-                            .stream() // stream of all TitleGenreEntity
-                            .map(titleGenreEntity -> { // for each movie-genre
-                                GenreEntity genreEntity = genreRepository.findById(titleGenreEntity.getGenreId()).orElseThrow(
-                                        () -> new RuntimeException("No genre found with id: " + titleGenreEntity.getGenreId())); // get the GenreEntity
-                                return modelMapper.map(genreEntity, Genre.class); // return the Genre from GenreEntity
-                            }).collect(Collectors.toList())); // collect as List<Genre>
-                    return movieDto; // return MovieDto
-                }).collect(Collectors.toList()); // collect as List<MovieDto>
+    private MovieDto getMovieDtoFromMovieEntity(MovieEntity movieEntity) {
+        MovieDto movieDto = modelMapper.map(movieEntity, MovieDto.class);
+        movieDto.setGenres(titleGenreRepository.findByMovieId(movieEntity.getId())
+                .stream()
+                .map(titleGenreEntity -> {
+                    GenreEntity genreEntity = genreRepository.findById(titleGenreEntity.getGenreId()).orElseThrow(
+                            () -> new RuntimeException("No genre found with id: " + titleGenreEntity.getGenreId()));
+                    return modelMapper.map(genreEntity, Genre.class);
+                }).collect(Collectors.toList()));
+        return movieDto;
+    }
+
+    private List<MovieDto> getMovieDtosFromMovieEntities(List<MovieEntity> movieEntities) {
+        return movieEntities.stream()
+                .map(this::getMovieDtoFromMovieEntity).collect(Collectors.toList());
     }
 }
