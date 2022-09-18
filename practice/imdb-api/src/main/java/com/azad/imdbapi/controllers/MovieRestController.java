@@ -81,6 +81,9 @@ public class MovieRestController {
         if (params.containsKey("genre")) {
             String genreName = params.get("genre");
             allMoviesFromService = service.getAllByGenre(genreName); // todo: add pagination support to this method
+        } else if (params.containsKey("year")) {
+            String year = params.get("year");
+            allMoviesFromService = service.getAllByYear(year, new PagingAndSorting(page > 0 ? page - 1 : page, limit, sort, order));
         } else {
             allMoviesFromService = service.getAll(new PagingAndSorting(page > 0 ? page - 1 : page, limit, sort, order));
         }

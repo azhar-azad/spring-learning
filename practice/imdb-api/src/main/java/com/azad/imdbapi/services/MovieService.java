@@ -8,4 +8,6 @@ import java.util.List;
 public interface MovieService extends GenericApiService<MovieDto> {
 
     List<MovieDto> getAllByGenre(String genreName);
+
+    List<MovieDto> getAllByYear(String year, PagingAndSorting ps);
 }

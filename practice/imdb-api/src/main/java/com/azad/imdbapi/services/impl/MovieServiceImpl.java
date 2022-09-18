@@ -107,6 +107,22 @@ public class MovieServiceImpl implements MovieService {
     }
 
     @Override
+    public List<MovieDto> getAllByYear(String year, PagingAndSorting ps) {
+
+        Pageable pageable;
+        if (ps.getSort() == null)
+            pageable = PageRequest.of(ps.getPage(), ps.getLimit());
+        else
+            pageable = PageRequest.of(ps.getPage(), ps.getLimit(), appUtils.getSortAndOrder(ps.getSort(), ps.getOrder()));
+
+        List<MovieEntity> allMoviesFromDbByYear = repository.findByReleaseYear(year, pageable);
+        if (allMoviesFromDbByYear.size() == 0)
+            return null;
+
+        return getMovieDtoFromMovieEntity(allMoviesFromDbByYear);
+    }
+
+    @Override
     public MovieDto getById(Long id) {
         return null;
     }

@@ -79,7 +79,7 @@ public class AppUtils {
         return sortBy;
     }
 
-    private int convertStringToInt(String strValue) {
+    public int convertStringToInt(String strValue) {
         try {
             if (strValue == null)
                 return -1;
