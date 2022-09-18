@@ -153,7 +153,8 @@ public class MovieServiceImpl implements MovieService {
         return movieEntities.stream() // stream of all MovieEntity
                 .map(movieEntity -> { // for each movieEntity
                     MovieDto movieDto = modelMapper.map(movieEntity, MovieDto.class); // convert to MovieDto
-                    movieDto.setGenres(titleGenreRepository.findByMovieId(movieEntity.getId()).stream() // to set Genres get all movie-genre for this movie
+                    movieDto.setGenres(titleGenreRepository.findByMovieId(movieEntity.getId()) // to set Genres get all movie-genre for this movie
+                            .stream() // stream of all TitleGenreEntity
                             .map(titleGenreEntity -> { // for each movie-genre
                                 GenreEntity genreEntity = genreRepository.findById(titleGenreEntity.getGenreId()).orElseThrow(
                                         () -> new RuntimeException("No genre found with id: " + titleGenreEntity.getGenreId())); // get the GenreEntity
