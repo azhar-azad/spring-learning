@@ -16,7 +16,9 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -133,12 +135,44 @@ public class MovieServiceImpl implements MovieService {
 
     @Override
     public MovieDto updateById(Long id, MovieDto updatedRequest) {
+
+        MovieEntity movieFromDb = repository.findById(id).orElseThrow(
+                () -> new RuntimeException("Movie not found with id: " + id));
+
+        if (updatedRequest.getTitle() != null)
+            movieFromDb.setTitle(updatedRequest.getTitle());
+        if (updatedRequest.getSummary() != null)
+            movieFromDb.setSummary(updatedRequest.getSummary());
+        if (updatedRequest.getImdbId() != null)
+            movieFromDb.setImdbId(updatedRequest.getImdbId());
+        if (updatedRequest.getPosterPath() != null)
+            movieFromDb.setPosterPath(updatedRequest.getPosterPath());
+        if (updatedRequest.getRating() != null)
+            movieFromDb.setRating(updatedRequest.getRating());
+        if (updatedRequest.getReleaseYear() != null)
+            movieFromDb.setReleaseYear(updatedRequest.getReleaseYear());
+        if (updatedRequest.getRuntime() != null)
+            movieFromDb.setRuntime(updatedRequest.getRuntime());
+
+        // todo: implement genre update
+//        if (updatedRequest.getGenres().size() > 0) {
+//            List<GenreEntity> updatedGenres = updateGenre(movieFromDb.getId(), updatedRequest.getGenres());
+//        }
+
+        return getMovieDtoFromMovieEntity(movieFromDb);
+    }
+
+    private List<GenreEntity> updateGenre(Long movieId, List<Genre> genres) {
         return null;
     }
 
     @Override
     public void deleteById(Long id) {
 
+        MovieEntity movieFromDb = repository.findById(id).orElseThrow(
+                () -> new RuntimeException("Movie not found with id: " + id));
+
+        repository.delete(movieFromDb);
     }
 
     private List<GenreEntity> saveGenres(List<Genre> genres) {

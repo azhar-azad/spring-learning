@@ -33,8 +33,8 @@
 ## create           POST        /movies             ADMIN           DONE
 ## getAll           GET         /movies             USER            DONE
 ## getById          GET         /movies/id          USER            DONE
-## updateById       PUT         /movies/id          USER
-## deleteById       DELETE      /movies/id          ADMIN
+## updateById       PATCH       /movies/id          USER            NOT DONE (implement genre update)
+## deleteById       DELETE      /movies/id          ADMIN           DONE
 
 #### Series & Genres
 ## create           POST        /series             ADMIN

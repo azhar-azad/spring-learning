@@ -127,7 +127,7 @@ public class MovieRestController {
 
     /**
      * @Path: /api/v1/movies/id
-     * @Method: PUT
+     * @Method: PATCH
      * @Desc: Logged-in users will have access to modify any movie data by id
      * @Access: ADMIN, USER
      * */
@@ -136,7 +136,10 @@ public class MovieRestController {
 
         MovieDto movieFromService = service.updateById(id, modelMapper.map(updatedRequest, MovieDto.class));
 
-        EntityModel<MovieResponse> responseEntityModel = assembler.toModel(modelMapper.map(movieFromService, MovieResponse.class));
+        MovieResponse movieResponse = modelMapper.map(movieFromService, MovieResponse.class);
+        movieResponse.setGenres(movieFromService.getGenres().stream().map(Genre::getGenreName).collect(Collectors.toList()));
+
+        EntityModel<MovieResponse> responseEntityModel = assembler.toModel(movieResponse);
 
         return new ResponseEntity<>(responseEntityModel, HttpStatus.OK);
     }
