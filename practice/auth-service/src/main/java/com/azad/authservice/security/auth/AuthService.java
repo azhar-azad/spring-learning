@@ -3,10 +3,16 @@ package com.azad.authservice.security.auth;
 import com.azad.authservice.models.dtos.AppUserDto;
 import com.azad.authservice.models.entities.AppUserEntity;
 import com.azad.authservice.models.entities.RoleEntity;
+import com.azad.authservice.models.pojos.AppUser;
+import com.azad.authservice.models.requests.LoginRequest;
 import com.azad.authservice.repos.AppUserRepository;
 import com.azad.authservice.repos.RoleRepository;
+import com.azad.authservice.security.SecurityUtils;
+import com.azad.authservice.security.jwt.JwtUtil;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.AuthenticationException;
@@ -14,11 +20,20 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
+import java.util.Map;
+
 @Service
 public class AuthService {
 
     @Autowired
+    private JwtUtil jwtUtil;
+
+    @Autowired
     private ModelMapper modelMapper;
+
+    @Autowired
+    private SecurityUtils securityUtils;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -61,19 +76,38 @@ public class AuthService {
         return modelMapper.map(appUserRepository.save(user), AppUserDto.class);
     }
 
-    public void authenticateUser(String email, String password) throws AuthenticationException {
+    public String getAuthenticatedUserId(LoginRequest request) {
+
+        if (securityUtils.isUsernameBasedAuth()) {
+            authenticateUser(request.getUsername(), request.getPassword());
+            return request.getUsername();
+        } else if (securityUtils.isEmailBasedAuth()) {
+            authenticateUser(request.getEmail(), request.getPassword());
+            return request.getEmail();
+        }
+        throw new RuntimeException("Unknown Authentication base configured. Valid authentication bases are USERNAME or EMAIL");
+    }
+
+    public void authenticateUser(String usernameOrEmail, String password) throws AuthenticationException {
 
         UsernamePasswordAuthenticationToken authenticationToken =
-                new UsernamePasswordAuthenticationToken(email, password);
+                new UsernamePasswordAuthenticationToken(usernameOrEmail, password);
 
         authenticationManager.authenticate(authenticationToken);
     }
 
     public AppUserEntity getLoggedInUser() {
-        String email = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        String usernameOrEmail = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
-        return appUserRepository.findByEmail(email).orElseThrow(
-                () -> new RuntimeException("User not found with email: " + email));
+        if (securityUtils.isUsernameBasedAuth()) {
+            return appUserRepository.findByUsername(usernameOrEmail).orElseThrow(
+                    () -> new RuntimeException("User not found with username: " + usernameOrEmail));
+        } else if (securityUtils.isEmailBasedAuth()) {
+            return appUserRepository.findByEmail(usernameOrEmail).orElseThrow(
+                    () -> new RuntimeException("User not found with email: " + usernameOrEmail));
+        }
+        else
+            throw new RuntimeException("Unknown Authentication base configured. Valid authentication bases are USERNAME or EMAIL");
     }
 
     public boolean loggedInUserIsAdmin() {
@@ -81,5 +115,24 @@ public class AuthService {
         String roleName = loggedInUser.getRole().getRoleName();
         return roleName.equalsIgnoreCase("ADMIN");
     }
+
+    public <U extends AppUser> String getUniqueIdentifier(U u) {
+        String uid = securityUtils.isUsernameBasedAuth() ? u.getUsername() : securityUtils.isEmailBasedAuth() ? u.getEmail() : null;
+        if (uid == null)
+            throw new RuntimeException("Unknown Authentication base configured: " + securityUtils.getAuthBase());
+        return uid;
+    }
+
+    public ResponseEntity<Map<String, String>> generateTokenAndSend(String authenticatedUserId, HttpStatus statusToSend) {
+        String token = jwtUtil.generateJwtToken(authenticatedUserId);
+        return new ResponseEntity<>(Collections.singletonMap("token", token), statusToSend);
+    }
+
+//    public String getUniqueUserIdentifier(AppUserEntity user) {
+//        String uid = securityUtils.isUsernameBasedAuth() ? user.getUsername() : securityUtils.isEmailBasedAuth() ? user.getEmail() : null;
+//        if (uid == null)
+//            throw new RuntimeException("Unknown Authentication base configured: " + securityUtils.getAuthBase());
+//        return uid;
+//    }
 
 }

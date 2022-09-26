@@ -5,7 +5,6 @@ import com.azad.authservice.models.pojos.AppUser;
 public class AppUserResponse extends AppUser {
 
     private Long id;
-    private String roleName;
 
     public AppUserResponse() {
     }
@@ -16,13 +15,5 @@ public class AppUserResponse extends AppUser {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public String getRoleName() {
-        return roleName;
-    }
-
-    public void setRoleName(String roleName) {
-        this.roleName = roleName;
     }
 }

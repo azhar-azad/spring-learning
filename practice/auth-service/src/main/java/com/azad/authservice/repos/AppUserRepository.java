@@ -10,4 +10,5 @@ import java.util.Optional;
 public interface AppUserRepository extends PagingAndSortingRepository<AppUserEntity, Long> {
 
     Optional<AppUserEntity> findByEmail(String email);
+    Optional<AppUserEntity> findByUsername(String username);
 }

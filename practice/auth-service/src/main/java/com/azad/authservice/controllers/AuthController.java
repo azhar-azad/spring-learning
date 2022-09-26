@@ -5,6 +5,7 @@ import com.azad.authservice.models.dtos.AppUserDto;
 import com.azad.authservice.models.requests.LoginRequest;
 import com.azad.authservice.models.requests.RegistrationRequest;
 import com.azad.authservice.models.responses.AppUserResponse;
+import com.azad.authservice.security.SecurityUtils;
 import com.azad.authservice.security.auth.AuthService;
 import com.azad.authservice.security.jwt.JwtUtil;
 import org.modelmapper.ModelMapper;
@@ -23,14 +24,16 @@ import java.util.Map;
 @RequestMapping(path = "/api/v1/auth")
 public class AuthController {
 
-    @Autowired
-    private JwtUtil jwtUtil;
+
 
     @Autowired
     private ModelMapper modelMapper;
 
     @Autowired
     private AppUserModelAssembler assembler;
+
+    @Autowired
+    private SecurityUtils securityUtils;
 
     private final AuthService authService;
 
@@ -45,15 +48,19 @@ public class AuthController {
         AppUserDto userDto = modelMapper.map(request, AppUserDto.class);
         AppUserDto registeredUser = authService.registerUser(userDto);
 
-        return generateTokenAndSend(registeredUser.getEmail(), HttpStatus.CREATED);
+        return authService.generateTokenAndSend(authService.getUniqueIdentifier(registeredUser), HttpStatus.CREATED);
     }
 
     @PostMapping(path = "/login")
     public ResponseEntity<Map<String, String>> handleUserLogin(@Valid @RequestBody LoginRequest request) {
-        try {
-            authService.authenticateUser(request.getEmail(), request.getPassword());
 
-            return generateTokenAndSend(request.getEmail(), HttpStatus.OK);
+        if (request.getUsername() == null && request.getEmail() == null)
+            throw new RuntimeException("Invalid login request. No username or email to authenticate.");
+
+        try {
+            String authenticatedUserId = authService.getAuthenticatedUserId(request);
+
+            return authService.generateTokenAndSend(authenticatedUserId, HttpStatus.OK);
         } catch (AuthenticationException ex) {
             return new ResponseEntity<>(Collections.singletonMap("Authentication Error", ex.getLocalizedMessage()), HttpStatus.UNAUTHORIZED);
         }
@@ -63,10 +70,5 @@ public class AuthController {
     public ResponseEntity<EntityModel<AppUserResponse>> getUserInfo() {
         AppUserResponse response = modelMapper.map(authService.getLoggedInUser(), AppUserResponse.class);
         return new ResponseEntity<>(assembler.toModel(response), HttpStatus.OK);
-    }
-
-    private ResponseEntity<Map<String, String>> generateTokenAndSend(String email, HttpStatus statusToSend) {
-        String token = jwtUtil.generateJwtToken(email);
-        return new ResponseEntity<>(Collections.singletonMap("token", token), statusToSend);
     }
 }
