@@ -7,7 +7,6 @@ import com.azad.authservice.models.requests.RegistrationRequest;
 import com.azad.authservice.models.responses.AppUserResponse;
 import com.azad.authservice.security.SecurityUtils;
 import com.azad.authservice.security.auth.AuthService;
-import com.azad.authservice.security.jwt.JwtUtil;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.EntityModel;
@@ -23,8 +22,6 @@ import java.util.Map;
 @RestController
 @RequestMapping(path = "/api/v1/auth")
 public class AuthController {
-
-
 
     @Autowired
     private ModelMapper modelMapper;
