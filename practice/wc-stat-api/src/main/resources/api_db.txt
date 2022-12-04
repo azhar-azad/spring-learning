@@ -1,0 +1,44 @@
+Database tables:
+## Group
+## Team
+## Club
+## Player
+## Match
+
+## Group
+    -- group_name
+    -- group_champion (team_name)
+    -- group_runners_up (team_name)
+
+## Team
+    -- team_name
+    -- fifa_ranking
+    -- group_match_played
+    -- points
+    -- group_goal_scored
+    -- group_goal_conceded
+    -- tournament_status [group_stage, group_champion/runnersup, 2nd_round, quarter_finalist, semi_finalist, 4th_place, 3rd_place, runnersup, champion]
+    -- group_id
+
+## Player
+    -- player_name
+    -- age
+    -- match_count
+    -- goal_count
+    -- assist_count
+    -- save_count
+    -- team_id
+    -- club_id
+
+## Match
+    -- match_no
+    -- team_1 (team_name)
+    -- team_2 (team_name)
+    -- result [team_1 0 - 0 team_2]
+    -- winner
+    -- looser
+    -- draw (boolean)
+
+## Club
+    -- club_name
+    -- league
