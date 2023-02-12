@@ -1,0 +1,56 @@
+Models:
+1. App
+    -> appName
+    -> appShortName
+    -> appLogo
+    -> appSize
+    -> pgRating
+    -> downloadCount
+    -> currentRating
+    -> isGame
+    -> ratingHistoryId (FK)
+    -> publisherId (FK)
+
+2. RatingHistory
+    -> appId (FK)
+    -> currentRating
+    -> highestRating
+    -> lowestRating
+    -> totalRatingCount
+    -> fiveStarRatingCount
+    -> fourStarRatingCount
+    -> threeStarRatingCount
+    -> twoStarRatingCount
+    -> oneStarRatingCount
+
+3. Publisher
+    -> pubName
+
+4. Category
+    -> categoryName
+
+4. User
+    -> name
+    -> username
+    -> email
+    -> password
+
+5. UserAppRating
+    -> rating
+    -> userId (FK)
+    -> appId (FK)
+
+6. UserAppReviews
+    -> appId (FK)
+    -> reviewText
+    -> reviewDate
+    -> userId (FK)
+
+Relationships:
+-> App-Category (many-to-many)
+    -- appId
+    -- categoryId
+
+-> App-Publisher (many-to-one)
+    -- publisherId (in App table)
+
