@@ -1,6 +1,7 @@
 package com.azad.playstoreapi.models.entities;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "users")
@@ -30,6 +31,12 @@ public class PlayStoreUserEntity {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "role_id")
     private RoleEntity role = new RoleEntity();
+
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<UserRatingEntity> userRatings;
+
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<UserReviewEntity> userReviews;
 
     public PlayStoreUserEntity() {
     }
@@ -100,5 +107,21 @@ public class PlayStoreUserEntity {
 
     public void setRole(RoleEntity role) {
         this.role = role;
+    }
+
+    public List<UserRatingEntity> getUserRatings() {
+        return userRatings;
+    }
+
+    public void setUserRatings(List<UserRatingEntity> userRatings) {
+        this.userRatings = userRatings;
+    }
+
+    public List<UserReviewEntity> getUserReviews() {
+        return userReviews;
+    }
+
+    public void setUserReviews(List<UserReviewEntity> userReviews) {
+        this.userReviews = userReviews;
     }
 }

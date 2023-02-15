@@ -3,7 +3,7 @@ Models:
     -> appName
     -> appShortName
     -> appLogo
-    -> appSize
+    -> appSizeKB
     -> pgRating
     -> downloadCount
     -> currentRating
@@ -35,12 +35,12 @@ Models:
     -> email
     -> password
 
-5. UserAppRating
+5. UserRating
     -> rating
     -> userId (FK)
     -> appId (FK)
 
-6. UserAppReviews
+6. UserReview
     -> appId (FK)
     -> reviewText
     -> reviewDate
@@ -53,4 +53,7 @@ Relationships:
 
 -> App-Publisher (many-to-one)
     -- publisherId (in App table)
+
+-> User-App-Rating
+    -- One user, many ratings
 
