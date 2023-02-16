@@ -99,21 +99,26 @@ public class AuthService {
     public PlayStoreUserEntity getLoggedInUser() {
         String usernameOrEmail = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
-        if (securityUtils.isUsernameBasedAuth()) {
-            return playStoreUserRepository.findByUsername(usernameOrEmail).orElseThrow(
-                    () -> new RuntimeException("User not found with username: " + usernameOrEmail));
-        } else if (securityUtils.isEmailBasedAuth()) {
-            return playStoreUserRepository.findByEmail(usernameOrEmail).orElseThrow(
-                    () -> new RuntimeException("User not found with email: " + usernameOrEmail));
+        try {
+            if (securityUtils.isUsernameBasedAuth()) {
+                return playStoreUserRepository.findByUsername(usernameOrEmail).orElseThrow(
+                        () -> new RuntimeException("User not found with username: " + usernameOrEmail));
+            } else if (securityUtils.isEmailBasedAuth()) {
+                return playStoreUserRepository.findByEmail(usernameOrEmail).orElseThrow(
+                        () -> new RuntimeException("User not found with email: " + usernameOrEmail));
+            }
+            else
+                throw new RuntimeException("Unknown Authentication base configured. Valid authentication bases are USERNAME or EMAIL");
+        } catch (RuntimeException ex) {
+            System.out.println("Logged in user not found. Reason: " + ex.getLocalizedMessage());
+            return null;
         }
-        else
-            throw new RuntimeException("Unknown Authentication base configured. Valid authentication bases are USERNAME or EMAIL");
+
     }
 
     public boolean loggedInUserIsAdmin() {
         PlayStoreUserEntity loggedInUser = getLoggedInUser();
-        String roleName = loggedInUser.getRole().getRoleName();
-        return roleName.equalsIgnoreCase("ADMIN");
+        return loggedInUser != null && loggedInUser.getRole().getRoleName().equalsIgnoreCase("ADMIN");
     }
 
     public <U extends PlayStoreUser> String getUniqueIdentifier(U u) {

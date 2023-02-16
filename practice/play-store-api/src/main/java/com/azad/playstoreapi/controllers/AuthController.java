@@ -2,6 +2,7 @@ package com.azad.playstoreapi.controllers;
 
 import com.azad.playstoreapi.assemblers.PlayStoreUserModelAssembler;
 import com.azad.playstoreapi.models.dtos.PlayStoreUserDto;
+import com.azad.playstoreapi.models.entities.PlayStoreUserEntity;
 import com.azad.playstoreapi.models.requests.LoginRequest;
 import com.azad.playstoreapi.models.requests.RegistrationRequest;
 import com.azad.playstoreapi.models.responses.PlayStoreUserResponse;
@@ -65,7 +66,11 @@ public class AuthController {
 
     @GetMapping(path = "/me")
     public ResponseEntity<EntityModel<PlayStoreUserResponse>> getUserInfo() {
-        PlayStoreUserResponse response = modelMapper.map(authService.getLoggedInUser(), PlayStoreUserResponse.class);
+        PlayStoreUserEntity loggedInUser = authService.getLoggedInUser();
+        if (loggedInUser == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        PlayStoreUserResponse response = modelMapper.map(loggedInUser, PlayStoreUserResponse.class);
         return new ResponseEntity<>(assembler.toModel(response), HttpStatus.OK);
     }
 }
