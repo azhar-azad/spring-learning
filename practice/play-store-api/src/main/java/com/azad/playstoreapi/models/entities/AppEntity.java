@@ -1,6 +1,7 @@
 package com.azad.playstoreapi.models.entities;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "app")
@@ -34,6 +35,9 @@ public class AppEntity {
 
     @Column(name = "is_game")
     private Boolean isGame;
+
+    @ManyToMany(mappedBy = "apps")
+    private List<CategoryEntity> categories;
 
     @ManyToOne(fetch = FetchType.LAZY)
     private PublisherEntity publisher;
@@ -148,5 +152,13 @@ public class AppEntity {
 
     public void setUserReview(UserReviewEntity userReview) {
         this.userReview = userReview;
+    }
+
+    public List<CategoryEntity> getCategories() {
+        return categories;
+    }
+
+    public void setCategories(List<CategoryEntity> categories) {
+        this.categories = categories;
     }
 }
