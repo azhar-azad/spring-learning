@@ -12,11 +12,15 @@ public class PublisherEntity {
     @Column(name = "publisher_id")
     private Long id;
 
-    @Column(name = "publisher_name", nullable = false, length = 50)
+    @Column(name = "publisher_name", nullable = false, unique = true, length = 50)
     private String pubName;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "publisher", cascade = CascadeType.ALL)
     private List<AppEntity> apps;
+
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", referencedColumnName = "user_id")
+    private PlayStoreUserEntity user;
 
     public PublisherEntity() {
     }
@@ -39,5 +43,13 @@ public class PublisherEntity {
 
     public void setApps(List<AppEntity> apps) {
         this.apps = apps;
+    }
+
+    public PlayStoreUserEntity getUser() {
+        return user;
+    }
+
+    public void setUser(PlayStoreUserEntity user) {
+        this.user = user;
     }
 }

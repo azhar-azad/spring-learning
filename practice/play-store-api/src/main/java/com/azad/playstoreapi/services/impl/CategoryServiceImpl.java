@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class CategoryServiceGenericImpl implements CategoryService {
+public class CategoryServiceImpl implements CategoryService {
 
     @Autowired
     private ModelMapper modelMapper;
@@ -28,7 +28,7 @@ public class CategoryServiceGenericImpl implements CategoryService {
     private final CategoryRepository repository;
 
     @Autowired
-    public CategoryServiceGenericImpl(CategoryRepository repository) {
+    public CategoryServiceImpl(CategoryRepository repository) {
         this.repository = repository;
     }
 

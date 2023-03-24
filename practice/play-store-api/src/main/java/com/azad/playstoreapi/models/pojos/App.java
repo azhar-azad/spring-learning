@@ -12,18 +12,18 @@ public class App {
     protected String appName;
     protected String appShortName;
     protected String appLogo;
+    protected String appDescription;
 
-    @NotNull(message = "App size must be provided in KB")
-    @Min(value = 1, message = "App size has to be at least 1KB.")
-    protected Double appSizeKB;
+    @NotNull(message = "App size must be provided in MB")
+    protected Double appSizeMB;
 
     @NotNull(message = "PG Rating must be provided")
     protected String pgRating;
-    protected Integer downloadCount;
+    protected String downloadCount;
     protected Double currentRating;
 
-    @NotNull(message = "Must provide if those app is a game")
-    protected Boolean isGame;
+    @NotNull(message = "Must provide if this app is a game")
+    protected String isGame;
 
     public App() {
     }
@@ -52,12 +52,12 @@ public class App {
         this.appLogo = appLogo;
     }
 
-    public Double getAppSizeKB() {
-        return appSizeKB;
+    public String getAppDescription() {
+        return appDescription;
     }
 
-    public void setAppSizeKB(Double appSizeKB) {
-        this.appSizeKB = appSizeKB;
+    public void setAppDescription(String appDescription) {
+        this.appDescription = appDescription;
     }
 
     public String getPgRating() {
@@ -68,14 +68,6 @@ public class App {
         this.pgRating = pgRating;
     }
 
-    public Integer getDownloadCount() {
-        return downloadCount;
-    }
-
-    public void setDownloadCount(Integer downloadCount) {
-        this.downloadCount = downloadCount;
-    }
-
     public Double getCurrentRating() {
         return currentRating;
     }
@@ -84,11 +76,27 @@ public class App {
         this.currentRating = currentRating;
     }
 
-    public Boolean getGame() {
+    public Double getAppSizeMB() {
+        return appSizeMB;
+    }
+
+    public void setAppSizeMB(Double appSizeMB) {
+        this.appSizeMB = appSizeMB;
+    }
+
+    public String getDownloadCount() {
+        return downloadCount;
+    }
+
+    public void setDownloadCount(String downloadCount) {
+        this.downloadCount = downloadCount;
+    }
+
+    public String getIsGame() {
         return isGame;
     }
 
-    public void setGame(Boolean game) {
-        isGame = game;
+    public void setIsGame(String isGame) {
+        this.isGame = isGame;
     }
 }

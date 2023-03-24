@@ -1,4 +1,4 @@
-package com.azad.playstoreapi.models.dtos;
+package com.azad.playstoreapi.models.responses;
 
 import com.azad.playstoreapi.models.pojos.App;
 import com.azad.playstoreapi.models.pojos.Category;
@@ -7,17 +7,15 @@ import com.azad.playstoreapi.models.pojos.RatingHistory;
 
 import java.util.List;
 
-public class AppDto extends App {
+public class AppResponse extends App {
 
     private Long id;
 
     private Publisher publisher;
-    private String pubName;
     private List<Category> categories;
-    private List<String> categoryNames;
     private RatingHistory ratingHistory;
 
-    public AppDto() {
+    public AppResponse() {
     }
 
     public Long getId() {
@@ -42,22 +40,6 @@ public class AppDto extends App {
 
     public void setCategories(List<Category> categories) {
         this.categories = categories;
-    }
-
-    public String getPubName() {
-        return pubName;
-    }
-
-    public void setPubName(String pubName) {
-        this.pubName = pubName;
-    }
-
-    public List<String> getCategoryNames() {
-        return categoryNames;
-    }
-
-    public void setCategoryNames(List<String> categoryNames) {
-        this.categoryNames = categoryNames;
     }
 
     public RatingHistory getRatingHistory() {

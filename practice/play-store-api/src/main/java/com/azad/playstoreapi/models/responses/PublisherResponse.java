@@ -1,4 +1,4 @@
-package com.azad.playstoreapi.models.dtos;
+package com.azad.playstoreapi.models.responses;
 
 import com.azad.playstoreapi.models.pojos.App;
 import com.azad.playstoreapi.models.pojos.PlayStoreUser;
@@ -6,13 +6,13 @@ import com.azad.playstoreapi.models.pojos.Publisher;
 
 import java.util.List;
 
-public class PublisherDto extends Publisher {
+public class PublisherResponse extends Publisher {
 
     private Long id;
     private List<App> apps;
     private PlayStoreUser user;
 
-    public PublisherDto() {
+    public PublisherResponse() {
     }
 
     public Long getId() {

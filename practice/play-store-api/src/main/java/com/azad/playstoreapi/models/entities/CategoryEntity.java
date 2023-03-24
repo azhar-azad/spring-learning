@@ -15,11 +15,7 @@ public class CategoryEntity {
     @Column(name = "category_name", nullable = false, length = 50)
     private String categoryName;
 
-    @ManyToMany
-    @JoinTable(
-            name = "app_category",
-            joinColumns = @JoinColumn(name = "app_id"),
-            inverseJoinColumns = @JoinColumn(name = "category_id"))
+    @ManyToMany(mappedBy = "categories")
     private List<AppEntity> apps;
 
     public CategoryEntity() {

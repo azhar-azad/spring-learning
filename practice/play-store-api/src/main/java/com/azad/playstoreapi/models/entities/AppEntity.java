@@ -21,22 +21,29 @@ public class AppEntity {
     @Column(name = "app_logo")
     private String appLogo;
 
-    @Column(name = "app_size_kb", nullable = false)
-    private Double appSizeKB;
+    @Column(name = "app_description")
+    private String appDescription;
+
+    @Column(name = "app_size_mb", nullable = false)
+    private Double appSizeMB;
 
     @Column(name = "pg_rating", nullable = false)
     private String pgRating;
 
     @Column(name = "download_count")
-    private Integer downloadCount;
+    private String downloadCount;
 
     @Column(name = "current_rating")
     private Double currentRating;
 
     @Column(name = "is_game")
-    private Boolean isGame;
+    private String isGame;
 
-    @ManyToMany(mappedBy = "apps")
+    @ManyToMany
+    @JoinTable(
+            name = "app_category",
+            joinColumns = @JoinColumn(name = "app_id"),
+            inverseJoinColumns = @JoinColumn(name = "category_id"))
     private List<CategoryEntity> categories;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -82,12 +89,12 @@ public class AppEntity {
         this.appLogo = appLogo;
     }
 
-    public Double getAppSizeKB() {
-        return appSizeKB;
+    public String getAppDescription() {
+        return appDescription;
     }
 
-    public void setAppSizeKB(Double appSizeKB) {
-        this.appSizeKB = appSizeKB;
+    public void setAppDescription(String appDescription) {
+        this.appDescription = appDescription;
     }
 
     public String getPgRating() {
@@ -98,28 +105,12 @@ public class AppEntity {
         this.pgRating = pgRating;
     }
 
-    public Integer getDownloadCount() {
-        return downloadCount;
-    }
-
-    public void setDownloadCount(Integer downloadCount) {
-        this.downloadCount = downloadCount;
-    }
-
     public Double getCurrentRating() {
         return currentRating;
     }
 
     public void setCurrentRating(Double currentRating) {
         this.currentRating = currentRating;
-    }
-
-    public Boolean getGame() {
-        return isGame;
-    }
-
-    public void setGame(Boolean game) {
-        isGame = game;
     }
 
     public PublisherEntity getPublisher() {
@@ -160,5 +151,29 @@ public class AppEntity {
 
     public void setCategories(List<CategoryEntity> categories) {
         this.categories = categories;
+    }
+
+    public Double getAppSizeMB() {
+        return appSizeMB;
+    }
+
+    public void setAppSizeMB(Double appSizeMB) {
+        this.appSizeMB = appSizeMB;
+    }
+
+    public String getDownloadCount() {
+        return downloadCount;
+    }
+
+    public void setDownloadCount(String downloadCount) {
+        this.downloadCount = downloadCount;
+    }
+
+    public String getIsGame() {
+        return isGame;
+    }
+
+    public void setIsGame(String isGame) {
+        this.isGame = isGame;
     }
 }

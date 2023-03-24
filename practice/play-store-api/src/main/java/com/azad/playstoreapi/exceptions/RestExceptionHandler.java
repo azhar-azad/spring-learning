@@ -145,6 +145,15 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
     /**
+     * Handle RuntimeExceptions
+     */
+    @ExceptionHandler({ UnauthorizedAccessException.class })
+    public ResponseEntity<Object> handleRuntimeException(UnauthorizedAccessException ex, WebRequest request) {
+        ApiError apiError = new ApiError(HttpStatus.UNAUTHORIZED, ex.getMessage(), "Logged in user is not the owner of this resource");
+        return new ResponseEntity<Object>(apiError, new HttpHeaders(), apiError.getStatus());
+    }
+
+    /**
      * Default Handler to catch all type of logic that deals with all other exceptions that don't have specific handlers.
      * */
     @ExceptionHandler({ Exception.class })

@@ -38,6 +38,9 @@ public class PlayStoreUserEntity {
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<UserReviewEntity> userReviews;
 
+    @OneToOne(mappedBy = "user")
+    private PublisherEntity publisher;
+
     public PlayStoreUserEntity() {
     }
 
@@ -123,5 +126,13 @@ public class PlayStoreUserEntity {
 
     public void setUserReviews(List<UserReviewEntity> userReviews) {
         this.userReviews = userReviews;
+    }
+
+    public PublisherEntity getPublisher() {
+        return publisher;
+    }
+
+    public void setPublisher(PublisherEntity publisher) {
+        this.publisher = publisher;
     }
 }

@@ -121,6 +121,11 @@ public class AuthService {
         return loggedInUser != null && loggedInUser.getRole().getRoleName().equalsIgnoreCase("ADMIN");
     }
 
+    public boolean loggedInUserIsPublisher() {
+        PlayStoreUserEntity loggedInUser = getLoggedInUser();
+        return loggedInUser != null && loggedInUser.getRole().getRoleName().equalsIgnoreCase("PUBLISHER");
+    }
+
     public <U extends PlayStoreUser> String getUniqueIdentifier(U u) {
         String uid = securityUtils.isUsernameBasedAuth() ? u.getUsername() : securityUtils.isEmailBasedAuth() ? u.getEmail() : null;
         if (uid == null)
