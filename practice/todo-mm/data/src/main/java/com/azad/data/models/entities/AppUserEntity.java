@@ -4,6 +4,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "users")
@@ -39,4 +40,6 @@ public class AppUserEntity {
     @JoinColumn(name = "role_id")
     private RoleEntity role = new RoleEntity();
 
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<TaskListEntity> taskLists;
 }
