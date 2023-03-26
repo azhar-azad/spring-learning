@@ -3,6 +3,7 @@ package com.azad.security.auth;
 import com.azad.data.models.dtos.AppUserDto;
 import com.azad.data.models.entities.AppUserEntity;
 import com.azad.data.models.entities.RoleEntity;
+import com.azad.data.models.pojos.AppUser;
 import com.azad.data.models.requests.LoginRequest;
 import com.azad.data.repos.AppUserRepository;
 import com.azad.data.repos.RoleRepository;
@@ -91,6 +92,13 @@ public class AuthService {
                 new UsernamePasswordAuthenticationToken(usernameOrEmail, password);
 
         authenticationManager.authenticate(authenticationToken);
+    }
+
+    public <U extends AppUser> String getUniqueIdentifier(U u) {
+        String uid = securityUtils.isUsernameBasedAuth() ? u.getUsername() : securityUtils.isEmailBasedAuth() ? u.getEmail() : null;
+        if (uid == null)
+            throw new RuntimeException("Unknown Authentication base configured: " + securityUtils.getAuthBase());
+        return uid;
     }
 
     public AppUserEntity getLoggedInUser() {
