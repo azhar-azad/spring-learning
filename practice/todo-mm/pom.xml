@@ -15,8 +15,8 @@
 	<name>todo-mm</name>
 	<description>Demo project for Spring Boot multi-module</description>
 	<modules>
-		<module>security</module>
 		<module>web</module>
+		<module>security</module>
 		<module>service</module>
 		<module>data</module>
 		<module>common</module>

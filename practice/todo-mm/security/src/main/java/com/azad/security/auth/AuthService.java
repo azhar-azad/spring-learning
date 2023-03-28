@@ -52,6 +52,9 @@ public class AuthService {
 
     public AppUserDto registerAppUser(AppUserDto appUserDto) throws RuntimeException {
 
+        if (appUserDto.getRoleName() == null || appUserDto.getRoleName().equalsIgnoreCase(""))
+            appUserDto.setRoleName("USER");
+
         String roleName = appUserDto.getRoleName();
 
         if (roleName.equalsIgnoreCase("ADMIN")) {

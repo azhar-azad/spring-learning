@@ -53,7 +53,7 @@ public class AuthController {
     public ResponseEntity<Map<String, String>> handleUserLogin(@Valid @RequestBody LoginRequest request) {
 
         if (request.getUsername() == null && request.getEmail() == null)
-            throw new RuntimeException("Invlid login request. No username or email to authenticate.");
+            throw new RuntimeException("Invalid login request. No username or email to authenticate.");
 
         try {
             String authenticatedUserId = authService.getAuthenticatedUserId(request);
