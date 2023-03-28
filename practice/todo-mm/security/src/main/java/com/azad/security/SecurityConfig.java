@@ -41,6 +41,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                     .antMatchers("/api/" + API_VERSION + "/auth/**").permitAll()
                     .antMatchers("/api/" + API_VERSION + "/tasklists/**").hasAnyRole("USER", "ADMIN")
+                    .antMatchers("/api/" + API_VERSION + "/tasks/**").hasAnyRole("USER", "ADMIN")
                 .and()
                 .exceptionHandling()
                     .authenticationEntryPoint((request, response, authException) ->
