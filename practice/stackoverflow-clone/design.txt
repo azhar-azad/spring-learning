@@ -1,0 +1,38 @@
+1. User
+    - firstName
+    - lastName
+    - username
+    - email
+    - password
+    - jobTitle
+    - companyName
+    - location
+    - reputation
+2. Question
+    - title
+    - body
+    - upvoteCount
+    - downvoteCount
+    - askedAt
+    - userId (FK)
+    - tags (FK)
+    - comments (FK)
+    - answers (FK)
+3. Answer
+    - answerText
+    - upvoteCount
+    - downvoteCount
+    - answeredAt
+    - score (calculated value)
+    - isBestAnswer
+    - userId (FK)
+    - comments (FK)
+4. Tag
+    - name
+    - description
+    - questionCount
+5. Comment
+    - commentText
+    - upvoteCount
+    - commentedAt
+    - userId (FK)
