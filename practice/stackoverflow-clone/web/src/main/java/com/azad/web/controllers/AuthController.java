@@ -7,7 +7,6 @@ import com.azad.data.models.responses.AppUserResponse;
 import com.azad.security.SecurityUtils;
 import com.azad.security.auth.AuthService;
 import com.azad.web.assemblers.AppUserModelAssembler;
-import org.hibernate.EntityMode;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.EntityModel;
