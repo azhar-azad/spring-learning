@@ -9,6 +9,7 @@ import com.azad.data.models.entities.TaskListEntity;
 import com.azad.data.repos.AccessRepository;
 import com.azad.data.repos.TaskListRepository;
 import com.azad.security.auth.AuthService;
+import com.azad.service.ServiceUtils;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -31,10 +32,10 @@ public class TaskListServiceImpl implements TaskListService {
     private AppUtils appUtils;
 
     @Autowired
-    private AuthService authService;
+    private ServiceUtils serviceUtils;
 
     @Autowired
-    private AccessRepository accessRepository;
+    private AuthService authService;
 
     private final TaskListRepository repository;
 
@@ -91,7 +92,7 @@ public class TaskListServiceImpl implements TaskListService {
         if (!Objects.equals(taskListFromDb.getUser().getId(), loggedInUser.getId())) {
             // logged-in user is not the owner of the fetched list.
             // Let us see if he has access.
-            if (getLoggedInUserAccess(loggedInUser, taskListFromDb) == null && !authService.loggedInUserIsAdmin()) {
+            if (serviceUtils.getLoggedInUserAccess(loggedInUser, taskListFromDb) == null && !authService.loggedInUserIsAdmin()) {
                 // logged in user has no access to this list. also, he is not an admin.
                 throw new RuntimeException("Resource not authorized for " + loggedInUser.getUsername() + " with id: " + loggedInUser.getId());
             }
@@ -113,7 +114,7 @@ public class TaskListServiceImpl implements TaskListService {
         if (!Objects.equals(taskListFromDb.getUser().getId(), loggedInUser.getId())) {
             // logged-in user is not the owner of the fetched list.
             // Let us see if he has access.
-            String loggedInUserAccess = getLoggedInUserAccess(loggedInUser, taskListFromDb);
+            String loggedInUserAccess = serviceUtils.getLoggedInUserAccess(loggedInUser, taskListFromDb);
             if (loggedInUserAccess == null && !authService.loggedInUserIsAdmin()) {
                 // logged in user has no access to this list. also, he is not an admin.
                 throw new RuntimeException("Resource not authorized for " + loggedInUser.getUsername() + " with id: " + loggedInUser.getId());
@@ -145,7 +146,7 @@ public class TaskListServiceImpl implements TaskListService {
         if (!Objects.equals(taskListFromDb.getUser().getId(), loggedInUser.getId())) {
             // logged-in user is not the owner of the fetched list.
             // Let us see if he has access.
-            String loggedInUserAccess = getLoggedInUserAccess(loggedInUser, taskListFromDb);
+            String loggedInUserAccess = serviceUtils.getLoggedInUserAccess(loggedInUser, taskListFromDb);
             if (loggedInUserAccess == null && !authService.loggedInUserIsAdmin()) {
                 // logged in user has no access to this list. also, he is not an admin.
                 throw new RuntimeException("Resource not authorized for " + loggedInUser.getUsername() + " with id: " + loggedInUser.getId());
@@ -157,19 +158,5 @@ public class TaskListServiceImpl implements TaskListService {
         }
 
         repository.delete(taskListFromDb);
-    }
-
-    private String getLoggedInUserAccess(AppUserEntity loggedInUser, TaskListEntity taskListEntity) {
-
-        Optional<List<AccessEntity>> optionalAccessEntities = accessRepository.findByAppUserId(loggedInUser.getId());
-        if (optionalAccessEntities.isPresent()) {
-            List<AccessEntity> accessEntities = optionalAccessEntities.get();
-            for (AccessEntity accessEntity: accessEntities) {
-                if (accessEntity.getTaskListId().equals(taskListEntity.getId())) {
-                    return accessEntity.getAccessName();
-                }
-            }
-        }
-        return null;
     }
 }

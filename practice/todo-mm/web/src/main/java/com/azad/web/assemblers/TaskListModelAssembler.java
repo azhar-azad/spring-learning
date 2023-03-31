@@ -23,15 +23,6 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 @Component
 public class TaskListModelAssembler implements GenericApiResponseModelAssembler<TaskListResponse> {
 
-    @Value("${default_page_number}")
-    private int defaultPage;
-
-    @Value("${default_result_limit}")
-    private int defaultLimit;
-
-    @Value("${default_sort_order}")
-    private String defaultOrder;
-
     @Autowired
     private TaskListRepository repository;
 

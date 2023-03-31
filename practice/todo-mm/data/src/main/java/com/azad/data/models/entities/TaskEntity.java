@@ -4,7 +4,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.List;
 
 @NoArgsConstructor
@@ -25,7 +25,7 @@ public class TaskEntity {
     private String taskDetails;
 
     @Column(name = "target_date")
-    private LocalDateTime targetDateTime;
+    private LocalDate targetDate;
 
     @Column(name = "is_starred")
     private boolean isStarred;
