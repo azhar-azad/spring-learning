@@ -68,4 +68,14 @@ public class AuthController {
         AppUserResponse response = modelMapper.map(authService.getLoggedInUser(), AppUserResponse.class);
         return new ResponseEntity<>(assembler.toModel(response), HttpStatus.OK);
     }
+
+    @PutMapping(path = "/me")
+    public ResponseEntity<EntityModel<AppUserResponse>> updateUserInfo(@RequestBody AppUserDto updatedDto) {
+
+        AppUserDto savedDto = authService.updateUser(updatedDto);
+
+        EntityModel<AppUserResponse> responseEntityModel = assembler.toModel(modelMapper.map(savedDto, AppUserResponse.class));
+
+        return new ResponseEntity<>(responseEntityModel, HttpStatus.OK);
+    }
 }

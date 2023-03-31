@@ -7,10 +7,10 @@
         <version>0.0.1-SNAPSHOT</version>
     </parent>
 
-    <artifactId>web</artifactId>
+    <artifactId>service</artifactId>
     <packaging>jar</packaging>
 
-    <name>web</name>
+    <name>service</name>
     <url>http://maven.apache.org</url>
 
     <properties>
@@ -20,19 +20,14 @@
     <dependencies>
         <dependency>
             <groupId>com.azad</groupId>
-            <artifactId>security</artifactId>
+            <artifactId>data</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
 
         <dependency>
             <groupId>com.azad</groupId>
-            <artifactId>service</artifactId>
+            <artifactId>security</artifactId>
             <version>0.0.1-SNAPSHOT</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-hateoas</artifactId>
         </dependency>
 
         <dependency>

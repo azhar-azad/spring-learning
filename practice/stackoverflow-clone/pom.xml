@@ -14,6 +14,9 @@
 	<packaging>pom</packaging>
 	<name>stackoverflow-clone</name>
 	<description>Demo project for Spring Boot (Multi-module)</description>
+    <modules>
+        <module>service</module>
+    </modules>
     <properties>
 		<java.version>1.8</java.version>
 	</properties>

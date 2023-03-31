@@ -97,6 +97,26 @@ public class AuthService {
         authenticationManager.authenticate(authenticationToken);
     }
 
+    public AppUserDto updateUser(AppUserDto updatedDto) {
+
+        AppUserEntity loggedInUser = getLoggedInUser();
+
+        if (updatedDto.getFirstName() != null)
+            loggedInUser.setFirstName(updatedDto.getFirstName());
+        if (updatedDto.getLastName() != null)
+            loggedInUser.setLastName(updatedDto.getLastName());
+        if (updatedDto.getJobTitle() != null)
+            loggedInUser.setJobTitle(updatedDto.getJobTitle());
+        if (updatedDto.getCompanyName() != null)
+            loggedInUser.setCompanyName(updatedDto.getCompanyName());
+        if (updatedDto.getLocation() != null)
+            loggedInUser.setLocation(updatedDto.getLocation());
+
+        AppUserEntity updatedUser = appUserRepository.save(loggedInUser);
+
+        return modelMapper.map(updatedUser, AppUserDto.class);
+    }
+
     public <U extends AppUser> String getUniqueIdentifier(U u) {
         String uid = securityUtils.isUsernameBasedAuth()
                 ? u.getUsername() : securityUtils.isEmailBasedAuth() ? u.getEmail() : null;

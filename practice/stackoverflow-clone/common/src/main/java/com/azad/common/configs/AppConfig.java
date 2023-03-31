@@ -1,4 +1,4 @@
-package com.azad.web.configs;
+package com.azad.common.configs;
 
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
