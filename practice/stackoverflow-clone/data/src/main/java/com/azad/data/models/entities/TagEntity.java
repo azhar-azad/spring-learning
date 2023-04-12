@@ -25,6 +25,12 @@ public class TagEntity {
     @Column(name = "question_count")
     private Long questionCount;
 
+    @Column(name = "created_by")
+    private String createdByUser;
+
+    @Column(name = "updatedBy")
+    private String updatedByUser;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "question_id")
     private QuestionEntity question;

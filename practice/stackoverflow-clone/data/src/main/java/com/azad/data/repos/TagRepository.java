@@ -10,5 +10,6 @@ import java.util.Optional;
 @Repository
 public interface TagRepository extends PagingAndSortingRepository<TagEntity, Long> {
 
+    Optional<TagEntity> findByName(String name);
     Optional<List<TagEntity>> findByQuestionId(Long questionId);
 }

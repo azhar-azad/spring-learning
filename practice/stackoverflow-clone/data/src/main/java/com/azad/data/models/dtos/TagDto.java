@@ -10,4 +10,9 @@ import lombok.Setter;
 public class TagDto extends Tag {
 
     private Long id;
+    private String message;
+    private String unregisteredUserMsg;
+
+    private String createdByUser;
+    private String updatedByUser;
 }

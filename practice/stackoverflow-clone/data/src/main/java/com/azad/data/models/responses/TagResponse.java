@@ -8,4 +8,8 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter @Setter
 public class TagResponse extends Tag {
+
+    private Long id;
+    private String message;
+    private String unregisteredUserMsg;
 }
