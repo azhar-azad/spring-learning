@@ -2,41 +2,47 @@ package com.azad.authenticationservice.models.entities;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.index.Indexed;
-import org.springframework.data.mongodb.core.mapping.Document;
-import org.springframework.data.mongodb.core.mapping.Field;
 
-import javax.validation.constraints.NotNull;
+import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @NoArgsConstructor
 @Data
-@Document(collation = "users")
+@Entity
+@Table(name = "users")
 public class AppUserEntity {
 
     @Id
-    @Field(name = "user_id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "user_id")
     private Long id;
 
-    @Field(name = "first_name")
-    @NotNull
+    @Column(name = "first_name", nullable = false)
     private String firstName;
 
-    @Field(name = "last_name")
-    @NotNull
+    @Column(name = "last_name", nullable = false)
     private String lastName;
 
-    @Field(name = "email")
-    @Indexed(unique = true)
-    @NotNull
+    @Column(name = "email", nullable = false, unique = true)
     private String email;
 
-    @Field(name = "username")
-    @Indexed(unique = true)
-    @NotNull
+    @Column(name = "username", nullable = false, unique = true)
     private String username;
 
-    @Field(name = "password")
-    @NotNull
+    @Column(name = "password", nullable = false)
     private String password;
+
+    @Column(name = "created_at", nullable = false)
+    private LocalDateTime createdAt;
+
+    @Column(name = "updated_at")
+    private LocalDateTime updatedAt;
+
+    private boolean enabled;
+    private boolean expired;
+    private boolean locked;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "role_id")
+    private RoleEntity role = new RoleEntity();
 }

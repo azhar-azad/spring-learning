@@ -13,4 +13,5 @@ public class AppUserDto extends AppUser {
 
     private String id;
     private Role role;
+    private String roleName;
 }
