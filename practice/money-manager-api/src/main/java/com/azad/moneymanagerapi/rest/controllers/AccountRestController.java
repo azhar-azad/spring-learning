@@ -20,7 +20,7 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping(path = "/api/v1/accounts")
-public class AccountRestController {
+public class AccountRestController implements GenericApiRestController<AccountRequest, AccountResponse> {
 
     @Autowired
     private ModelMapper modelMapper;
@@ -35,6 +35,7 @@ public class AccountRestController {
     }
 
     @PostMapping
+    @Override
     public ResponseEntity<EntityModel<AccountResponse>> createEntity(@Valid @RequestBody AccountRequest request) {
 
         AccountDto dto = modelMapper.map(request, AccountDto.class);
@@ -51,6 +52,7 @@ public class AccountRestController {
     }
 
     @GetMapping
+    @Override
     public ResponseEntity<CollectionModel<EntityModel<AccountResponse>>> getAllEntities(
             @Valid @RequestParam(value = "page", defaultValue = "1") int page,
             @Valid @RequestParam(value = "limit", defaultValue = "25") int limit,
@@ -75,6 +77,7 @@ public class AccountRestController {
     }
 
     @GetMapping(path = "/{id}")
+    @Override
     public ResponseEntity<EntityModel<AccountResponse>> getEntity(@Valid @PathVariable("id") Long id) {
 
         AccountDto fetchedDtoFromService = service.getById(id);
@@ -87,6 +90,7 @@ public class AccountRestController {
     }
 
     @PutMapping(path = "/{id}")
+    @Override
     public ResponseEntity<EntityModel<AccountResponse>> updateEntity(
             @Valid @PathVariable("id") Long id, @RequestBody AccountRequest updatedRequest) {
 
@@ -102,6 +106,7 @@ public class AccountRestController {
     }
 
     @DeleteMapping(path = "/{id}")
+    @Override
     public ResponseEntity<?> deleteEntity(@Valid @PathVariable("id") Long id) {
 
         try {
