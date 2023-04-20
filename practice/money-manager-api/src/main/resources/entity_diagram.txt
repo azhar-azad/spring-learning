@@ -1,0 +1,76 @@
+# Entities:
+    #1 AccountGroup
+    #2 Account
+    #3 Category
+    #4 SubCategory
+    #5 Transaction
+    #6 Transfer
+    #7 AccountsReport
+    #8 ExpensesReport
+    #9 IncomeReport
+
+# Entity Properties:
+    #1 AccountGroup:
+        AccountGroupName
+        AccountIds (FK: one-to-many)
+
+    #2 Account:
+        AccountName
+        Balance
+        Currency
+        Description
+        AccountGroupId (FK: many-to-one)
+        TransactionIds (FK: one-to-many)
+
+    #3 Category:
+        CategoryName
+        Type (Income/Expense)
+        SubCategoryIds (FK: one-to-many)
+        TransactionIds (FK: one-to-many)
+
+    #4 Subcategory:
+        SubcategoryName
+        CategoryId (FK: many-to-one)
+        TransactionIds (FK: one-to-many)
+
+    #5 Transaction:
+        Date
+        Note
+        Description
+        Amount
+        AccountId (FK: many-to-one)
+        CategoryId (FK: many-to-one)
+        SubCategoryId (FK: many-to-one)
+
+    #6 Transfer:
+        Date
+        FromAccountName
+        ToAccountName
+        TransferFees
+        Amount
+        Note
+        Description
+
+    #7 AccountsReport:
+        AccountGroups (List of AccountGroup)
+            Accounts (List of Account)
+                AccountName
+                Balance
+                Currency
+        Assets (total balance of all accounts)
+        Liabilities (total negative balance of all accounts)
+        Total (Assets - Liabilities)
+
+    #8 ExpensesReport:
+        DateRange
+        TotalExpenses
+        Categories (List of ExpenseCategories)
+            CategoryName
+            ExpensesInThisCategory
+
+    #8 IncomeReport:
+            DateRange
+            TotalIncome
+            Categories (List of IncomeCategories)
+                CategoryName
+                IncomeInThisCategory
