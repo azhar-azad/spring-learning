@@ -1,6 +1,6 @@
 package com.azad.moneymanagerapi.models.constants;
 
-public enum CategoryType {
+public enum CategoryTypes {
 
     INCOME, EXPENSE;
 

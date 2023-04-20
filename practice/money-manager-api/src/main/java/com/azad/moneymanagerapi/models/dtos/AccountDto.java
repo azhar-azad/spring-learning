@@ -11,5 +11,6 @@ import lombok.Setter;
 public class AccountDto extends Account {
 
     private Long id;
+    private String accountGroupName;
     private AccountGroup accountGroup;
 }

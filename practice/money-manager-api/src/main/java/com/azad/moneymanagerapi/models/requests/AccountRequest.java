@@ -9,4 +9,6 @@ import lombok.Setter;
 @Getter
 @Setter
 public class AccountRequest extends Account {
+
+    private String accountGroupName;
 }
