@@ -31,6 +31,12 @@ public class AccountGroupModelAssembler implements GenericApiResponseModelAssemb
                 .getEntity(response.getId()))
                 .withSelfRel());
         responseEntityModel.add(linkTo(methodOn(AccountGroupRestController.class)
+                .updateEntity(response.getId(), new AccountGroupRequest()))
+                .withRel("edit"));
+        responseEntityModel.add(linkTo(methodOn(AccountGroupRestController.class)
+                .deleteEntity(response.getId()))
+                .withRel("remove"));
+        responseEntityModel.add(linkTo(methodOn(AccountGroupRestController.class)
                 .getAllEntities(defaultPage, defaultLimit, "", defaultOrder))
                 .withRel(IanaLinkRelations.COLLECTION));
 

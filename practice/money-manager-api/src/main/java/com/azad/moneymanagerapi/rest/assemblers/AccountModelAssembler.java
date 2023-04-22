@@ -1,8 +1,11 @@
 package com.azad.moneymanagerapi.rest.assemblers;
 
 import com.azad.moneymanagerapi.commons.PagingAndSorting;
+import com.azad.moneymanagerapi.models.requests.AccountGroupRequest;
+import com.azad.moneymanagerapi.models.requests.AccountRequest;
 import com.azad.moneymanagerapi.models.responses.AccountResponse;
 import com.azad.moneymanagerapi.repositories.AccountRepository;
+import com.azad.moneymanagerapi.rest.controllers.AccountGroupRestController;
 import com.azad.moneymanagerapi.rest.controllers.AccountRestController;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.CollectionModel;
@@ -29,6 +32,12 @@ public class AccountModelAssembler implements GenericApiResponseModelAssembler<A
         responseEntityModel.add(linkTo(methodOn(AccountRestController.class)
                 .getEntity(response.getId()))
                 .withSelfRel());
+        responseEntityModel.add(linkTo(methodOn(AccountRestController.class)
+                .updateEntity(response.getId(), new AccountRequest()))
+                .withRel("edit"));
+        responseEntityModel.add(linkTo(methodOn(AccountRestController.class)
+                .deleteEntity(response.getId()))
+                .withRel("remove"));
         responseEntityModel.add(linkTo(methodOn(AccountRestController.class)
                 .getAllEntities(defaultPage, defaultLimit, "", defaultOrder))
                 .withRel(IanaLinkRelations.COLLECTION));
