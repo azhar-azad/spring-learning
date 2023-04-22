@@ -45,11 +45,7 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public List<CategoryDto> getAll(PagingAndSorting ps) {
 
-        Pageable pageable;
-        if (ps.getSort().isEmpty())
-            pageable = PageRequest.of(ps.getPage(), ps.getLimit());
-        else
-            pageable = PageRequest.of(ps.getPage(), ps.getLimit(), appUtils.getSortAndOrder(ps.getSort(), ps.getOrder()));
+        Pageable pageable = appUtils.getPageable(ps);
 
         List<CategoryEntity> allEntitiesFromDb = repository.findAll(pageable).getContent();
         if (allEntitiesFromDb.size() == 0)

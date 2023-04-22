@@ -44,11 +44,7 @@ public class AccountGroupServiceImpl implements AccountGroupService {
     @Override
     public List<AccountGroupDto> getAll(PagingAndSorting ps) {
 
-        Pageable pageable;
-        if (ps.getSort().isEmpty())
-            pageable = PageRequest.of(ps.getPage(), ps.getLimit());
-        else
-            pageable = PageRequest.of(ps.getPage(), ps.getLimit(), appUtils.getSortAndOrder(ps.getSort(), ps.getOrder()));
+        Pageable pageable = appUtils.getPageable(ps);
 
         List<AccountGroupEntity> allAccountGroupsFromDb = repository.findAll(pageable).getContent();
         if (allAccountGroupsFromDb.size() == 0)

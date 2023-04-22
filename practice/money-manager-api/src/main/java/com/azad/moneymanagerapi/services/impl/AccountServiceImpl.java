@@ -54,11 +54,7 @@ public class AccountServiceImpl implements AccountService {
     @Override
     public List<AccountDto> getAll(PagingAndSorting ps) {
 
-        Pageable pageable;
-        if (ps.getSort().isEmpty())
-            pageable = PageRequest.of(ps.getPage(), ps.getLimit());
-        else
-            pageable = PageRequest.of(ps.getPage(), ps.getLimit(), appUtils.getSortAndOrder(ps.getSort(), ps.getOrder()));
+        Pageable pageable = appUtils.getPageable(ps);
 
         List<AccountEntity> allEntitiesFromDb = repository.findAll(pageable).getContent();
         if (allEntitiesFromDb.size() == 0)
