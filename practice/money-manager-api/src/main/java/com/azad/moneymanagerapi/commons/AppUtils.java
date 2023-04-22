@@ -3,6 +3,8 @@ package com.azad.moneymanagerapi.commons;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Component;
 
@@ -26,6 +28,14 @@ public class AppUtils {
 
     public Logger getLogger() {
         return LOG;
+    }
+
+    public Pageable getPageable(PagingAndSorting ps) {
+
+        if (ps.getSort().isEmpty())
+            return PageRequest.of(ps.getPage(), ps.getLimit());
+        else
+            return PageRequest.of(ps.getPage(), ps.getLimit(), getSortAndOrder(ps.getSort(), ps.getOrder()));
     }
 
     public Sort getSortAndOrder(String sort, String order) {

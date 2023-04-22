@@ -11,5 +11,6 @@ import lombok.Setter;
 public class SubcategoryDto extends Subcategory {
 
     private Long id;
+    private Long categoryId;
     private Category category;
 }

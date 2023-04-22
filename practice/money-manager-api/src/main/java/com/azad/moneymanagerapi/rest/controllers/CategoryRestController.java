@@ -2,10 +2,15 @@ package com.azad.moneymanagerapi.rest.controllers;
 
 import com.azad.moneymanagerapi.commons.PagingAndSorting;
 import com.azad.moneymanagerapi.models.dtos.CategoryDto;
+import com.azad.moneymanagerapi.models.dtos.SubcategoryDto;
 import com.azad.moneymanagerapi.models.requests.CategoryRequest;
+import com.azad.moneymanagerapi.models.requests.SubcategoryRequest;
 import com.azad.moneymanagerapi.models.responses.CategoryResponse;
+import com.azad.moneymanagerapi.models.responses.SubcategoryResponse;
 import com.azad.moneymanagerapi.rest.assemblers.CategoryModelAssembler;
+import com.azad.moneymanagerapi.rest.assemblers.SubcategoryModelAssembler;
 import com.azad.moneymanagerapi.services.CategoryService;
+import com.azad.moneymanagerapi.services.SubcategoryService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.CollectionModel;
@@ -24,6 +29,12 @@ public class CategoryRestController implements GenericApiRestController<Category
 
     @Autowired
     private ModelMapper modelMapper;
+
+    @Autowired
+    private SubcategoryService subcategoryService;
+
+    @Autowired
+    private SubcategoryModelAssembler subcategoryModelAssembler;
 
     private final CategoryService service;
     private final CategoryModelAssembler assembler;
@@ -111,5 +122,48 @@ public class CategoryRestController implements GenericApiRestController<Category
         }
 
         return ResponseEntity.noContent().build();
+    }
+
+    @PostMapping(path = "/{id}/subcategories")
+    public ResponseEntity<EntityModel<SubcategoryResponse>> createSubcategory(
+            @Valid @PathVariable("id") Long id, // categoryId
+            @Valid @RequestBody SubcategoryRequest request) {
+
+        SubcategoryDto dto = modelMapper.map(request, SubcategoryDto.class);
+
+        SubcategoryDto savedDtoFromService;
+        try {
+            savedDtoFromService = subcategoryService.create(id, dto);
+        } catch (RuntimeException ex) {
+            return ResponseEntity.badRequest().build();
+        }
+
+        return new ResponseEntity<>(subcategoryModelAssembler.toModel(modelMapper.map(savedDtoFromService, SubcategoryResponse.class)),
+                HttpStatus.CREATED);
+    }
+
+    @GetMapping(path = "/{id}/subcategories")
+    public ResponseEntity<CollectionModel<EntityModel<SubcategoryResponse>>> getAllSubcategoriesByCategory(
+            @Valid @PathVariable("id") Long id, // categoryId
+            @Valid @RequestParam(value = "page", defaultValue = "1") int page,
+            @Valid @RequestParam(value = "limit", defaultValue = "25") int limit,
+            @Valid @RequestParam(value = "sort", defaultValue = "") String sort,
+            @Valid @RequestParam(value = "order", defaultValue = "asc") String order) {
+
+        if (page < 0) page = 0;
+
+        List<SubcategoryDto> allDtosFromService = subcategoryService.getAllByParent(
+                id, new PagingAndSorting(page > 0 ? page - 1 : page, limit, sort, order));
+        if (allDtosFromService == null || allDtosFromService.size() == 0)
+            return ResponseEntity.noContent().build();
+
+        List<SubcategoryResponse> responses = allDtosFromService.stream()
+                .map(dto -> modelMapper.map(dto, SubcategoryResponse.class))
+                .collect(Collectors.toList());
+
+        CollectionModel<EntityModel<SubcategoryResponse>> responseCollectionModel =
+                subcategoryModelAssembler.getCollectionModelForCategory(id, responses, new PagingAndSorting(page, limit, sort, order));
+
+        return new ResponseEntity<>(responseCollectionModel, HttpStatus.OK);
     }
 }
