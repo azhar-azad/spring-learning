@@ -12,4 +12,5 @@ import java.util.Optional;
 public interface SubcategoryRepository extends PagingAndSortingRepository<SubcategoryEntity, Long> {
 
     Optional<List<SubcategoryEntity>> findByCategoryId(Long categoryId, Pageable pageable);
+    Optional<SubcategoryEntity> findBySubcategoryName(String subcategoryName);
 }

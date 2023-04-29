@@ -11,4 +11,5 @@ import java.util.Optional;
 public interface AccountRepository extends PagingAndSortingRepository<AccountEntity, Long> {
 
     Optional<List<AccountEntity>> findByAccountGroupId(Long accountGroupId);
+    Optional<AccountEntity> findByAccountName(String accountName);
 }

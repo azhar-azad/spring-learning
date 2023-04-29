@@ -1,5 +1,7 @@
 package com.azad.moneymanagerapi.models.pojos;
 
+import com.azad.moneymanagerapi.commons.validations.EnumValidator;
+import com.azad.moneymanagerapi.models.constants.CategoryTypes;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
@@ -27,4 +29,8 @@ public class Transaction {
     protected String note;
 
     protected String description;
+
+    @NotNull(message = "Transaction type cannot be empty. Valid values are INCOME/EXPENSE")
+    @EnumValidator(enumClass = CategoryTypes.class, message = "Not a valid transaction type")
+    protected String transactionType;
 }

@@ -1,0 +1,10 @@
+{
+  "date": "05/04/2023",
+  "amount": "140",
+  "note": "Spotify bill April",
+  "description": "",
+  "transactionType": "EXPENSE",
+  "accountName": "Spotify Account",
+  "categoryName": "Culture",
+  "subcategoryName": "Music"
+}

@@ -29,6 +29,9 @@ public class TransactionEntity {
     @Column(name = "description")
     private String description;
 
+    @Column(name = "transaction_type", nullable = false)
+    private String transactionType;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "account_id")
     private AccountEntity account;
