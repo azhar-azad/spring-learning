@@ -1,4 +1,4 @@
-package com.azad.basicecommerce.common;
+package com.azad.basicecommerce.common.configs;
 
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
