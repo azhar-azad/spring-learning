@@ -10,6 +10,5 @@ import lombok.Setter;
 public class AppUserResponse extends AppUser {
 
     private Long id;
-    private String userUid;
     private Role role;
 }

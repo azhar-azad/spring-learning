@@ -18,6 +18,8 @@ import java.time.LocalDateTime;
 @Data
 public class AppUser {
 
+    protected String userUid;
+
     @NotNull(message = "First name cannot be empty.")
     @Size(min = 1, max = 50, message = "First name length has to be between 1 to 50 characters.")
     protected String firstName;

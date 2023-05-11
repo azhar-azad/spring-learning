@@ -10,7 +10,6 @@ import lombok.Setter;
 public class AppUserDto extends AppUser {
 
     private Long id;
-    private String userUid;
     private Role role;
     private String roleName;
 }

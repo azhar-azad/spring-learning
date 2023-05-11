@@ -1,0 +1,152 @@
+package com.azad.basicecommerce.api.resources;
+
+import com.azad.basicecommerce.api.assemblers.StoreResponseModelAssembler;
+import com.azad.basicecommerce.common.ApiUtils;
+import com.azad.basicecommerce.common.GenericApiRestController;
+import com.azad.basicecommerce.common.PagingAndSorting;
+import com.azad.basicecommerce.common.exceptions.UnauthorizedAccessException;
+import com.azad.basicecommerce.inventory.models.StoreDto;
+import com.azad.basicecommerce.inventory.models.StoreRequest;
+import com.azad.basicecommerce.inventory.models.StoreResponse;
+import com.azad.basicecommerce.inventory.service.StoreService;
+import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.CollectionModel;
+import org.springframework.hateoas.EntityModel;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
+import java.util.List;
+import java.util.stream.Collectors;
+
+@RestController
+@RequestMapping(path = "/api/v1/inventory/stores")
+public class StoreRestResource implements GenericApiRestController<StoreRequest, StoreResponse> {
+
+    @Autowired
+    private ApiUtils apiUtils;
+
+    @Autowired
+    private ModelMapper modelMapper;
+
+    private final StoreService service;
+    private final StoreResponseModelAssembler assembler;
+
+    @Autowired
+    public StoreRestResource(StoreService service, StoreResponseModelAssembler assembler) {
+        this.service = service;
+        this.assembler = assembler;
+    }
+
+    @PostMapping
+    @Override
+    public ResponseEntity<EntityModel<StoreResponse>> createEntity(@Valid @RequestBody StoreRequest request) {
+
+        apiUtils.printResourceRequestInfo("/api/v1/inventory/stores", "POST", true);
+
+        StoreDto dto = modelMapper.map(request, StoreDto.class);
+
+        StoreDto savedDto = service.create(dto);
+
+        return new ResponseEntity<>(assembler.toModel(modelMapper.map(savedDto, StoreResponse.class)),
+                HttpStatus.CREATED);
+    }
+
+    @GetMapping
+    @Override
+    public ResponseEntity<CollectionModel<EntityModel<StoreResponse>>> getAllEntities(
+            @Valid @RequestParam(name = "page", defaultValue = "1") int page,
+            @Valid @RequestParam(name = "limit", defaultValue = "25") int limit,
+            @Valid @RequestParam(name = "sort", defaultValue = "") String sort,
+            @Valid @RequestParam(name = "order", defaultValue = "asc") String order) {
+
+        apiUtils.printResourceRequestInfo("/api/v1/inventory/stores", "GET", true);
+
+        if (page < 0) page = 0;
+
+        List<StoreDto> dtosFromService = service.getAll(
+                new PagingAndSorting(page > 0 ? page - 1 : page, limit, sort, order));
+        if (dtosFromService == null || dtosFromService.size() == 0)
+            return ResponseEntity.noContent().build();
+
+        List<StoreResponse> responses = dtosFromService.stream()
+                .map(dto -> modelMapper.map(dto, StoreResponse.class))
+                .collect(Collectors.toList());
+
+        CollectionModel<EntityModel<StoreResponse>> responseCollectionModel =
+                assembler.getCollectionModel(responses, new PagingAndSorting(page, limit, sort, order));
+
+        return new ResponseEntity<>(responseCollectionModel, HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<EntityModel<StoreResponse>> getEntity(Long id) {
+        return null;
+    }
+
+    @GetMapping(path = "/{storeUid}")
+    @Override
+    public ResponseEntity<EntityModel<StoreResponse>> getEntity(@Valid @PathVariable("storeUid") String storeUid) {
+
+        apiUtils.printResourceRequestInfo("/api/v1/inventory/stores/" + storeUid, "GET", true);
+
+        StoreDto dtoFromService;
+        try {
+            dtoFromService = service.getByUid(storeUid);
+        } catch (UnauthorizedAccessException ex) {
+            return ResponseEntity.badRequest().build();
+        } catch (RuntimeException ex) {
+            return ResponseEntity.notFound().build();
+        }
+
+        return new ResponseEntity<>(assembler.toModel(modelMapper.map(dtoFromService, StoreResponse.class)),
+                HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<EntityModel<StoreResponse>> updateEntity(Long id, StoreRequest updatedRequest) {
+        return null;
+    }
+
+    @PutMapping(path = "/{storeUid}")
+    @Override
+    public ResponseEntity<EntityModel<StoreResponse>> updateEntity(
+            @Valid @PathVariable("storeUid") String storeUid, @RequestBody StoreRequest updatedRequest) {
+
+        apiUtils.printResourceRequestInfo("/api/v1/inventory/stores/" + storeUid, "PUT", true);
+
+        StoreDto dtoFromService;
+        try {
+            dtoFromService = service.updateByUid(storeUid, modelMapper.map(updatedRequest, StoreDto.class));
+        } catch (UnauthorizedAccessException ex) {
+            return ResponseEntity.badRequest().build();
+        } catch (RuntimeException ex) {
+            return ResponseEntity.notFound().build();
+        }
+
+        return new ResponseEntity<>(assembler.toModel(modelMapper.map(dtoFromService, StoreResponse.class)),
+                HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<?> deleteEntity(Long id) {
+        return null;
+    }
+
+    @DeleteMapping(path = "/{storeUid}")
+    @Override
+    public ResponseEntity<?> deleteEntity(@Valid @PathVariable("storeUid") String storeUid) {
+
+        apiUtils.printResourceRequestInfo("/api/v1/inventory/stores/" + storeUid, "DELETE", true);
+
+        try {
+            service.deleteByUid(storeUid);
+        } catch (RuntimeException ex) {
+            return ResponseEntity.badRequest().build();
+        }
+
+        return ResponseEntity.noContent().build();
+    }
+}

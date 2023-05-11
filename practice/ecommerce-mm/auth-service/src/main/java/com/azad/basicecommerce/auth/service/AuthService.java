@@ -63,7 +63,7 @@ public class AuthService {
 
         String encodedPass = passwordEncoder.encode(dto.getPassword());
         dto.setPassword(encodedPass);
-        dto.setUserUid(apiUtils.getHash(dto.getEmail() + dto.getUsername()
+        dto.setUserUid(apiUtils.getHash("user", dto.getEmail() + dto.getUsername()
                 + dto.getFirstName() + dto.getLastName()));
 
         RoleEntity role = roleRepository.findByRoleName(roleName).orElseThrow(
