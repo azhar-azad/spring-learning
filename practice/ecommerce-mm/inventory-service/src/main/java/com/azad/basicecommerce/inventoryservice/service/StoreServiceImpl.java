@@ -1,4 +1,4 @@
-package com.azad.basicecommerce.inventory.service;
+package com.azad.basicecommerce.inventoryservice.service;
 
 import com.azad.basicecommerce.auth.models.AppUser;
 import com.azad.basicecommerce.auth.models.AppUserEntity;
@@ -8,10 +8,11 @@ import com.azad.basicecommerce.auth.reposotories.RoleRepository;
 import com.azad.basicecommerce.auth.service.AuthService;
 import com.azad.basicecommerce.common.ApiUtils;
 import com.azad.basicecommerce.common.PagingAndSorting;
+import com.azad.basicecommerce.common.exceptions.ResourceNotFoundException;
 import com.azad.basicecommerce.common.exceptions.UnauthorizedAccessException;
-import com.azad.basicecommerce.inventory.models.StoreDto;
-import com.azad.basicecommerce.inventory.models.StoreEntity;
-import com.azad.basicecommerce.inventory.repositories.StoreRepository;
+import com.azad.basicecommerce.inventoryservice.models.StoreDto;
+import com.azad.basicecommerce.inventoryservice.models.StoreEntity;
+import com.azad.basicecommerce.inventoryservice.repositories.StoreRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -57,7 +58,7 @@ public class StoreServiceImpl implements StoreService {
             // Update storeOwner's role to 'SELLER'
             Optional<RoleEntity> byRoleName = roleRepository.findByRoleName("SELLER");
             if (!byRoleName.isPresent())
-                throw new RuntimeException("There is no valid role with name 'SELLER'");
+                throw new ResourceNotFoundException("Resource Not Found", "ROLE", "seller");
             storeOwner.setRole(byRoleName.get());
             storeOwner = appUserRepository.save(storeOwner);
         }
@@ -107,12 +108,12 @@ public class StoreServiceImpl implements StoreService {
         apiUtils.printInfoLog("*** STORE :: GET ***");
 
         StoreEntity entityFromDb = repository.findByStoreUid(uid).orElseThrow(
-                () -> new RuntimeException("Store not found with uid: " + uid));
+                () -> new ResourceNotFoundException("Store not found with uid: " + uid, "STORE", "uid = " + uid));
 
         String storeOwnerUid = entityFromDb.getStoreOwnerUid();
         Optional<AppUserEntity> byUserUid = appUserRepository.findByUserUid(storeOwnerUid);
         if (!byUserUid.isPresent())
-            throw new RuntimeException("User not found with uid: " + storeOwnerUid);
+            throw new ResourceNotFoundException("User not found with uid: " + storeOwnerUid, "USER", "uid = " + storeOwnerUid);
 
         StoreDto fetchedDto = modelMapper.map(entityFromDb, StoreDto.class);
         fetchedDto.setStoreOwner(modelMapper.map(byUserUid.get(), AppUser.class));
@@ -133,7 +134,7 @@ public class StoreServiceImpl implements StoreService {
         AppUserEntity loggedInUser = authService.getLoggedInUser();
 
         StoreEntity entityFromDb = repository.findByStoreUid(uid).orElseThrow(
-                () -> new RuntimeException("Store not found with uid: " + uid));
+                () -> new ResourceNotFoundException("Store not found with uid: " + uid, "STORE", "uid = " + uid));
 
         if (loggedInUserIsNotOwner(entityFromDb.getStoreOwnerUid(), loggedInUser.getUserUid())) {
             apiUtils.printErrorLog("*** ERROR :: Logged in user is not the owner ***");
@@ -168,13 +169,18 @@ public class StoreServiceImpl implements StoreService {
         AppUserEntity storeOwner = authService.getLoggedInUser();
 
         StoreEntity entityFromDb = repository.findByStoreUid(uid).orElseThrow(
-                () -> new RuntimeException("Store not found with uid: " + uid));
+                () -> new ResourceNotFoundException("Store not found with uid: " + uid, "STORE", "uid = " + uid));
 
         if (loggedInUserIsNotOwner(entityFromDb.getStoreOwnerUid(), storeOwner.getUserUid())) {
             throw new UnauthorizedAccessException("Unauthorized. Logged in user is not the owner of this store");
         }
 
         repository.delete(entityFromDb);
+    }
+
+    @Override
+    public Long getEntityCount() {
+        return repository.count();
     }
 
     private boolean loggedInUserIsNotOwner(String dbEntityUserUid, String storeOwnerUid) {

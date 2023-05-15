@@ -1,6 +1,6 @@
-package com.azad.basicecommerce.inventory.repositories;
+package com.azad.basicecommerce.inventoryservice.repositories;
 
-import com.azad.basicecommerce.inventory.models.StoreEntity;
+import com.azad.basicecommerce.inventoryservice.models.StoreEntity;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Repository;

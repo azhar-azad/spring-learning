@@ -3,9 +3,9 @@ package com.azad.basicecommerce.api.assemblers;
 import com.azad.basicecommerce.api.resources.StoreRestResource;
 import com.azad.basicecommerce.common.GenericApiResponseModelAssembler;
 import com.azad.basicecommerce.common.PagingAndSorting;
-import com.azad.basicecommerce.inventory.models.StoreRequest;
-import com.azad.basicecommerce.inventory.models.StoreResponse;
-import com.azad.basicecommerce.inventory.repositories.StoreRepository;
+import com.azad.basicecommerce.inventoryservice.models.StoreRequest;
+import com.azad.basicecommerce.inventoryservice.models.StoreResponse;
+import com.azad.basicecommerce.inventoryservice.repositories.StoreRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
@@ -32,10 +32,10 @@ public class StoreResponseModelAssembler implements GenericApiResponseModelAssem
                 .getEntity(response.getStoreUid()))
                 .withSelfRel());
         responseEntityModel.add(linkTo(methodOn(StoreRestResource.class)
-                .updateEntity(response.getId(), new StoreRequest()))
+                .updateEntity(response.getStoreUid(), new StoreRequest()))
                 .withRel("edit"));
         responseEntityModel.add(linkTo(methodOn(StoreRestResource.class)
-                .deleteEntity(response.getId()))
+                .deleteEntity(response.getStoreUid()))
                 .withRel("remove"));
         responseEntityModel.add(linkTo(methodOn(StoreRestResource.class)
                 .getAllEntities(defaultPage, defaultLimit, "", defaultOrder))

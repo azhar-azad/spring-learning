@@ -1,4 +1,4 @@
-package com.azad.basicecommerce.inventory.models;
+package com.azad.basicecommerce.inventoryservice.models;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;

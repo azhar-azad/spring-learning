@@ -32,11 +32,11 @@ public class ApiUtils {
 
     private final Logger LOG = LoggerFactory.getLogger(ApiUtils.class);
 
-    public void printResourceRequestInfo(String url, String method, boolean isPrivate) {
+    public void printResourceRequestInfo(String url, String method, String hasAccess) {
         LOG.info("*** REQUEST RECEIVED ***");
         LOG.info("*** Request URL: " + url + " ***");
         LOG.info("*** Method: " + method.toUpperCase() + " ***");
-        LOG.info("*** Need Authorization: " + isPrivate + " ***");
+        LOG.info("*** Has Access: " + hasAccess + " ***");
     }
 
     public void printInfoLog(String log) {
@@ -63,7 +63,7 @@ public class ApiUtils {
         return hashSHA256(entityName, data + getSecureRandomString());
     }
 
-    public int convertStringToInt(String strValue) {
+    private int convertStringToInt(String strValue) {
         try {
             if (strValue == null)
                 return -1;

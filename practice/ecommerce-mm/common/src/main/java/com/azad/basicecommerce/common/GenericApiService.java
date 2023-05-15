@@ -44,4 +44,5 @@ public interface GenericApiService<T> {
     T updateByUid(String uid, T updatedDto);
     void deleteById(Long id);
     void deleteByUid(String uid);
+    Long getEntityCount();
 }

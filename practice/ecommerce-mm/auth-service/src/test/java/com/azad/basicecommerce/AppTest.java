@@ -1,4 +1,4 @@
-package com.azad.basic-ecommerce;
+package com.azad.basicecommerce;
 
 import junit.framework.Test;
 import junit.framework.TestCase;

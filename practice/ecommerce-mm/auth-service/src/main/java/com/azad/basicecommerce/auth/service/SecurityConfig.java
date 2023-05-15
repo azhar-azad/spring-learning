@@ -33,19 +33,22 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
-                .csrf().disable()
-                .httpBasic().disable()
-                .cors()
-                .and()
-                .authorizeRequests()
-                .antMatchers("/api/" + API_VERSION + "/auth/**").permitAll()
-                .and()
-                .exceptionHandling()
-                .authenticationEntryPoint((request, response, authException) ->
-                        response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Unauthorized"))
-                .and()
-                .sessionManagement()
-                .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+            .csrf().disable()
+            .httpBasic().disable()
+            .cors()
+            .and()
+            .authorizeRequests()
+            .antMatchers("/api/" + API_VERSION + "/auth/**").permitAll()
+            .antMatchers("/api/" + API_VERSION + "/inventoryservice/stores/**").authenticated()
+            .antMatchers("/api/" + API_VERSION + "/productservice/productLines/**").hasRole("ADMIN")
+            .antMatchers("/api/" + API_VERSION + "/productservice/categories/**").hasRole("ADMIN")
+            .and()
+            .exceptionHandling()
+            .authenticationEntryPoint((request, response, authException) ->
+                    response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Unauthorized"))
+            .and()
+            .sessionManagement()
+            .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
         http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
     }

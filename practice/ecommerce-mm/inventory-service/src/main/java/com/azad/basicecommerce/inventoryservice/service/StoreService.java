@@ -1,7 +1,7 @@
-package com.azad.basicecommerce.inventory.service;
+package com.azad.basicecommerce.inventoryservice.service;
 
 import com.azad.basicecommerce.common.GenericApiService;
-import com.azad.basicecommerce.inventory.models.StoreDto;
+import com.azad.basicecommerce.inventoryservice.models.StoreDto;
 
 public interface StoreService extends GenericApiService<StoreDto> {
 }

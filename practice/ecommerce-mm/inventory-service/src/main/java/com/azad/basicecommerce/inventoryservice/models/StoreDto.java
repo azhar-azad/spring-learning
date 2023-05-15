@@ -1,4 +1,4 @@
-package com.azad.basicecommerce.inventory.models;
+package com.azad.basicecommerce.inventoryservice.models;
 
 import com.azad.basicecommerce.auth.models.AppUser;
 import lombok.Getter;
@@ -8,7 +8,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-public class StoreResponse extends Store {
+public class StoreDto extends Store {
 
     private Long id;
     private AppUser storeOwner;

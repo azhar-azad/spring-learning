@@ -19,6 +19,7 @@ import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @ControllerAdvice
 public class RestExceptionHandler extends ResponseEntityExceptionHandler {
@@ -88,7 +89,7 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler({ MethodArgumentTypeMismatchException.class })
     public ResponseEntity<Object> handleMethodArgumentTypeMismatch(MethodArgumentTypeMismatchException ex, WebRequest request) {
 
-        String error = ex.getName() + " should be of type " + ex.getRequiredType().getName();
+        String error = ex.getName() + " should be of type " + Objects.requireNonNull(ex.getRequiredType()).getName();
 
         ApiError apiError = new ApiError(HttpStatus.BAD_REQUEST, ex.getLocalizedMessage(), error);
         return new ResponseEntity<Object>(apiError, new HttpHeaders(), apiError.getStatus());
@@ -103,6 +104,20 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 //        ApiError apiError = new ApiError(HttpStatus.UNAUTHORIZED, String.valueOf(ex.getCause()), error);
 //        return new ResponseEntity<>(apiError, new HttpHeaders(), apiError.getStatus());
 //    }
+
+    @ExceptionHandler({ ResourceNotFoundException.class })
+    public ResponseEntity<Object> handleResourceNotFoundException(ResourceNotFoundException ex, WebRequest request) {
+
+        ApiError apiError = new ApiError(HttpStatus.BAD_REQUEST, ex.getLocalizedMessage(), ex.getResource() + " not found with identifier: " + ex.getResourceIdentifier());
+        return new ResponseEntity<>(apiError, new HttpHeaders(), apiError.getStatus());
+    }
+
+    @ExceptionHandler({ UnauthorizedAccessException.class })
+    public ResponseEntity<Object> handleUnauthorizedAccessException(UnauthorizedAccessException ex, WebRequest request) {
+
+        ApiError apiError = new ApiError(HttpStatus.UNAUTHORIZED, ex.getLocalizedMessage(), "Unauthorized Access");
+        return new ResponseEntity<>(apiError, new HttpHeaders(), apiError.getStatus());
+    }
 
     /**
      * HttpRequestMethodNotSupportedException - This exception occurs when we send a requested with an unsupported HTTP method.
