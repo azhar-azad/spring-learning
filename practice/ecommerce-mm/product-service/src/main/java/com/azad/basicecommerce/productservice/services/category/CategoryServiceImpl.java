@@ -115,8 +115,10 @@ public class CategoryServiceImpl implements CategoryService {
         CategoryEntity entity = repository.findByCategoryUid(uid).orElseThrow(
                 () -> new ResourceNotFoundException("Category Not Found", "CATEGORY", "uid = " + uid));
 
-        if (updatedDto.getCategoryName() != null)
+        if (updatedDto.getCategoryName() != null) {
             entity.setCategoryName(updatedDto.getCategoryName());
+        }
+        entity.setCategoryUid(apiUtils.getHash("category", entity.getCategoryName()));
 
         CategoryEntity updatedEntity = repository.save(entity);
 

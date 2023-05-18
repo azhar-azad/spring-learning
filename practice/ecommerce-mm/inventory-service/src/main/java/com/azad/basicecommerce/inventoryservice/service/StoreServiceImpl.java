@@ -141,14 +141,13 @@ public class StoreServiceImpl implements StoreService {
             throw new UnauthorizedAccessException("Unauthorized. Logged in user is not the owner of this store");
         }
 
-        if (updatedDto.getStoreName() != null) {
+        if (updatedDto.getStoreName() != null)
             entityFromDb.setStoreName(updatedDto.getStoreName());
-            entityFromDb.setStoreUid(apiUtils.getHash("store", updatedDto.getStoreName()));
-        }
         if (updatedDto.getPictureUrl() != null)
             entityFromDb.setPictureUrl(updatedDto.getPictureUrl());
         if (updatedDto.getDiscount() != null)
             entityFromDb.setDiscount(updatedDto.getDiscount());
+        entityFromDb.setStoreUid(apiUtils.getHash("store", entityFromDb.getStoreName()));
 
         StoreDto savedDto = modelMapper.map(repository.save(entityFromDb), StoreDto.class);
         savedDto.setStoreOwner(modelMapper.map(loggedInUser, AppUser.class));

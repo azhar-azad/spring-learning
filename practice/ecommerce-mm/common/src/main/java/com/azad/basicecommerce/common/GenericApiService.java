@@ -19,9 +19,21 @@ import java.util.List;
  *          - Retrieve the Entity from database by ID.
  *          - If not found, throw an error that will be resolved by global exception handler.
  *          - If found, convert to DTO and return.
+ *      getByUid:
+ *          - Receive the Entity UID passed in request.
+ *          - Retrieve the Entity from database by UID.
+ *          - If not found, throw an error that will be resolved by global exception handler.
+ *          - If found, convert to DTO and return.
  *      updateById:
  *          - Receive the Entity ID and DTO class with updated values from request.
  *          - Retrieve the Entity from database by ID.
+ *          - If not found, throw an error that will be resolved by global exception handler.
+ *          - If found, update the Entity field(s) by the updated values from DTO.
+ *          - Save the Entity.
+ *          - Convert to DTO and return.
+ *      updateByUid:
+ *          - Receive the Entity UID and DTO class with updated values from request.
+ *          - Retrieve the Entity from database by UID.
  *          - If not found, throw an error that will be resolved by global exception handler.
  *          - If found, update the Entity field(s) by the updated values from DTO.
  *          - Save the Entity.
@@ -31,6 +43,13 @@ import java.util.List;
  *          - Retrieve the Entity from database by ID.
  *          - If not found, throw an error that will be resolved by global exception handler.
  *          - If found, delete from database and return nothing.
+ *      deleteByUid:
+ *          - Receive the Entity UID passed in request.
+ *          - Retrieve the Entity from database by UID.
+ *          - If not found, throw an error that will be resolved by global exception handler.
+ *          - If found, delete from database and return nothing.
+ *      getEntityCount():
+ *          - Return the total entity count in the table.
  *
  * @param <T> Entity DTO class that will resolve the data transfers between classes.
  */

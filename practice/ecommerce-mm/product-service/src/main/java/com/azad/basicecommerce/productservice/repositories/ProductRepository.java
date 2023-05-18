@@ -1,6 +1,7 @@
 package com.azad.basicecommerce.productservice.repositories;
 
 import com.azad.basicecommerce.productservice.models.product.ProductEntity;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
 
@@ -11,5 +12,6 @@ import java.util.Optional;
 public interface ProductRepository extends PagingAndSortingRepository<ProductEntity, Long> {
 
     Optional<ProductEntity> findByProductUid(String productUid);
-    Optional<List<ProductEntity>> findByCategoryId(Long categoryId);
+    Optional<List<ProductEntity>> findByCategoryId(Long categoryId, Pageable pageable);
+    Optional<List<ProductEntity>> findByStoreUid(String storeUid, Pageable pageable);
 }

@@ -62,4 +62,7 @@ public class ProductEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_id")
     private CategoryEntity category;
+
+    @Column(name = "store_uid", nullable = false)
+    private String storeUid;
 }
