@@ -1,10 +1,12 @@
 package com.azad.basicecommerce.productservice.models.product;
 
 import com.azad.basicecommerce.productservice.models.category.CategoryEntity;
+import com.azad.basicecommerce.productservice.models.review.ReviewEntity;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.List;
 
 @NoArgsConstructor
 @Data
@@ -65,4 +67,7 @@ public class ProductEntity {
 
     @Column(name = "store_uid", nullable = false)
     private String storeUid;
+
+    @OneToMany(mappedBy = "product", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<ReviewEntity> reviews;
 }
