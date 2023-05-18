@@ -1,6 +1,5 @@
 package com.azad.basicecommerce.productservice.models.review;
 
-import com.azad.basicecommerce.auth.models.AppUserEntity;
 import com.azad.basicecommerce.productservice.models.product.ProductEntity;
 import lombok.Data;
 import lombok.NoArgsConstructor;

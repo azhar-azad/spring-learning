@@ -58,6 +58,9 @@ public class ReviewServiceImpl implements ReviewService {
 
         ReviewEntity savedEntity = repository.save(entityFromDto);
 
+        product.setTotalReview(product.getTotalReview() + 1);
+        productRepository.save(product);
+
         ReviewDto dtoFromEntity = modelMapper.map(savedEntity, ReviewDto.class);
         dtoFromEntity.setProductUid(savedEntity.getProduct().getProductUid());
 
@@ -166,6 +169,13 @@ public class ReviewServiceImpl implements ReviewService {
         if (!entity.getReviewerUid().equals(authService.getLoggedInUser().getUserUid())) {
             apiUtils.printErrorLog("*** Review can only be deleted by the Reviewer himself/herself ***");
             throw new UnauthorizedAccessException("Unauthorized Access");
+        }
+
+        ProductEntity product = productRepository.findByProductUid(entity.getProduct().getProductUid())
+                .orElse(null);
+        if (product != null) {
+            product.setTotalReview(product.getTotalReview() - 1);
+            productRepository.save(product);
         }
 
         repository.delete(entity);
