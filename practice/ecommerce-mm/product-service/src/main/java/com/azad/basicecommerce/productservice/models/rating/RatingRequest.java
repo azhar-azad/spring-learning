@@ -1,4 +1,4 @@
-package com.azad.basicecommerce.productservice.models.review;
+package com.azad.basicecommerce.productservice.models.rating;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -7,8 +7,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-public class ReviewResponse extends Review {
+public class RatingRequest extends Rating {
 
     private String productUid;
-    private String reviewerUid;
 }

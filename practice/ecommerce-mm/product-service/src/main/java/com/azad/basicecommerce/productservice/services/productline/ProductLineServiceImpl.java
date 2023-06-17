@@ -31,7 +31,7 @@ public class ProductLineServiceImpl implements ProductLineService {
     @Override
     public ProductLineDto create(ProductLineDto dto) {
 
-        apiUtils.printInfoLog("*** PRODUCTLINE :: CREATE ***");
+        apiUtils.logInfo("*** PRODUCTLINE :: CREATE ***");
 
         ProductLineEntity entityFromDto = modelMapper.map(dto, ProductLineEntity.class);
         entityFromDto.setProductLineUid(apiUtils.getHash("productLine", dto.getProductLineName()));
@@ -44,7 +44,7 @@ public class ProductLineServiceImpl implements ProductLineService {
     @Override
     public List<ProductLineDto> getAll(PagingAndSorting ps) {
 
-        apiUtils.printInfoLog("*** PRODUCTLINE :: GET ALL ***");
+        apiUtils.logInfo("*** PRODUCTLINE :: GET ALL ***");
 
         List<ProductLineEntity> entitiesFromDb = repository.findAll(apiUtils.getPageable(ps)).getContent();
         if (entitiesFromDb.size() == 0)

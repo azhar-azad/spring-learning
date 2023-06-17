@@ -49,13 +49,13 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public ProductDto create(ProductDto dto) {
 
-        apiUtils.printInfoLog("*** PRODUCT :: CREATE ***");
+        apiUtils.logInfo("*** PRODUCT :: CREATE ***");
 
         AppUserEntity loggedInUser = authService.getLoggedInUser();
         String roleName = loggedInUser.getRole().getRoleName();
         if (!roleName.equalsIgnoreCase("SELLER")
                 && !roleName.equalsIgnoreCase("ADMIN")) {
-            apiUtils.printErrorLog("*** PRODUCT :: Only SELLER or ADMIN can add a product ***");
+            apiUtils.logError("*** PRODUCT :: Only SELLER or ADMIN can add a product ***");
             throw new UnauthorizedAccessException("Unauthorized Resource");
         }
 
@@ -65,7 +65,7 @@ public class ProductServiceImpl implements ProductService {
         StoreEntity store = storeRepository.findByStoreUid(dto.getStoreUid()).orElseThrow(
                 () -> new ResourceNotFoundException("Resource not found", "STORE", "uid = " + dto.getStoreUid()));
         if (!store.getStoreOwnerUid().equalsIgnoreCase(loggedInUser.getUserUid())) {
-            apiUtils.printErrorLog("*** PRODUCT :: Logged in user is not the owner of the store that will be linked to this product");
+            apiUtils.logError("*** PRODUCT :: Logged in user is not the owner of the store that will be linked to this product");
             throw new UnauthorizedAccessException("Unauthorized Resource");
         }
 
@@ -75,6 +75,7 @@ public class ProductServiceImpl implements ProductService {
         entityFromDto.setCategory(category);
         entityFromDto.setDiscount(0.0);
         entityFromDto.setAverageRating(0.0);
+        entityFromDto.setTotalRating(0L);
         entityFromDto.setTotalReview(0L);
 
         ProductEntity savedEntity = repository.save(entityFromDto);
@@ -93,7 +94,7 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public List<ProductDto> getAllByStoreUid(String storeUid, PagingAndSorting ps) {
 
-        apiUtils.printInfoLog("*** PRODUCT :: GET ALL BY STORE ***");
+        apiUtils.logInfo("*** PRODUCT :: GET ALL BY STORE ***");
 
         Optional<List<ProductEntity>> byStoreUid = repository.findByStoreUid(storeUid, apiUtils.getPageable(ps));
         if (!byStoreUid.isPresent())
@@ -115,7 +116,7 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public List<ProductDto> getAllByCategoryUid(String categoryUid, PagingAndSorting ps) {
 
-        apiUtils.printInfoLog("*** PRODUCT :: GET ALL BY CATEGORY ***");
+        apiUtils.logInfo("*** PRODUCT :: GET ALL BY CATEGORY ***");
 
         CategoryEntity category = categoryRepository.findByCategoryUid(categoryUid).orElseThrow(
                 () -> new ResourceNotFoundException("Resource Not Found", "CATEGORY", "uid = " + categoryUid));
@@ -144,7 +145,7 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public ProductDto getByUid(String uid) {
 
-        apiUtils.printInfoLog("*** PRODUCT :: GET BY UID ***");
+        apiUtils.logInfo("*** PRODUCT :: GET BY UID ***");
 
         ProductEntity entity = repository.findByProductUid(uid).orElseThrow(
                 () -> new ResourceNotFoundException("Resource Not Found", "PRODUCT", "uid = " + uid));
@@ -163,7 +164,7 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public ProductDto updateByUid(String uid, ProductDto updatedDto) {
 
-        apiUtils.printInfoLog("*** PRODUCT :: UPDATE BY UID ***");
+        apiUtils.logInfo("*** PRODUCT :: UPDATE BY UID ***");
 
         ProductEntity entity = repository.findByProductUid(uid).orElseThrow(
                 () -> new ResourceNotFoundException("Resource Not Found", "PRODUCT", "uid = " + uid));
@@ -174,7 +175,7 @@ public class ProductServiceImpl implements ProductService {
 
         if (!loggedInUser.getRole().getRoleName().equalsIgnoreCase("SELLER")
                 || !store.getStoreOwnerUid().equalsIgnoreCase(loggedInUser.getUserUid())) {
-            apiUtils.printErrorLog("*** PRODUCT :: Only SELLER can update the product of his/her store ***");
+            apiUtils.logError("*** PRODUCT :: Only SELLER can update the product of his/her store ***");
             throw new UnauthorizedAccessException("Unauthorized Resource");
         }
 
@@ -218,7 +219,7 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public void deleteByUid(String uid) {
 
-        apiUtils.printInfoLog("*** PRODUCT :: DELETE BY UID ***");
+        apiUtils.logInfo("*** PRODUCT :: DELETE BY UID ***");
 
         ProductEntity entity = repository.findByProductUid(uid).orElseThrow(
                 () -> new ResourceNotFoundException("Resource Not Found", "PRODUCT", "uid = " + uid));
@@ -229,7 +230,7 @@ public class ProductServiceImpl implements ProductService {
 
         if (!loggedInUser.getRole().getRoleName().equalsIgnoreCase("SELLER")
                 || !store.getStoreOwnerUid().equalsIgnoreCase(loggedInUser.getUserUid())) {
-            apiUtils.printErrorLog("*** PRODUCT :: Only SELLER can update the product of his/her store ***");
+            apiUtils.logError("*** PRODUCT :: Only SELLER can update the product of his/her store ***");
             throw new UnauthorizedAccessException("Unauthorized Resource");
         }
 

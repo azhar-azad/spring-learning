@@ -12,6 +12,7 @@
         - availableInStock
         - lowStockThreshold
         - averageRating
+        - totalRating
         - totalReview
         -- CategoryId (FK)
         ---- StoreId (FK) - Inventory

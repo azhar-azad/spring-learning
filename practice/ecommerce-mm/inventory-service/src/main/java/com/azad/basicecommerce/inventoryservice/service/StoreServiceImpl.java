@@ -50,7 +50,7 @@ public class StoreServiceImpl implements StoreService {
     @Override
     public StoreDto create(StoreDto dto) {
 
-        apiUtils.printInfoLog("*** STORE :: CREATE ***");
+        apiUtils.logInfo("*** STORE :: CREATE ***");
 
         AppUserEntity storeOwner = authService.getLoggedInUser();
 
@@ -81,7 +81,7 @@ public class StoreServiceImpl implements StoreService {
     @Override
     public List<StoreDto> getAll(PagingAndSorting ps) {
 
-        apiUtils.printInfoLog("*** STORE :: GET ALL ***");
+        apiUtils.logInfo("*** STORE :: GET ALL ***");
 
         AppUserEntity loggedInUser = authService.getLoggedInUser();
 
@@ -105,7 +105,7 @@ public class StoreServiceImpl implements StoreService {
     @Override
     public StoreDto getByUid(String uid) {
 
-        apiUtils.printInfoLog("*** STORE :: GET ***");
+        apiUtils.logInfo("*** STORE :: GET ***");
 
         StoreEntity entityFromDb = repository.findByStoreUid(uid).orElseThrow(
                 () -> new ResourceNotFoundException("Store not found with uid: " + uid, "STORE", "uid = " + uid));
@@ -129,7 +129,7 @@ public class StoreServiceImpl implements StoreService {
     @Override
     public StoreDto updateByUid(String uid, StoreDto updatedDto) {
 
-        apiUtils.printInfoLog("*** STORE :: UPDATE ***");
+        apiUtils.logInfo("*** STORE :: UPDATE ***");
 
         AppUserEntity loggedInUser = authService.getLoggedInUser();
 
@@ -137,7 +137,7 @@ public class StoreServiceImpl implements StoreService {
                 () -> new ResourceNotFoundException("Store not found with uid: " + uid, "STORE", "uid = " + uid));
 
         if (loggedInUserIsNotOwner(entityFromDb.getStoreOwnerUid(), loggedInUser.getUserUid())) {
-            apiUtils.printErrorLog("*** ERROR :: Logged in user is not the owner ***");
+            apiUtils.logError("*** ERROR :: Logged in user is not the owner ***");
             throw new UnauthorizedAccessException("Unauthorized. Logged in user is not the owner of this store");
         }
 
@@ -163,7 +163,7 @@ public class StoreServiceImpl implements StoreService {
     @Override
     public void deleteByUid(String uid) {
 
-        apiUtils.printInfoLog("*** STORE :: DELETE ***");
+        apiUtils.logInfo("*** STORE :: DELETE ***");
 
         AppUserEntity storeOwner = authService.getLoggedInUser();
 

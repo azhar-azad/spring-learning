@@ -7,7 +7,6 @@ import com.azad.basicecommerce.common.PagingAndSorting;
 import com.azad.basicecommerce.common.exceptions.ResourceNotFoundException;
 import com.azad.basicecommerce.common.exceptions.UnauthorizedAccessException;
 import com.azad.basicecommerce.productservice.models.product.ProductEntity;
-import com.azad.basicecommerce.productservice.models.review.Review;
 import com.azad.basicecommerce.productservice.models.review.ReviewDto;
 import com.azad.basicecommerce.productservice.models.review.ReviewEntity;
 import com.azad.basicecommerce.productservice.repositories.ProductRepository;
@@ -45,7 +44,7 @@ public class ReviewServiceImpl implements ReviewService {
     @Override
     public ReviewDto create(ReviewDto dto) {
 
-        apiUtils.printInfoLog("*** REVIEW :: CREATE ***");
+        apiUtils.logInfo("*** REVIEW :: CREATE ***");
 
         ProductEntity product = productRepository.findByProductUid(dto.getProductUid()).orElseThrow(
                 () -> new ResourceNotFoundException("Resource Not Found", "PRODUCT", "uid = " + dto.getProductUid()));
@@ -70,11 +69,11 @@ public class ReviewServiceImpl implements ReviewService {
     @Override
     public List<ReviewDto> getAll(PagingAndSorting ps) {
 
-        apiUtils.printInfoLog("*** REVIEW :: GET ALL BY USER ***");
+        apiUtils.logInfo("*** REVIEW :: GET ALL BY USER ***");
 
         AppUserEntity loggedInUser = authService.getLoggedInUser();
 
-        Optional<List<ReviewEntity>> byReviewerUid = repository.findByReviewerUid(loggedInUser.getUserUid());
+        Optional<List<ReviewEntity>> byReviewerUid = repository.findByReviewerUid(loggedInUser.getUserUid(), apiUtils.getPageable(ps));
 
         return byReviewerUid.map(reviewEntities -> reviewEntities.stream()
                 .map(entity -> {
@@ -87,12 +86,12 @@ public class ReviewServiceImpl implements ReviewService {
     @Override
     public List<ReviewDto> getAllByProduct(String productUid, PagingAndSorting ps) {
 
-        apiUtils.printInfoLog("*** REVIEW :: GET ALL BY PRODUCT ***");
+        apiUtils.logInfo("*** REVIEW :: GET ALL BY PRODUCT ***");
 
         ProductEntity product = productRepository.findByProductUid(productUid).orElseThrow(
                 () -> new ResourceNotFoundException("Resource Not Found", "PRODUCT", "uid = " + productUid));
 
-        Optional<List<ReviewEntity>> byProductId = repository.findByProductId(product.getId());
+        Optional<List<ReviewEntity>> byProductId = repository.findByProductId(product.getId(), apiUtils.getPageable(ps));
 
         return byProductId.map(reviewEntities -> reviewEntities.stream()
                 .map(entity -> {
@@ -111,7 +110,7 @@ public class ReviewServiceImpl implements ReviewService {
     @Override
     public ReviewDto getByUid(String uid) {
 
-        apiUtils.printInfoLog("*** REVIEW :: GET BY UID ***");
+        apiUtils.logInfo("*** REVIEW :: GET BY UID ***");
 
         ReviewEntity entity = repository.findByReviewUid(uid).orElseThrow(
                 () -> new ResourceNotFoundException("Review Not Found", "REVIEW", "uid = " + uid));
@@ -130,13 +129,13 @@ public class ReviewServiceImpl implements ReviewService {
     @Override
     public ReviewDto updateByUid(String uid, ReviewDto updatedDto) {
 
-        apiUtils.printInfoLog("*** REVIEW :: UPDATE BY UID ***");
+        apiUtils.logInfo("*** REVIEW :: UPDATE BY UID ***");
 
         ReviewEntity entity = repository.findByReviewUid(uid).orElseThrow(
                 () -> new ResourceNotFoundException("Review Not Found", "REVIEW", "uid = " + uid));
 
         if (!entity.getReviewerUid().equals(authService.getLoggedInUser().getUserUid())) {
-            apiUtils.printErrorLog("*** Review can only be updated by the Reviewer himself/herself ***");
+            apiUtils.logError("*** Review can only be updated by the Reviewer himself/herself ***");
             throw new UnauthorizedAccessException("Unauthorized Access");
         }
 
@@ -161,13 +160,13 @@ public class ReviewServiceImpl implements ReviewService {
     @Override
     public void deleteByUid(String uid) {
 
-        apiUtils.printInfoLog("*** REVIEW :: DELETE BY UID ***");
+        apiUtils.logInfo("*** REVIEW :: DELETE BY UID ***");
 
         ReviewEntity entity = repository.findByReviewUid(uid).orElseThrow(
                 () -> new ResourceNotFoundException("Review Not Found", "REVIEW", "uid = " + uid));
 
         if (!entity.getReviewerUid().equals(authService.getLoggedInUser().getUserUid())) {
-            apiUtils.printErrorLog("*** Review can only be deleted by the Reviewer himself/herself ***");
+            apiUtils.logError("*** Review can only be deleted by the Reviewer himself/herself ***");
             throw new UnauthorizedAccessException("Unauthorized Access");
         }
 

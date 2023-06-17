@@ -34,15 +34,15 @@ public class ApiUtils {
         LOG.info("*** Has Access: " + hasAccess + " ***");
     }
 
-    public void printInfoLog(String log) {
+    public void logInfo(String log) {
         LOG.info(log);
     }
 
-    public void printDebugLog(String log) {
+    public void logDebug(String log) {
         LOG.debug(log);
     }
 
-    public void printErrorLog(String log) {
+    public void logError(String log) {
         LOG.error(log);
     }
 

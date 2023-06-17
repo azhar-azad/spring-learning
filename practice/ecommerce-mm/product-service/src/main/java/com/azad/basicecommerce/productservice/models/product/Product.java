@@ -41,5 +41,6 @@ public class Product {
     protected String returnPolicy;
     protected String warranty;
     protected Double averageRating;
+    protected Long totalRating;
     protected Long totalReview;
 }

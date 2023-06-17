@@ -39,7 +39,7 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public CategoryDto create(CategoryDto dto) {
 
-        apiUtils.printInfoLog("*** CATEGORY :: CREATE ***");
+        apiUtils.logInfo("*** CATEGORY :: CREATE ***");
 
         Optional<ProductLineEntity> byProductLineUid = productLineRepository.findByProductLineUid(dto.getProductLineUid());
         if (!byProductLineUid.isPresent())
@@ -60,7 +60,7 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public List<CategoryDto> getAll(PagingAndSorting ps) {
 
-        apiUtils.printInfoLog("*** CATEGORY :: GET ALL ***");
+        apiUtils.logInfo("*** CATEGORY :: GET ALL ***");
 
         List<CategoryEntity> entitiesFromDb = repository.findAll(apiUtils.getPageable(ps)).getContent();
         if (entitiesFromDb.size() == 0)
@@ -77,7 +77,7 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public CategoryDto getById(Long id) {
 
-        apiUtils.printInfoLog("*** CATEGORY :: GET BY ID ***");
+        apiUtils.logInfo("*** CATEGORY :: GET BY ID ***");
 
         CategoryEntity entity = repository.findById(id).orElseThrow(
                 () -> new ResourceNotFoundException("Category Not Found", "CATEGORY", "id = " + id));
@@ -91,7 +91,7 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public CategoryDto getByUid(String uid) {
 
-        apiUtils.printInfoLog("*** CATEGORY :: GET BY UID ***");
+        apiUtils.logInfo("*** CATEGORY :: GET BY UID ***");
 
         CategoryEntity entity = repository.findByCategoryUid(uid).orElseThrow(
                 () -> new ResourceNotFoundException("Category Not Found", "CATEGORY", "uid = " + uid));
@@ -110,7 +110,7 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public CategoryDto updateByUid(String uid, CategoryDto updatedDto) {
 
-        apiUtils.printInfoLog("*** CATEGORY :: UPDATE BY UID ***");
+        apiUtils.logInfo("*** CATEGORY :: UPDATE BY UID ***");
 
         CategoryEntity entity = repository.findByCategoryUid(uid).orElseThrow(
                 () -> new ResourceNotFoundException("Category Not Found", "CATEGORY", "uid = " + uid));
@@ -136,7 +136,7 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public void deleteByUid(String uid) {
 
-        apiUtils.printInfoLog("*** CATEGORY :: DELETE BY UID ***");
+        apiUtils.logInfo("*** CATEGORY :: DELETE BY UID ***");
 
         CategoryEntity entity = repository.findByCategoryUid(uid).orElseThrow(
                 () -> new ResourceNotFoundException("Category Not Found", "CATEGORY", "uid = " + uid));

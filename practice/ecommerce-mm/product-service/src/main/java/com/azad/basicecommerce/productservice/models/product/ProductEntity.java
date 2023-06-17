@@ -1,6 +1,7 @@
 package com.azad.basicecommerce.productservice.models.product;
 
 import com.azad.basicecommerce.productservice.models.category.CategoryEntity;
+import com.azad.basicecommerce.productservice.models.rating.RatingEntity;
 import com.azad.basicecommerce.productservice.models.review.ReviewEntity;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -58,6 +59,9 @@ public class ProductEntity {
     @Column(name = "average_rating", nullable = false)
     private Double averageRating;
 
+    @Column(name = "total_rating", nullable = false)
+    private Long totalRating;
+
     @Column(name = "total_review", nullable = false)
     private Long totalReview;
 
@@ -70,4 +74,7 @@ public class ProductEntity {
 
     @OneToMany(mappedBy = "product", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<ReviewEntity> reviews;
+
+    @OneToMany(mappedBy = "product", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<RatingEntity> ratings;
 }
