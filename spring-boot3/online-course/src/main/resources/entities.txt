@@ -1,0 +1,72 @@
+Classes:
+    -- Role
+        - roleName
+
+    -- AppUser
+        - firstName
+        - lastName
+        - email
+        - password
+        - profilePicUrl
+        - roleId (FK: Role)
+
+    -- Instructor
+        - headline
+        - biography
+        - website
+        - userId (FK: AppUser)
+
+    -- Category
+        - categoryName
+
+    -- Subcategory
+        - subcategoryName
+        - categoryId (FK: Category)
+
+    -- Topic
+        - topicName
+        - subCategoryId (FK: Subcategory)
+
+    -- Tag
+        - tagName [ most_popular, new, beginner_favourites, bestseller, highest_rated ]
+
+    -- Level
+        - levelName [ beginner, intermediate, expert, all ]
+
+    -- Rating
+        - ratingValue
+        - userId (FK: AppUser)
+
+    -- Review
+        - reviewText
+        - userId (FK: AppUser)
+
+    -- Course
+        - title
+        - description
+        - language
+        - price
+        - totalRatings
+        - avgRating
+        - totalReviews
+        - totalEnrolled
+        - tagId (FK: Tag)
+
+Tables:
+    -- roles
+    -- users
+    -- categories
+    -- subcategories
+    -- topics
+    -- tags
+    -- levels
+    -- ratings
+    -- reviews
+    -- courses
+    -- category_course
+    -- subcategory_course
+    -- topic_course
+    -- course_tag
+    -- course_level
+    -- user_course
+    -- instructor_course
