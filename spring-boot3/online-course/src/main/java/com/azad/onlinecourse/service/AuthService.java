@@ -83,7 +83,7 @@ public class AuthService {
             loggedInUser.setLastName(updatedDto.getLastName());
         if (updatedDto.getProfilePicUrl() != null)
             loggedInUser.setProfilePicUrl(updatedDto.getProfilePicUrl());
-        loggedInUser.setUpdatedAt(LocalDateTime.now());
+        loggedInUser.setModifiedAt(LocalDateTime.now());
 
         AppUserEntity updatedUser = appUserRepository.save(loggedInUser);
 

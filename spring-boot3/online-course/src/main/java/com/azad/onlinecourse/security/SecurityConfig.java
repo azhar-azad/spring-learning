@@ -57,7 +57,8 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .httpBasic(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/" + API_VERSION + "/auth/**").permitAll())
+                        .requestMatchers("/api/" + API_VERSION + "/auth/**").permitAll()
+                        .requestMatchers("/api/" + API_VERSION + "/instructors/**").authenticated())
                 .exceptionHandling(ex -> ex.authenticationEntryPoint((request, response, authException) ->
                         response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Unauthorized")))
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));

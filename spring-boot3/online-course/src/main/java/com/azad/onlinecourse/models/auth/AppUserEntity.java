@@ -1,5 +1,6 @@
 package com.azad.onlinecourse.models.auth;
 
+import com.azad.onlinecourse.models.instructor.InstructorEntity;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -36,7 +37,7 @@ public class AppUserEntity {
     private LocalDateTime createdAt;
 
     @Column(name = "updated_at")
-    private LocalDateTime updatedAt;
+    private LocalDateTime modifiedAt;
 
     private boolean enabled;
     private boolean expired;
@@ -45,4 +46,8 @@ public class AppUserEntity {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "role_id")
     private RoleEntity role = new RoleEntity();
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "instructor_id", referencedColumnName = "instructor_id")
+    private InstructorEntity instructor;
 }
