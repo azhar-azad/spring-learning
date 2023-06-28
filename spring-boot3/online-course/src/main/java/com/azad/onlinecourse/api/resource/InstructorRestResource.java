@@ -1,7 +1,7 @@
 package com.azad.onlinecourse.api.resource;
 
 import com.azad.onlinecourse.api.assembler.InstructorResponseModelAssembler;
-import com.azad.onlinecourse.common.GenericApiRestController;
+import com.azad.onlinecourse.common.generics.GenericApiRestController;
 import com.azad.onlinecourse.models.instructor.InstructorDto;
 import com.azad.onlinecourse.models.instructor.InstructorRequest;
 import com.azad.onlinecourse.models.instructor.InstructorResponse;
@@ -14,9 +14,6 @@ import org.springframework.hateoas.EntityModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.w3c.dom.stylesheets.LinkStyle;
-
-import java.util.List;
 
 @RestController
 @RequestMapping(path = "/api/v1/instructors")

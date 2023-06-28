@@ -1,11 +1,11 @@
 package com.azad.onlinecourse.api.assembler;
 
-import com.azad.onlinecourse.api.resource.InstructorRestResource;
+import com.azad.onlinecourse.api.resource.CategoryRestResource;
 import com.azad.onlinecourse.common.generics.GenericApiResponseModelAssembler;
 import com.azad.onlinecourse.common.PagingAndSorting;
-import com.azad.onlinecourse.models.instructor.InstructorRequest;
-import com.azad.onlinecourse.models.instructor.InstructorResponse;
-import com.azad.onlinecourse.repository.InstructorRepository;
+import com.azad.onlinecourse.models.category.CategoryRequest;
+import com.azad.onlinecourse.models.category.CategoryResponse;
+import com.azad.onlinecourse.repository.CategoryRepository;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.CollectionModel;
@@ -20,29 +20,30 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @Component
-public class InstructorResponseModelAssembler implements GenericApiResponseModelAssembler<InstructorResponse> {
+public class CategoryResponseModelAssembler implements GenericApiResponseModelAssembler<CategoryResponse> {
 
     @Autowired
-    private InstructorRepository repository;
+    private CategoryRepository repository;
 
     @Override
-    public @NotNull EntityModel<InstructorResponse> toModel(@NotNull InstructorResponse response) {
-        EntityModel<InstructorResponse> responseEntityModel = EntityModel.of(response);
+    public @NotNull EntityModel<CategoryResponse> toModel(@NotNull CategoryResponse response) {
+
+        EntityModel<CategoryResponse> responseEntityModel = EntityModel.of(response);
 
         if (response.getError() != null) {
             return responseEntityModel;
         }
 
-        responseEntityModel.add(linkTo(methodOn(InstructorRestResource.class)
+        responseEntityModel.add(linkTo(methodOn(CategoryRestResource.class)
                 .getEntity(response.getId()))
                 .withSelfRel());
-        responseEntityModel.add(linkTo(methodOn(InstructorRestResource.class)
-                .updateEntity(response.getId(), new InstructorRequest()))
+        responseEntityModel.add(linkTo(methodOn(CategoryRestResource.class)
+                .updateEntity(response.getId(), new CategoryRequest()))
                 .withRel("edit"));
-        responseEntityModel.add(linkTo(methodOn(InstructorRestResource.class)
+        responseEntityModel.add(linkTo(methodOn(CategoryRestResource.class)
                 .deleteEntity(response.getId()))
                 .withRel("remove"));
-        responseEntityModel.add(linkTo(methodOn(InstructorRestResource.class)
+        responseEntityModel.add(linkTo(methodOn(CategoryRestResource.class)
                 .getAllEntities(defaultPage, defaultLimit, "", defaultOrder))
                 .withRel(IanaLinkRelations.COLLECTION));
 
@@ -50,8 +51,8 @@ public class InstructorResponseModelAssembler implements GenericApiResponseModel
     }
 
     @Override
-    public CollectionModel<EntityModel<InstructorResponse>> toCollectionModel(Iterable<? extends InstructorResponse> responses) {
-        List<EntityModel<InstructorResponse>> responseEntityModels = new ArrayList<>();
+    public CollectionModel<EntityModel<CategoryResponse>> toCollectionModel(Iterable<? extends CategoryResponse> responses) {
+        List<EntityModel<CategoryResponse>> responseEntityModels = new ArrayList<>();
 
         responses.forEach(response -> responseEntityModels.add(toModel(response)));
 
@@ -59,10 +60,10 @@ public class InstructorResponseModelAssembler implements GenericApiResponseModel
     }
 
     @Override
-    public CollectionModel<EntityModel<InstructorResponse>> getCollectionModel(Iterable<? extends InstructorResponse> responses, PagingAndSorting ps) {
-        CollectionModel<EntityModel<InstructorResponse>> responseCollectionModel = toCollectionModel(responses);
+    public CollectionModel<EntityModel<CategoryResponse>> getCollectionModel(Iterable<? extends CategoryResponse> responses, PagingAndSorting ps) {
+        CollectionModel<EntityModel<CategoryResponse>> responseCollectionModel = toCollectionModel(responses);
 
-        responseCollectionModel.add(linkTo(methodOn(InstructorRestResource.class)
+        responseCollectionModel.add(linkTo(methodOn(CategoryRestResource.class)
                 .getAllEntities(ps.getPage(), ps.getLimit(), ps.getSort(), ps.getOrder()))
                 .withSelfRel());
 
@@ -77,15 +78,15 @@ public class InstructorResponseModelAssembler implements GenericApiResponseModel
     }
 
     @Override
-    public void addNextLink(CollectionModel<EntityModel<InstructorResponse>> collectionModel, PagingAndSorting ps) {
-        collectionModel.add(linkTo(methodOn(InstructorRestResource.class)
+    public void addNextLink(CollectionModel<EntityModel<CategoryResponse>> collectionModel, PagingAndSorting ps) {
+        collectionModel.add(linkTo(methodOn(CategoryRestResource.class)
                 .getAllEntities(ps.getPage() + 1, ps.getLimit(), ps.getSort(), ps.getOrder()))
                 .withRel(IanaLinkRelations.NEXT));
     }
 
     @Override
-    public void addPrevLink(CollectionModel<EntityModel<InstructorResponse>> collectionModel, PagingAndSorting ps) {
-        collectionModel.add(linkTo(methodOn(InstructorRestResource.class)
+    public void addPrevLink(CollectionModel<EntityModel<CategoryResponse>> collectionModel, PagingAndSorting ps) {
+        collectionModel.add(linkTo(methodOn(CategoryRestResource.class)
                 .getAllEntities(ps.getPage() - 1, ps.getLimit(), ps.getSort(), ps.getOrder()))
                 .withRel(IanaLinkRelations.PREV));
     }

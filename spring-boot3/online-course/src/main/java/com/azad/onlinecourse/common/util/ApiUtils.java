@@ -1,11 +1,17 @@
-package com.azad.onlinecourse.common;
+package com.azad.onlinecourse.common.util;
 
+import com.azad.onlinecourse.common.PagingAndSorting;
+import com.azad.onlinecourse.common.exception.ApiError;
+import com.azad.onlinecourse.common.exception.ResourceNotFoundException;
+import com.azad.onlinecourse.common.exception.UnauthorizedAccessException;
+import com.azad.onlinecourse.common.exception.UserNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 
 import java.util.Arrays;
@@ -22,25 +28,44 @@ public class ApiUtils {
     @Value("${default_sort_order}")
     private String defaultOrder;
 
-    private static final Logger LOG = LoggerFactory.getLogger(ApiUtils.class);
+    private Logger logger = LoggerFactory.getLogger(ApiUtils.class);
 
-    public void printRequestInfo(String url, String method, String hasAccess) {
-        LOG.info("*** REQUEST RECEIVED ***");
-        LOG.info("*** URL: " + url + " ***");
-        LOG.info("*** Method: " + method.toUpperCase() + " ***");
-        LOG.info("*** Access: " + hasAccess + " ***");
+    public void printRequestInfo(Class _class, String url, String method, String hasAccess) {
+        logger = LoggerFactory.getLogger(_class);
+        logger.info(">>> URL: " + url + " <<<");
+        logger.info(">>> Method: " + method.toUpperCase() + " <<<");
+        logger.info(">>> Access: " + hasAccess + " <<<\n");
     }
 
-    public void logInfo(String log) {
-        LOG.info(log);
+    public void logInfo(Class _class, String log) {
+        logger = LoggerFactory.getLogger(_class);
+        logger.info(">>>> {} <<<<", log);
     }
 
-    public void logDebug(String log) {
-        LOG.debug(log);
+    public void logDebug(Class _class, String log) {
+        logger = LoggerFactory.getLogger(_class);
+        logger.debug(">>>> {} <<<<", log);
     }
 
-    public void logError(String log) {
-        LOG.error(log);
+    public void logError(Class _class, String log) {
+        logger = LoggerFactory.getLogger(_class);
+        logger.error(">>>> {} <<<<", log);
+    }
+
+    public ApiError getApiErrorForUnauthorizedAccess(UnauthorizedAccessException ex) {
+        return new ApiError(HttpStatus.UNAUTHORIZED, ex.getLocalizedMessage(),
+                "Logged in user doesn't have access or is not the owner of this resource. " +
+                        "Valid accesses are " + ex.getValidAccess());
+    }
+
+    public ApiError getApiErrorForResourceNotFound(ResourceNotFoundException ex) {
+        return new ApiError(HttpStatus.NOT_FOUND, ex.getLocalizedMessage(),
+                ex.getResource() + " not found with identifier: " + ex.getResourceIdentifier());
+    }
+
+    public ApiError getApiErrorForUserNotFound(UserNotFoundException ex) {
+        return new ApiError(HttpStatus.BAD_REQUEST, ex.getLocalizedMessage(),
+                "User not found with the identifier passed");
     }
 
     public Pageable getPageable(PagingAndSorting ps) {

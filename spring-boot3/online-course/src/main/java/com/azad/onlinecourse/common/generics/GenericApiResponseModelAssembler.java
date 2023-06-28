@@ -1,5 +1,6 @@
-package com.azad.onlinecourse.common;
+package com.azad.onlinecourse.common.generics;
 
+import com.azad.onlinecourse.common.PagingAndSorting;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.hateoas.CollectionModel;

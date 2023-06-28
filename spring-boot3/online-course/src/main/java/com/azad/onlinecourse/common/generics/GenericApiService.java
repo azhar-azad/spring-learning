@@ -1,4 +1,6 @@
-package com.azad.onlinecourse.common;
+package com.azad.onlinecourse.common.generics;
+
+import com.azad.onlinecourse.common.PagingAndSorting;
 
 import java.util.List;
 

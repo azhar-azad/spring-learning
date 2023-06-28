@@ -1,8 +1,7 @@
 package com.azad.onlinecourse.service;
 
-import com.azad.onlinecourse.common.ApiUtils;
+import com.azad.onlinecourse.common.util.ApiUtils;
 import com.azad.onlinecourse.common.PagingAndSorting;
-import com.azad.onlinecourse.models.auth.AppUser;
 import com.azad.onlinecourse.models.auth.AppUserEntity;
 import com.azad.onlinecourse.models.instructor.InstructorDto;
 import com.azad.onlinecourse.models.instructor.InstructorEntity;

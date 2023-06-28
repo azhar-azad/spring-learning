@@ -13,6 +13,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Set;
 
 @Service
 public class AuthService {
@@ -112,5 +114,17 @@ public class AuthService {
         String email = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         return securityUtils.getUserByEmail(email);
+    }
+
+    public boolean isUserAuthorized(String userRole, Set<String> authorizedRoles) {
+        return authorizedRoles.contains(userRole);
+    }
+
+    public boolean isUserAuthorized(String userRole, String... authorizedRoles) {
+        for (String authorizedRole: authorizedRoles) {
+            if (userRole.equalsIgnoreCase(authorizedRole))
+                return true;
+        }
+        return false;
     }
 }

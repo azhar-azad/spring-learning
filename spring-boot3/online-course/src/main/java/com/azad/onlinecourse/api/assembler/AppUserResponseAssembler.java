@@ -1,7 +1,7 @@
 package com.azad.onlinecourse.api.assembler;
 
 import com.azad.onlinecourse.api.resource.AuthRestResource;
-import com.azad.onlinecourse.common.GenericApiResponseModelAssembler;
+import com.azad.onlinecourse.common.generics.GenericApiResponseModelAssembler;
 import com.azad.onlinecourse.common.PagingAndSorting;
 import com.azad.onlinecourse.models.auth.AppUserResponse;
 import jakarta.validation.constraints.NotNull;
@@ -17,6 +17,9 @@ public class AppUserResponseAssembler implements GenericApiResponseModelAssemble
     @Override
     public @NotNull EntityModel<AppUserResponse> toModel(@NotNull AppUserResponse response) {
         EntityModel<AppUserResponse> responseEntityModel = EntityModel.of(response);
+        if (response.getError() != null) {
+            return responseEntityModel;
+        }
         responseEntityModel.add(linkTo(methodOn(AuthRestResource.class).getUser()).withSelfRel());
         return responseEntityModel;
     }

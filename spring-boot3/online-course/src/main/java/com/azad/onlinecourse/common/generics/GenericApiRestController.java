@@ -1,4 +1,4 @@
-package com.azad.onlinecourse.common;
+package com.azad.onlinecourse.common.generics;
 
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;

@@ -1,4 +1,4 @@
-package com.azad.onlinecourse.config;
+package com.azad.onlinecourse.common.config;
 
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
