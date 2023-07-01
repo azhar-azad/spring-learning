@@ -1,7 +1,6 @@
 package com.azad.onlinecourse.api.resource;
 
 import com.azad.onlinecourse.api.assembler.CategoryResponseModelAssembler;
-import com.azad.onlinecourse.common.exception.ApiError;
 import com.azad.onlinecourse.common.exception.ResourceNotFoundException;
 import com.azad.onlinecourse.common.exception.UnauthorizedAccessException;
 import com.azad.onlinecourse.common.generics.GenericApiRestController;
@@ -10,7 +9,11 @@ import com.azad.onlinecourse.common.util.ApiUtils;
 import com.azad.onlinecourse.models.category.CategoryDto;
 import com.azad.onlinecourse.models.category.CategoryRequest;
 import com.azad.onlinecourse.models.category.CategoryResponse;
+import com.azad.onlinecourse.models.subcategory.SubcategoryDto;
+import com.azad.onlinecourse.models.subcategory.SubcategoryRequest;
+import com.azad.onlinecourse.models.subcategory.SubcategoryResponse;
 import com.azad.onlinecourse.service.CategoryService;
+import com.azad.onlinecourse.service.SubcategoryService;
 import jakarta.validation.Valid;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +30,8 @@ import java.util.List;
 public class CategoryRestResource implements GenericApiRestController<CategoryRequest, CategoryResponse> {
 
     private final String BASE_URL = "/api/v1/categories";
-    private final CategoryResponse responseWithError = new CategoryResponse();
+    private final CategoryResponse globalCategoryResponse = new CategoryResponse();
+    private final SubcategoryResponse globalSubcategoryResponse = new SubcategoryResponse();
 
     @Autowired
     private ModelMapper modelMapper;
@@ -35,13 +39,40 @@ public class CategoryRestResource implements GenericApiRestController<CategoryRe
     @Autowired
     private ApiUtils apiUtils;
 
-    private final CategoryService service;
+    @Autowired
+    private SubcategoryService subcategoryService;
+
+    private final CategoryService categoryService;
     private final CategoryResponseModelAssembler assembler;
 
     @Autowired
-    public CategoryRestResource(CategoryService service, CategoryResponseModelAssembler assembler) {
-        this.service = service;
+    public CategoryRestResource(CategoryService categoryService, CategoryResponseModelAssembler assembler) {
+        this.categoryService = categoryService;
         this.assembler = assembler;
+    }
+
+    @PostMapping(path = "/{categoryId}/subcategories")
+    public ResponseEntity<EntityModel<SubcategoryResponse>> createSubcategory(
+            @Valid @PathVariable("categoryId") Long categoryId, @Valid @RequestBody SubcategoryRequest request) {
+
+        apiUtils.printRequestInfo(CategoryRestResource.class, BASE_URL + "/" + categoryId + "/subcategories", "GET", "ADMIN");
+
+        SubcategoryDto dtoFromService;
+        try {
+            dtoFromService = subcategoryService.create(modelMapper.map(request, SubcategoryDto.class));
+        } catch (UnauthorizedAccessException ex) {
+            globalSubcategoryResponse.setError(apiUtils.getApiErrorForUnauthorizedAccess(ex));
+//            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(assembler.toModel(globalSubcategoryResponse));
+        } catch (RuntimeException ex) {
+            return ResponseEntity.internalServerError().build();
+        }
+        apiUtils.logInfo(CategoryRestResource.class, "CATEGORY :: CREATE: SUCCESS");
+
+//        return new ResponseEntity<>(
+//                assembler.toModel(modelMapper.map(dtoFromService, CategoryResponse.class)),
+//                HttpStatus.CREATED);
+
+        return null;
     }
 
     @PostMapping
@@ -52,7 +83,7 @@ public class CategoryRestResource implements GenericApiRestController<CategoryRe
 
         CategoryDto dtoFromService;
         try {
-            dtoFromService = service.create(modelMapper.map(request, CategoryDto.class));
+            dtoFromService = categoryService.create(modelMapper.map(request, CategoryDto.class));
         } catch (UnauthorizedAccessException ex) {
             return handleResponseForUnauthorizedAccess(ex);
         } catch (RuntimeException ex) {
@@ -79,7 +110,7 @@ public class CategoryRestResource implements GenericApiRestController<CategoryRe
 
         List<CategoryDto> dtosFromService;
         try {
-            dtosFromService = service.getAll(
+            dtosFromService = categoryService.getAll(
                     new PagingAndSorting(page > 0 ? page - 1 : page, limit, sort, order));
         } catch (RuntimeException ex) {
             return ResponseEntity.internalServerError().build();
@@ -106,7 +137,7 @@ public class CategoryRestResource implements GenericApiRestController<CategoryRe
 
         CategoryDto dtoFromService;
         try {
-            dtoFromService = service.getById(id);
+            dtoFromService = categoryService.getById(id);
         } catch (UnauthorizedAccessException ex) {
             return handleResponseForUnauthorizedAccess(ex);
         } catch (ResourceNotFoundException ex) {
@@ -134,7 +165,7 @@ public class CategoryRestResource implements GenericApiRestController<CategoryRe
 
         CategoryDto dtoFromService;
         try {
-            dtoFromService = service.updateById(id, modelMapper.map(updatedRequest, CategoryDto.class));
+            dtoFromService = categoryService.updateById(id, modelMapper.map(updatedRequest, CategoryDto.class));
         } catch (UnauthorizedAccessException ex) {
             return handleResponseForUnauthorizedAccess(ex);
         } catch (ResourceNotFoundException ex) {
@@ -159,7 +190,7 @@ public class CategoryRestResource implements GenericApiRestController<CategoryRe
         apiUtils.printRequestInfo(CategoryRestResource.class, BASE_URL + "/" + id, "DELETE", "ADMIN");
 
         try {
-            service.deleteById(id);
+            categoryService.deleteById(id);
         } catch (UnauthorizedAccessException ex) {
             return handleResponseForUnauthorizedAccess(ex);
         } catch (ResourceNotFoundException ex) {
@@ -173,12 +204,12 @@ public class CategoryRestResource implements GenericApiRestController<CategoryRe
     }
 
     private ResponseEntity<EntityModel<CategoryResponse>> handleResponseForUnauthorizedAccess(UnauthorizedAccessException ex) {
-        responseWithError.setError(apiUtils.getApiErrorForUnauthorizedAccess(ex));
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(assembler.toModel(responseWithError));
+        globalCategoryResponse.setError(apiUtils.getApiErrorForUnauthorizedAccess(ex));
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(assembler.toModel(globalCategoryResponse));
     }
 
     private ResponseEntity<EntityModel<CategoryResponse>> handleResponseForResourceNotFound(ResourceNotFoundException ex) {
-        responseWithError.setError(apiUtils.getApiErrorForResourceNotFound(ex));
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(assembler.toModel(responseWithError));
+        globalCategoryResponse.setError(apiUtils.getApiErrorForResourceNotFound(ex));
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(assembler.toModel(globalCategoryResponse));
     }
 }

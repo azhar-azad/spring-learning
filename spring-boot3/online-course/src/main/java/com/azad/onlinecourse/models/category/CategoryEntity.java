@@ -1,10 +1,12 @@
 package com.azad.onlinecourse.models.category;
 
+import com.azad.onlinecourse.models.subcategory.SubcategoryEntity;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @NoArgsConstructor
 @Data
@@ -25,4 +27,7 @@ public class CategoryEntity {
 
     @Column(name = "modified_at")
     private LocalDateTime modifiedAt;
+
+    @OneToMany(mappedBy = "category", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<SubcategoryEntity> subcategories;
 }
