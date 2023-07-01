@@ -1,4 +1,4 @@
-package com.azad.hosteldiningapi.common.config;
+package com.azad.hosteldiningapi.common.configs;
 
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;

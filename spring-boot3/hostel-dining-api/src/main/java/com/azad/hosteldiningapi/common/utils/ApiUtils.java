@@ -1,4 +1,4 @@
-package com.azad.hosteldiningapi.common.util;
+package com.azad.hosteldiningapi.common.utils;
 
 import com.azad.hosteldiningapi.common.PagingAndSorting;
 import com.azad.hosteldiningapi.common.exceptions.ApiError;
@@ -14,6 +14,9 @@ import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
 import java.util.Arrays;
 
 @Component
@@ -28,28 +31,32 @@ public class ApiUtils {
     @Value("${default_sort_order}")
     private String defaultOrder;
 
-    private Logger logger = LoggerFactory.getLogger(ApiUtils.class);
+    private static Logger LOGGER = LoggerFactory.getLogger(ApiUtils.class);
 
     public void printRequestInfo(Class _class, String url, String method, String hasAccess) {
-        logger = LoggerFactory.getLogger(_class);
-        logger.info(">>> URL: " + url + " <<<");
-        logger.info(">>> Method: " + method.toUpperCase() + " <<<");
-        logger.info(">>> Access: " + hasAccess + " <<<\n");
+        LOGGER = LoggerFactory.getLogger(_class);
+        LOGGER.info(">>> URL: " + url + " <<<");
+        LOGGER.info(">>> Method: " + method.toUpperCase() + " <<<");
+        LOGGER.info(">>> Access: " + hasAccess + " <<<\n");
     }
 
-    public void logInfo(Class _class, String log) {
-        logger = LoggerFactory.getLogger(_class);
-        logger.info(">>>> {} <<<<", log);
+    public static void logInfo(Class _class, String log) {
+        LOGGER = LoggerFactory.getLogger(_class);
+        LOGGER.info(">>>> {} <<<<", log);
     }
 
-    public void logDebug(Class _class, String log) {
-        logger = LoggerFactory.getLogger(_class);
-        logger.debug(">>>> {} <<<<", log);
+    public static void logDebug(Class _class, String log) {
+        LOGGER = LoggerFactory.getLogger(_class);
+        LOGGER.debug(">>>> {} <<<<", log);
     }
 
-    public void logError(Class _class, String log) {
-        logger = LoggerFactory.getLogger(_class);
-        logger.error(">>>> {} <<<<", log);
+    public static void logError(Class _class, String log) {
+        LOGGER = LoggerFactory.getLogger(_class);
+        LOGGER.error(">>>> {} <<<<", log);
+    }
+
+    public static String generateMemberUid(String email, String firstName, String lastName) {
+        return generateUid("member", email, firstName, lastName);
     }
 
     public Pageable getPageable(PagingAndSorting ps) {
@@ -89,46 +96,52 @@ public class ApiUtils {
                 "User not found with the identifier passed");
     }
 
-//    private String hashSHA256(String entityName, String input) {
-//        MessageDigest digest; // create SHA-256 hash object
-//        try {
-//            digest = MessageDigest.getInstance("SHA-256");
-//        } catch (NoSuchAlgorithmException e) {
-//            LOG.info("Exception on hashSha256 method");
-//            throw new RuntimeException(e);
-//        }
-//        byte[] hash = digest.digest(input.getBytes()); // generate hash as a byte array
-//
-//        // take first 4 bytes (32 bits) of the hash and convert to hexadecimal format
-//        StringBuilder sb = new StringBuilder();
-//        for (int i = 0; i < 4; i++) {
-//            String hex = Integer.toHexString(hash[i] & 0xFF);
-//            if (hex.length() == 1) {
-//                sb.append('0');
-//            }
-//            sb.append(hex);
-//        }
-//
-//        return entityName + "_" + sb;
-//    }
+    private static String generateUid(String entityCode, String... properties) {
+        StringBuilder sb = new StringBuilder();
+        Arrays.stream(properties).forEach(sb::append);
+        return hashSHA256(entityCode, sb + getSecureRandomString());
+    }
 
-//    private String getSecureRandomString() {
-//        final String ALPHA_NUMERIC_SYMBOLS =
-//                "ABCDEFGHIJKLMNOPQRSTUVWXYZ" +
-//                        "abcdefghijklmnopqrstuvwxyz" +
-//                        "0123456789!@#$%^&*()_+-=[]{}|;':\",./<>?";
-//
-//        SecureRandom random = new SecureRandom();
-//        StringBuilder sb = new StringBuilder();
-//
-//        for (int i = 0; i < 32; i++) {
-//            int index = random.nextInt(ALPHA_NUMERIC_SYMBOLS.length());
-//            char randomChar = ALPHA_NUMERIC_SYMBOLS.charAt(index);
-//            sb.append(randomChar);
-//        }
-//
-//        return sb.toString();
-//    }
+    private static String hashSHA256(String entityName, String input) {
+        MessageDigest digest; // create SHA-256 hash object
+        try {
+            digest = MessageDigest.getInstance("SHA-256");
+        } catch (NoSuchAlgorithmException e) {
+            logInfo(ApiUtils.class, "Exception on hashSha256 method");
+            throw new RuntimeException(e);
+        }
+        byte[] hash = digest.digest(input.getBytes()); // generate hash as a byte array
+
+        // take first 4 bytes (32 bits) of the hash and convert to hexadecimal format
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < 4; i++) {
+            String hex = Integer.toHexString(hash[i] & 0xFF);
+            if (hex.length() == 1) {
+                sb.append('0');
+            }
+            sb.append(hex);
+        }
+
+        return entityName + "_" + sb;
+    }
+
+    private static String getSecureRandomString() {
+        final String ALPHA_NUMERIC_SYMBOLS =
+                "ABCDEFGHIJKLMNOPQRSTUVWXYZ" +
+                        "abcdefghijklmnopqrstuvwxyz" +
+                        "0123456789!@#$%^&*()_+-=[]{}|;':\",./<>?";
+
+        SecureRandom random = new SecureRandom();
+        StringBuilder sb = new StringBuilder();
+
+        for (int i = 0; i < 32; i++) {
+            int index = random.nextInt(ALPHA_NUMERIC_SYMBOLS.length());
+            char randomChar = ALPHA_NUMERIC_SYMBOLS.charAt(index);
+            sb.append(randomChar);
+        }
+
+        return sb.toString();
+    }
 
     private boolean isNumeric(String strValue) {
         return strValue != null && strValue.matches("[0-9.]+");

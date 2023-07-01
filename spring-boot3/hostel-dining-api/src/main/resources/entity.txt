@@ -7,7 +7,7 @@ ENTITIES
         - lastName
         - email
         - password
-        - lastLogin
+        - lastLoginAt
         - roleId (FK: Role)
 
     -- MemberInfo
