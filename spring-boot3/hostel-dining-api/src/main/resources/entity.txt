@@ -1,0 +1,69 @@
+ENTITIES
+    -- Role
+        - roleName
+
+    -- Member
+        - firstName
+        - lastName
+        - email
+        - password
+        - lastLogin
+        - roleId (FK: Role)
+
+    -- MemberInfo
+        - rollNo
+        - roomNo
+        - seatNo
+        - session
+        - department
+        - totalTokenReceived
+        - totalExpenses
+        - memberId (FK: Member)
+
+    -- Item
+        - itemName
+        - description
+        - price
+        - imageUrl
+
+    -- Meal
+        - mealType
+        - mealDate
+        - mealName
+        - description
+        - price
+        - orderAvailable
+        - orderExpirationTime
+
+    -- Token
+        - mealName
+        - memberEmail
+        - memberFullName
+        - expirationTime
+        - mealId (FK: Meal)
+        - memberId (FK: Member)
+
+CONSTANTS
+    -- MealTypes
+        - BREAKFAST
+        - LUNCH
+        - DINNER
+
+RELATIONS
+    - Role (1)-(n) Member
+    - Member (1)-(n) MemberInfo
+    - Item (n)-(n) Meal
+    - Meal (1)-(n) Token
+    - Member (1)-(n) Token
+
+TABLES
+    - roles
+    - members
+    - member_info
+    - items
+    - meals
+    - meal_item
+    - orders
+    - tokens
+
+
