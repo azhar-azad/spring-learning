@@ -1,4 +1,4 @@
-package com.azad.hosteldiningapi.common.generics;
+package com.azad.hosteldiningapi.models;
 
 import com.azad.hosteldiningapi.common.exceptions.ApiError;
 

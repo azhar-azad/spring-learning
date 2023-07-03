@@ -59,6 +59,10 @@ public class ApiUtils {
         return generateUid("member", email, firstName, lastName);
     }
 
+    public static String generateMemberInfoUid(String rollNo, String department, String session) {
+        return generateUid("memberinfo", rollNo, department, session);
+    }
+
     public Pageable getPageable(PagingAndSorting ps) {
 
         if (ps.getSort().isEmpty())

@@ -51,7 +51,7 @@ CONSTANTS
 
 RELATIONS
     - Role (1)-(n) Member
-    - Member (1)-(n) MemberInfo
+    - Member (1)-(1) MemberInfo
     - Item (n)-(n) Meal
     - Meal (1)-(n) Token
     - Member (1)-(n) Token

@@ -1,6 +1,7 @@
 package com.azad.hosteldiningapi.models.auth;
 
-import com.azad.hosteldiningapi.common.generics.DtoModel;
+import com.azad.hosteldiningapi.models.DtoModel;
+import com.azad.hosteldiningapi.models.memberinfo.MemberInfo;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

@@ -1,5 +1,6 @@
 package com.azad.hosteldiningapi.models.auth;
 
+import com.azad.hosteldiningapi.models.memberinfo.MemberInfoEntity;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -48,4 +49,7 @@ public class MemberEntity {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "role_id")
     private RoleEntity role = new RoleEntity();
+
+    @OneToOne(mappedBy = "member")
+    private MemberInfoEntity memberInfo;
 }

@@ -1,7 +1,8 @@
 package com.azad.hosteldiningapi.models.auth;
 
-import com.azad.hosteldiningapi.common.generics.PojoModel;
+import com.azad.hosteldiningapi.models.PojoModel;
 import com.azad.hosteldiningapi.common.utils.ApiUtils;
+import com.azad.hosteldiningapi.models.memberinfo.MemberInfo;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
@@ -43,6 +44,8 @@ public class Member extends PojoModel {
     @JsonSerialize(using = LocalDateTimeSerializer.class)
     @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     protected LocalDateTime lastLoginAt;
+
+    protected MemberInfo memberInfo;
 
     @Override
     public String getUid() {

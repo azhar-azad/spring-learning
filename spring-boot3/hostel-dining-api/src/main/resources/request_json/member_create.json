@@ -1,0 +1,13 @@
+{
+  "firstName": "Azhar Uddin",
+  "lastName": "Azad",
+  "email": "azad@gmail.com",
+  "password": "1234",
+  "memberInfo": {
+    "rollNo": "ASH1301055M",
+    "roomNo": "213",
+    "seatNo": "1",
+    "session": "2012-13",
+    "department": "CSTE"
+  }
+}

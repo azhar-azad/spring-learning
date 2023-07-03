@@ -1,7 +1,7 @@
 package com.azad.hosteldiningapi.models.auth;
 
 import com.azad.hosteldiningapi.common.exceptions.ApiError;
-import com.azad.hosteldiningapi.common.generics.ResponseModel;
+import com.azad.hosteldiningapi.models.ResponseModel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

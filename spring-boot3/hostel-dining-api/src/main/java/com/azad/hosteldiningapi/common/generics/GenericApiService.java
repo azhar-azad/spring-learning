@@ -9,6 +9,9 @@ public interface GenericApiService<T> {
     T create(T dto);
     List<T> getAll(PagingAndSorting ps);
     T getById(Long id);
+    T getByUid(String uid);
     T updateById(Long id, T updatedDto);
+    T updateByUid(String uid, T updatedDto);
     void deleteById(Long id);
+    void deleteByUid(String uid);
 }
