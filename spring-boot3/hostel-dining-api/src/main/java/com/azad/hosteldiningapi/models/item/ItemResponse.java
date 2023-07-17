@@ -1,18 +1,17 @@
-package com.azad.hosteldiningapi.models.auth;
+package com.azad.hosteldiningapi.models.item;
 
 import com.azad.hosteldiningapi.common.exceptions.ApiError;
 import com.azad.hosteldiningapi.models.ResponseModel;
-import lombok.Getter;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
+@EqualsAndHashCode(callSuper = true)
 @NoArgsConstructor
-@Getter
-@Setter
-public class MemberResponse extends Member implements ResponseModel {
+@Data
+public class ItemResponse extends Item implements ResponseModel {
 
     private Long id;
-    private Role role;
     private ApiError error;
 
     @Override

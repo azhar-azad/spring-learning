@@ -157,16 +157,4 @@ public class AuthService {
 
         return securityUtils.getUserByEmail(email);
     }
-
-    public boolean isUserAuthorized(String userRole, Set<String> authorizedRoles) {
-        return authorizedRoles.contains(userRole);
-    }
-
-    public boolean isUserAuthorized(String userRole, String... authorizedRoles) {
-        for (String authorizedRole: authorizedRoles) {
-            if (userRole.equalsIgnoreCase(authorizedRole))
-                return true;
-        }
-        return false;
-    }
 }

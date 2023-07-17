@@ -5,6 +5,7 @@ import com.azad.hosteldiningapi.common.exceptions.ApiError;
 import com.azad.hosteldiningapi.common.exceptions.ResourceNotFoundException;
 import com.azad.hosteldiningapi.common.exceptions.UnauthorizedAccessException;
 import com.azad.hosteldiningapi.common.exceptions.UserNotFoundException;
+import com.azad.hosteldiningapi.services.ItemServiceImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -33,13 +34,6 @@ public class ApiUtils {
 
     private static Logger LOGGER = LoggerFactory.getLogger(ApiUtils.class);
 
-    public void printRequestInfo(Class _class, String url, String method, String hasAccess) {
-        LOGGER = LoggerFactory.getLogger(_class);
-        LOGGER.info(">>> URL: " + url + " <<<");
-        LOGGER.info(">>> Method: " + method.toUpperCase() + " <<<");
-        LOGGER.info(">>> Access: " + hasAccess + " <<<\n");
-    }
-
     public static void logInfo(Class _class, String log) {
         LOGGER = LoggerFactory.getLogger(_class);
         LOGGER.info(">>>> {} <<<<", log);
@@ -61,6 +55,32 @@ public class ApiUtils {
 
     public static String generateMemberInfoUid(String rollNo, String department, String session) {
         return generateUid("memberinfo", rollNo, department, session);
+    }
+
+    public static String generateItemUid(String itemName, Double price) {
+        return generateUid("item", itemName, String.valueOf(price));
+    }
+
+    public boolean isUserAuthorized(String userRole, String... authorizedRoles) {
+        for (String authorizedRole: authorizedRoles) {
+            if (userRole.equalsIgnoreCase(authorizedRole))
+                return true;
+        }
+        return false;
+    }
+
+    public void handleUnauthorizedUserAccess(Class _class, String errorLog, String errorMsg, String userRole, String... authorizedRoles) {
+        if (!isUserAuthorized(userRole, authorizedRoles)) {
+            ApiUtils.logError(_class, errorLog);
+            throw new UnauthorizedAccessException(errorMsg);
+        }
+    }
+
+    public void printRequestInfo(Class _class, String url, String method, String hasAccess) {
+        LOGGER = LoggerFactory.getLogger(_class);
+        LOGGER.info(">>> URL: " + url + " <<<");
+        LOGGER.info(">>> Method: " + method.toUpperCase() + " <<<");
+        LOGGER.info(">>> Access: " + hasAccess + " <<<\n");
     }
 
     public Pageable getPageable(PagingAndSorting ps) {

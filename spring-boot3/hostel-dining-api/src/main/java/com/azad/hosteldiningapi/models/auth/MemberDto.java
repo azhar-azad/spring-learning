@@ -13,4 +13,9 @@ public class MemberDto extends Member implements DtoModel {
 
     private Long id;
     private String roleName;
+
+    @Override
+    public Long getId() {
+        return id;
+    }
 }
