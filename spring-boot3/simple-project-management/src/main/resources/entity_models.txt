@@ -1,5 +1,5 @@
 1. Role
-    - roleName (Project_Manager, Implementation_Member, Developer_Lead, QA_Lead, Developer, QA)
+    - roleName (Project_Manager, Impl_Member, Developer_Lead, QA_Lead, Developer, QA)
 
 1. User
     - user_id
@@ -20,32 +20,32 @@
     - board_name
     - project_id (FK: Project.project_id)
 
-4. Epic [ Implementation_Member ]
+4. Epic [ Impl_Member ]
     - epic_name
     - epic_description
     - issue_details_id (FK: Issue_Details.issue_details_id)
 
 5. Story [ Developer_Lead, QA_Lead ]
     - story_summary
-    - story_details
+    - story_description
     - epic_id (FK: Epic.epic_id)
     - issue_details_id (FK: Issue_Details.issue_details_id)
 
 6. Task [ Developer, QA ]
     - task_summary
-    - task_details
+    - task_description
     - story_id (FK: Story.story_id)
     - issue_details_id (FK: Issue_Details.issue_details_id)
 
 7. Subtask [ Developer, QA ]
     - subtask_summary
-    - subtask_details
+    - subtask_description
     - task_id (FK: Task.task_id)
     - issue_details_id (FK: Issue_Details.issue_details_id)
 
 8. Bug [ Developer, QA ]
     - bug_summary
-    - bug_details
+    - bug_description
     - task_id (FK: Task.task_id)
     - subtask_id (FK: Subtask.subtask_id)
     - issue_details_id (FK: Issue_Details.issue_details_id)
