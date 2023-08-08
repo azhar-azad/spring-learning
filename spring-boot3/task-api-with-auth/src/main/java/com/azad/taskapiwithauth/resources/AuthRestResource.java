@@ -1,9 +1,9 @@
 package com.azad.taskapiwithauth.resources;
 
-import com.azad.taskapiwithauth.auth.AppUserDto;
-import com.azad.taskapiwithauth.auth.AppUserResponse;
-import com.azad.taskapiwithauth.auth.LoginRequest;
-import com.azad.taskapiwithauth.auth.RegistrationRequest;
+import com.azad.taskapiwithauth.models.auth.AppUserDto;
+import com.azad.taskapiwithauth.models.auth.AppUserResponse;
+import com.azad.taskapiwithauth.models.auth.LoginRequest;
+import com.azad.taskapiwithauth.models.auth.RegistrationRequest;
 import com.azad.taskapiwithauth.security.SecurityUtils;
 import com.azad.taskapiwithauth.services.AuthService;
 import jakarta.validation.Valid;

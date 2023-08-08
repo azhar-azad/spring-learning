@@ -1,6 +1,6 @@
 package com.azad.taskapiwithauth.repositories;
 
-import com.azad.taskapiwithauth.auth.RoleEntity;
+import com.azad.taskapiwithauth.models.auth.RoleEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

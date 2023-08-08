@@ -1,13 +1,18 @@
-package com.azad.taskapiwithauth.auth;
+package com.azad.taskapiwithauth.models.auth;
 
+import com.azad.taskapiwithauth.models.task.TaskEntity;
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @NoArgsConstructor
-@Data
+@Getter
+@Setter
 @Entity
 @Table(name = "users")
 public class AppUserEntity {
@@ -42,4 +47,7 @@ public class AppUserEntity {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "role_id")
     private RoleEntity role = new RoleEntity();
+
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<TaskEntity> tasks;
 }

@@ -1,9 +1,9 @@
 package com.azad.taskapiwithauth.services;
 
-import com.azad.taskapiwithauth.auth.AppUserDto;
-import com.azad.taskapiwithauth.auth.AppUserEntity;
-import com.azad.taskapiwithauth.auth.LoginRequest;
-import com.azad.taskapiwithauth.auth.RoleEntity;
+import com.azad.taskapiwithauth.models.auth.AppUserDto;
+import com.azad.taskapiwithauth.models.auth.AppUserEntity;
+import com.azad.taskapiwithauth.models.auth.LoginRequest;
+import com.azad.taskapiwithauth.models.auth.RoleEntity;
 import com.azad.taskapiwithauth.repositories.AppUserRepository;
 import com.azad.taskapiwithauth.repositories.RoleRepository;
 import com.azad.taskapiwithauth.security.SecurityUtils;

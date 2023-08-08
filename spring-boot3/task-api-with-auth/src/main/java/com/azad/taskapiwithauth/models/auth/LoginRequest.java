@@ -1,4 +1,4 @@
-package com.azad.taskapiwithauth.auth;
+package com.azad.taskapiwithauth.models.auth;
 
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;

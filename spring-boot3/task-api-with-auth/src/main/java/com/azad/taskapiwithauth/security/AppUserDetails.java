@@ -1,6 +1,6 @@
 package com.azad.taskapiwithauth.security;
 
-import com.azad.taskapiwithauth.auth.AppUserEntity;
+import com.azad.taskapiwithauth.models.auth.AppUserEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;

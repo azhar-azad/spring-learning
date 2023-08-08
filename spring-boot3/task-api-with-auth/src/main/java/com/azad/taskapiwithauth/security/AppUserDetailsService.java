@@ -1,6 +1,6 @@
 package com.azad.taskapiwithauth.security;
 
-import com.azad.taskapiwithauth.auth.AppUserEntity;
+import com.azad.taskapiwithauth.models.auth.AppUserEntity;
 import com.azad.taskapiwithauth.repositories.AppUserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
