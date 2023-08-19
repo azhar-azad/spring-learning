@@ -1,6 +1,7 @@
 package com.azad.taskapiwithauth.resources;
 
 import com.azad.taskapiwithauth.commons.PagingAndSorting;
+import com.azad.taskapiwithauth.commons.exceptions.ResourceNotFoundException;
 import com.azad.taskapiwithauth.models.task.TaskDto;
 import com.azad.taskapiwithauth.models.task.TaskRequest;
 import com.azad.taskapiwithauth.models.task.TaskResponse;
@@ -63,7 +64,15 @@ public class TaskRestResource {
     @GetMapping(path = "/{id}")
     public ResponseEntity<TaskResponse> getTask(@Valid @PathVariable("id") Long id) {
 
-        TaskDto dtoFromService = service.getById(id);
+        TaskDto dtoFromService;
+        try {
+            dtoFromService = service.getById(id);
+        } catch (ResourceNotFoundException ex) {
+            return ResponseEntity.notFound().build();
+        } catch (RuntimeException ex) {
+            return ResponseEntity.internalServerError().build();
+        }
+
         if (dtoFromService == null)
             return ResponseEntity.notFound().build();
 
@@ -76,7 +85,15 @@ public class TaskRestResource {
 
         TaskDto dto = modelMapper.map(updatedRequest, TaskDto.class);
 
-        TaskDto updatedDto = service.updateById(id, dto);
+        TaskDto updatedDto;
+        try {
+            updatedDto= service.updateById(id, dto);
+        } catch (ResourceNotFoundException ex) {
+            return ResponseEntity.notFound().build();
+        } catch (RuntimeException ex) {
+            return ResponseEntity.internalServerError().build();
+        }
+
 
         return new ResponseEntity<>(modelMapper.map(updatedDto, TaskResponse.class), HttpStatus.OK);
     }
@@ -84,7 +101,14 @@ public class TaskRestResource {
     @DeleteMapping(path = "/{id}")
     public ResponseEntity<?> deleteTask(@Valid @PathVariable("id") Long id) {
 
-        service.deleteById(id);
+        try {
+            service.deleteById(id);
+        } catch (ResourceNotFoundException ex) {
+            return ResponseEntity.notFound().build();
+        } catch (RuntimeException ex) {
+            return ResponseEntity.internalServerError().build();
+        }
+
         return ResponseEntity.ok("Task Deleted");
     }
 }

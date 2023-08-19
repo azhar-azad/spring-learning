@@ -1,6 +1,7 @@
 package com.azad.taskapiwithauth.services;
 
 import com.azad.taskapiwithauth.commons.PagingAndSorting;
+import com.azad.taskapiwithauth.commons.exceptions.ResourceNotFoundException;
 import com.azad.taskapiwithauth.commons.utils.ApiUtils;
 import com.azad.taskapiwithauth.models.auth.AppUserEntity;
 import com.azad.taskapiwithauth.models.task.Task;
@@ -90,7 +91,7 @@ public class TaskServiceImpl implements TaskService {
                 .filter(taskEntity -> Objects.equals(taskEntity.getId(), id)).toList();
 
         if (tasks.isEmpty())
-            return null;
+            throw new ResourceNotFoundException("Resource not found");
         if (tasks.size() > 1)
             throw new RuntimeException("How can there be two tasks with same taskId. Please investigate");
 
@@ -106,7 +107,7 @@ public class TaskServiceImpl implements TaskService {
                 .filter(taskEntity -> Objects.equals(taskEntity.getId(), id)).toList();
 
         if (tasks.isEmpty())
-            return null;
+            throw new ResourceNotFoundException("Resource not found");
         if (tasks.size() > 1)
             throw new RuntimeException("How can there be two tasks with same taskId. Please investigate");
 
