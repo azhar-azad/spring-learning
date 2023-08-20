@@ -1,6 +1,5 @@
 package com.azad.moviepedia.models.auth;
 
-import com.azad.moviepedia.models.memberinfo.MemberInfoEntity;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -16,7 +15,7 @@ public class MemberEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "member_id")
+    @Column(name = "user_id")
     private Long id;
 
     @Column(name = "email", nullable = false, unique = true)
@@ -31,6 +30,24 @@ public class MemberEntity {
     @Column(name = "member_from", nullable = false)
     private LocalDate memberFrom;
 
+    @Column(name = "first_name", nullable = false)
+    private String firstName;
+
+    @Column(name = "last_name", nullable = false)
+    private String lastName;
+
+    @Column(name = "occupation", nullable = false)
+    private String occupation;
+
+    @Column(name = "total_reviews", nullable = false)
+    private Integer totalReviews;
+
+    @Column(name = "total_ratings", nullable = false)
+    private Integer totalRatings;
+
+    @Column(name = "avg_rating_given", nullable = false)
+    private Double avgRatingGiven;
+
     private boolean enabled;
     private boolean expired;
     private boolean locked;
@@ -38,7 +55,4 @@ public class MemberEntity {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "role_id")
     private RoleEntity role = new RoleEntity();
-
-    @OneToOne(mappedBy = "member")
-    private MemberInfoEntity memberInfo;
 }

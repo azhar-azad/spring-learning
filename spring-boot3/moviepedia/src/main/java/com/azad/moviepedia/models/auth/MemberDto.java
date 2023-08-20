@@ -11,4 +11,5 @@ public class MemberDto extends Member {
 
     private Long id;
     private String roleName;
+    private Role role;
 }

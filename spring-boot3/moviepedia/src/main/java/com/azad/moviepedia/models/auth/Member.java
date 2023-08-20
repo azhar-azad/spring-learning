@@ -1,6 +1,5 @@
 package com.azad.moviepedia.models.auth;
 
-import com.azad.moviepedia.models.memberinfo.MemberInfo;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
@@ -11,6 +10,7 @@ import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -39,5 +39,18 @@ public class Member {
     @JsonDeserialize(using = LocalDateDeserializer.class)
     protected LocalDateTime memberFrom;
 
-    protected MemberInfo memberInfo;
+    @NotNull(message = "First name cannot be empty.")
+    @Size(min = 1, max = 50, message = "First name length has to be between 1 to 50 characters.")
+    protected String firstName;
+
+    @NotNull(message = "Last name cannot be empty.")
+    @Size(min = 1, max = 50, message = "Last name length has to be between 1 to 50 characters.")
+    protected String lastName;
+
+    @NotNull(message = "Occupation cannot be empty.")
+    protected String occupation;
+
+    protected Integer totalReviews;
+    protected Integer totalRatings;
+    protected Double avgRatingGiven;
 }
