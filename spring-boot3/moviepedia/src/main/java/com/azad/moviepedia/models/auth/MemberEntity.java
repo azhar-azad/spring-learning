@@ -2,13 +2,16 @@ package com.azad.moviepedia.models.auth;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @NoArgsConstructor
-@Data
+@Getter
+@Setter
 @Entity
 @Table(name = "users")
 public class MemberEntity {
@@ -27,7 +30,7 @@ public class MemberEntity {
     @Column(name = "last_login_at")
     private LocalDateTime lastLoginAt;
 
-    @Column(name = "member_from", nullable = false)
+    @Column(name = "registered_at", nullable = false)
     private LocalDate memberFrom;
 
     @Column(name = "first_name", nullable = false)
