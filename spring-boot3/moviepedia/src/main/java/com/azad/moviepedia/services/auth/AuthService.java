@@ -11,11 +11,13 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Service
 public class AuthService {
@@ -80,14 +82,48 @@ public class AuthService {
                 new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword());
         authenticationManager.authenticate(authToken);
 
-        return request.getEmail();
+        MemberEntity loggedInMember = memberRepository.findByEmail(request.getEmail()).orElseThrow(
+                () -> new RuntimeException("Member not found with email " + request.getEmail()));
+        loggedInMember.setLastLoginAt(LocalDateTime.now());
+        memberRepository.save(loggedInMember);
+
+        return loggedInMember.getEmail();
+    }
+
+    public MemberDto updateMember(MemberDto updatedDto) {
+        MemberEntity loggedInUser = getLoggedInMember();
+
+        if (updatedDto.getFirstName() != null)
+            loggedInUser.setFirstName(updatedDto.getFirstName());
+        if (updatedDto.getLastName() != null)
+            loggedInUser.setLastName(updatedDto.getLastName());
+        if (updatedDto.getOccupation() != null)
+            loggedInUser.setOccupation(updatedDto.getOccupation());
+
+        MemberEntity updatedUser = memberRepository.save(loggedInUser);
+
+        return modelMapper.map(updatedUser, MemberDto.class);
+    }
+
+    public void deleteMember() {
+        MemberEntity loggedInUser = getLoggedInMember();
+        memberRepository.delete(loggedInUser);
+    }
+
+    public void resetPassword(String updatedPassword) {
+        MemberEntity loggedInUser = getLoggedInMember();
+
+        String encodedPassword = passwordEncoder.encode(updatedPassword);
+        loggedInUser.setPassword(encodedPassword);
+
+        memberRepository.save(loggedInUser);
     }
 
     public boolean loggedInUserIsAdmin() {
-        return getLoggedInUser().getRole().getRoleName().equalsIgnoreCase("ADMIN");
+        return getLoggedInMember().getRole().getRoleName().equalsIgnoreCase("ADMIN");
     }
 
-    public MemberEntity getLoggedInUser() {
+    public MemberEntity getLoggedInMember() {
         String email = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         return securityUtils.getUserByEmail(email);

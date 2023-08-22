@@ -12,12 +12,16 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @NoArgsConstructor
-@Data
+@Getter
+@Setter
 public class Member {
 
     @NotNull(message = "Email cannot be empty.")
@@ -37,7 +41,7 @@ public class Member {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     @JsonSerialize(using = LocalDateSerializer.class)
     @JsonDeserialize(using = LocalDateDeserializer.class)
-    protected LocalDateTime memberFrom;
+    protected LocalDate memberFrom;
 
     @NotNull(message = "First name cannot be empty.")
     @Size(min = 1, max = 50, message = "First name length has to be between 1 to 50 characters.")
