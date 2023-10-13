@@ -30,9 +30,10 @@ public class MoviePeople {
 
     private MoviePeople() {}
 
-    public MoviePeople(MovieEntity movie, PeopleEntity people) {
+    public MoviePeople(MovieEntity movie, PeopleEntity people, String role) {
         this.movie = movie;
         this.people = people;
+        this.role = role;
         this.id = new MoviePeopleId(movie.getId(), people.getId());
     }
 

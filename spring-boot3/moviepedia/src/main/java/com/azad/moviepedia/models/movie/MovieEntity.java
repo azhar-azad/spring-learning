@@ -2,6 +2,7 @@ package com.azad.moviepedia.models.movie;
 
 import com.azad.moviepedia.models.composits.MoviePeople;
 import com.azad.moviepedia.models.people.PeopleEntity;
+import com.azad.moviepedia.models.people.PeopleRole;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -65,10 +66,15 @@ public class MovieEntity {
 
     public MovieEntity() {}
 
-    public void addPeople(PeopleEntity people) {
-        MoviePeople moviePeople = new MoviePeople(this, people);
+    public void addPeople(PeopleEntity people, PeopleRole peopleRole) {
+        MoviePeople moviePeople = new MoviePeople(this, people, peopleRole.name());
         peoples.add(moviePeople);
         people.getMovies().add(moviePeople);
+    }
+
+    public void addPeoples(List<PeopleEntity> peoples, PeopleRole peopleRole) {
+        for (PeopleEntity people: peoples)
+            addPeople(people, peopleRole);
     }
 
     public void removePeople(PeopleEntity people) {
