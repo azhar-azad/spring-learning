@@ -1,12 +1,11 @@
 package com.azad.moviepedia.common;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @NoArgsConstructor
 @AllArgsConstructor
-@Data
+@Getter
+@Setter
 public class PagingAndSorting {
 
     private int page;
