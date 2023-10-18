@@ -109,7 +109,7 @@ public class AuthController {
     }
 
     /*
-        Private Methods
+    Private Methods
      */
     private ResponseEntity<Map<String, String>> generateTokenAndSend(String email, HttpStatus httpStatus) {
 

@@ -61,6 +61,7 @@ public class AuthService {
                 () -> new RuntimeException("Role not found with name: " + roleName));
 
         MemberEntity member = modelMapper.map(dto, MemberEntity.class);
+        member.setDesignation(dto.getDesignation().getValue());
         member.setRole(role);
         member.setEnabled(true);
         member.setExpired(false);
@@ -94,7 +95,7 @@ public class AuthService {
         if (updatedDto.getLastName() != null)
             loggedInUser.setLastName(updatedDto.getLastName());
         if (updatedDto.getDesignation() != null)
-            loggedInUser.setDesignation(updatedDto.getDesignation());
+            loggedInUser.setDesignation(updatedDto.getDesignation().getValue());
 
         MemberEntity updatedUser = memberRepository.save(loggedInUser);
 
