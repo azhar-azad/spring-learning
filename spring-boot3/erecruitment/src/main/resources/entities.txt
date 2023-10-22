@@ -1,0 +1,32 @@
+##1 Role (roles)
+    - id (role_id)
+    - roleName
+
+##2 Member (users)
+    - id (user_id)
+    - email
+    - password
+    - lastLoginAt
+    - memberFrom
+    - firstName
+    - lastName
+    - designation
+    - enabled
+    - expired
+    - locked
+    - role_id (FK)
+
+##3 JobOpening (job_openings)
+    - id (opening_id)
+    - title
+    - description
+    - responsibilities
+    - requirements
+    - benefits
+    - location
+    - deadline
+    - numOfOpenPositions
+    - salaryMin
+    - salaryMax
+    - postedOn
+    - status [Draft, Unlisted, Publish-Ready, Published]
