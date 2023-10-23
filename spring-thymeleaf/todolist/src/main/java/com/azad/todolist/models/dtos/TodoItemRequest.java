@@ -9,4 +9,6 @@ import lombok.Setter;
 @Getter
 @Setter
 public class TodoItemRequest extends TodoItem {
+
+    private Long id;
 }

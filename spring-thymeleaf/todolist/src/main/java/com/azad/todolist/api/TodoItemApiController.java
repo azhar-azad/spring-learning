@@ -59,7 +59,7 @@ public class TodoItemApiController implements ApiController<TodoItemRequest, Tod
 
         List<TodoItemDto> dtos = service.getAll(new PagingAndSorting(
                 page > 0 ? page - 1 : page, limit, sort, order));
-        if (dtos.size() == 0)
+        if (dtos == null || dtos.isEmpty())
             return ResponseEntity.noContent().build();
 
         return new ResponseEntity<>(dtos.stream()
@@ -67,18 +67,47 @@ public class TodoItemApiController implements ApiController<TodoItemRequest, Tod
                 .collect(Collectors.toList()), HttpStatus.OK);
     }
 
+    @GetMapping(path = "/{id}")
     @Override
-    public ResponseEntity<TodoItemResponse> getEntity(Long id) {
-        return null;
+    public ResponseEntity<TodoItemResponse> getEntity(@PathVariable("id") Long id) {
+
+        TodoItemDto dto;
+        try {
+            dto = service.getById(id);
+        } catch (RuntimeException e) {
+            return ResponseEntity.notFound().build();
+        }
+
+        TodoItemResponse response = modelMapper.map(dto, TodoItemResponse.class);
+
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
+    @PutMapping(path = "/{id}")
     @Override
-    public ResponseEntity<TodoItemResponse> updateEntity(Long id, TodoItemRequest updatedRequest) {
-        return null;
+    public ResponseEntity<TodoItemResponse> updateEntity(
+            @PathVariable("id") Long id, @RequestBody TodoItemRequest updatedRequest) {
+
+        TodoItemDto dto;
+        try {
+            dto = service.updateById(id, modelMapper.map(updatedRequest, TodoItemDto.class));
+        } catch (RuntimeException e) {
+            return ResponseEntity.internalServerError().build();
+        }
+
+        return new ResponseEntity<>(modelMapper.map(dto, TodoItemResponse.class), HttpStatus.OK);
     }
 
+    @DeleteMapping(path = "/{id}")
     @Override
-    public ResponseEntity<?> deleteEntity(Long id) {
-        return null;
+    public ResponseEntity<?> deleteEntity(@PathVariable("id") Long id) {
+
+        try {
+            service.deleteById(id);
+        } catch (RuntimeException e) {
+            return ResponseEntity.internalServerError().build();
+        }
+
+        return ResponseEntity.ok("Todo Deleted");
     }
 }

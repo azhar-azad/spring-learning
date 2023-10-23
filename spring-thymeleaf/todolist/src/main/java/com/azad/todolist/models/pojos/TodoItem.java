@@ -24,8 +24,8 @@ import java.time.LocalDateTime;
 @Setter
 public class TodoItem {
 
-    @NotNull(message = "Todo item name cannot be null")
-    protected String name;
+    @NotNull(message = "Todo title cannot be null")
+    protected String title;
 
     protected String description;
     protected LocalDate dueDate;
@@ -36,7 +36,7 @@ public class TodoItem {
     @Enumerated(EnumType.STRING)
     protected TodoStatus status;
 
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     @JsonSerialize(using = LocalDateSerializer.class)
     @JsonDeserialize(using = LocalDateDeserializer.class)
     protected LocalDate createdAt;
