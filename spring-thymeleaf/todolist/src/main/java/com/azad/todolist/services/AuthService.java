@@ -1,9 +1,9 @@
 package com.azad.todolist.services;
 
-import com.azad.todolist.models.auth.LoginRequest;
-import com.azad.todolist.models.auth.MemberDto;
-import com.azad.todolist.models.auth.MemberEntity;
-import com.azad.todolist.models.auth.RoleEntity;
+import com.azad.todolist.models.dtos.LoginRequest;
+import com.azad.todolist.models.dtos.MemberDto;
+import com.azad.todolist.models.entities.MemberEntity;
+import com.azad.todolist.models.entities.RoleEntity;
 import com.azad.todolist.repositorites.MemberRepository;
 import com.azad.todolist.repositorites.RoleRepository;
 import com.azad.todolist.security.SecurityUtils;

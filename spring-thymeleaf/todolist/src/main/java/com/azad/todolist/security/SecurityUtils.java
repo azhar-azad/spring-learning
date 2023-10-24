@@ -4,7 +4,7 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
-import com.azad.todolist.models.auth.MemberEntity;
+import com.azad.todolist.models.entities.MemberEntity;
 import com.azad.todolist.repositorites.MemberRepository;
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;

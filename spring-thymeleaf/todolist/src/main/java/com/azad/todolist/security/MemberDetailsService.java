@@ -1,6 +1,6 @@
 package com.azad.todolist.security;
 
-import com.azad.todolist.models.auth.MemberEntity;
+import com.azad.todolist.models.entities.MemberEntity;
 import com.azad.todolist.repositorites.MemberRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;

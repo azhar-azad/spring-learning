@@ -1,6 +1,6 @@
 package com.azad.todolist.repositorites;
 
-import com.azad.todolist.models.auth.MemberEntity;
+import com.azad.todolist.models.entities.MemberEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

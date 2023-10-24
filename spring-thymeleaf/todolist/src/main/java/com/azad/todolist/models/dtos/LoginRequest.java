@@ -1,4 +1,4 @@
-package com.azad.todolist.models.auth;
+package com.azad.todolist.models.dtos;
 
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;

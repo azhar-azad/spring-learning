@@ -1,6 +1,10 @@
 package com.azad.todolist.api;
 
-import com.azad.todolist.models.auth.*;
+import com.azad.todolist.models.dtos.LoginRequest;
+import com.azad.todolist.models.dtos.MemberDto;
+import com.azad.todolist.models.dtos.MemberResponse;
+import com.azad.todolist.models.dtos.RegistrationRequest;
+import com.azad.todolist.models.entities.MemberEntity;
 import com.azad.todolist.security.SecurityUtils;
 import com.azad.todolist.services.AuthService;
 import jakarta.validation.Valid;

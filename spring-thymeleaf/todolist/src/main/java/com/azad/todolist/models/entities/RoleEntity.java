@@ -1,5 +1,6 @@
-package com.azad.todolist.models.auth;
+package com.azad.todolist.models.entities;
 
+import com.azad.todolist.models.entities.MemberEntity;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
