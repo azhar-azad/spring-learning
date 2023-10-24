@@ -110,4 +110,16 @@ public class TodoItemApiController implements ApiController<TodoItemRequest, Tod
 
         return ResponseEntity.ok("Todo Deleted");
     }
+
+    @DeleteMapping
+    public ResponseEntity<?> deleteAllEntities() {
+
+        try {
+            service.deleteAll();
+        } catch (RuntimeException e) {
+            return ResponseEntity.internalServerError().build();
+        }
+
+        return ResponseEntity.ok("All Todos Deleted");
+    }
 }

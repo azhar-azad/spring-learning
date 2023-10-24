@@ -34,6 +34,9 @@ public class TodoItemViewController {
                 null,
                 new ParameterizedTypeReference<>() {});
 
+        if (response.getStatusCode().equals(HttpStatus.NO_CONTENT))
+            return "todos";
+
         if (!response.getStatusCode().equals(HttpStatus.OK))
             throw new RuntimeException("ERROR ::: " + response.getStatusCode());
 
@@ -93,6 +96,13 @@ public class TodoItemViewController {
     public String deleteTodo(@PathVariable(value = "id") Long id) {
 
         restTemplate.delete(todoResourceUrl + "/" + id);
+        return "redirect:/todos/";
+    }
+
+    @GetMapping(path = "/delete/all")
+    public String deleteAllTodos() {
+
+        restTemplate.delete(todoResourceUrl);
         return "redirect:/todos/";
     }
 }
