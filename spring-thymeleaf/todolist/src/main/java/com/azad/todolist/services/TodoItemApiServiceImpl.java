@@ -92,4 +92,10 @@ public class TodoItemApiServiceImpl implements TodoItemApiService {
                 () -> new RuntimeException("Todo item not found with id: " + id));
         repository.delete(entity);
     }
+
+    @Override
+    public void deleteAll() {
+
+        repository.deleteAll();
+    }
 }
