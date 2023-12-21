@@ -1,0 +1,43 @@
+## Role
+    - id
+    - roleName
+
+## Member
+    - id
+    - ...
+    - role_id (FK)
+
+## MemberInfo
+    - id
+    - firstName
+    - lastName
+    - member_id (FK)
+
+## Item
+    - id
+    - itemName [movie/series/documentary/sports that will be shown]
+    - runtime
+
+## Hall
+    - id
+    - hallName
+    - floor
+
+## Screen
+    - id
+    - screenName
+    - totalSeats
+    - hall_id (FK)
+
+## Show
+    - id
+    - showType [MORNING, AFTERNOON, EVENING, NIGHT]
+    - screen_id (FK)
+    - item_id (FK)
+
+## Ticket
+    - id
+    - ticketNumber
+    - seatCount
+    - show_id (FK)
+    - member_info_id (FK)
