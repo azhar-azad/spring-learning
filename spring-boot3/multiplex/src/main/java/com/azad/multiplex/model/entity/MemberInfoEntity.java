@@ -26,12 +26,6 @@ public class MemberInfoEntity {
     @Column(name = "last_name", nullable = false)
     private String lastName;
 
-    @Column(name = "user_from", nullable = false)
-    private LocalDate memberFrom;
-
-    @Column(name = "last_login_at", nullable = false)
-    private LocalDateTime lastLoginAt;
-
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", referencedColumnName = "user_id")
     private MemberEntity member;

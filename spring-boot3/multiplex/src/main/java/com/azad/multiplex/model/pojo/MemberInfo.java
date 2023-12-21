@@ -28,14 +28,4 @@ public class MemberInfo {
     @NotBlank
     @Size(min = 1, max = 20, message = "Last name length must be between 1 to 20 characters")
     protected String lastName;
-
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
-    @JsonSerialize(using = LocalDateSerializer.class)
-    @JsonDeserialize(using = LocalDateDeserializer.class)
-    protected LocalDate memberFrom;
-
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
-    @JsonSerialize(using = LocalDateTimeSerializer.class)
-    @JsonDeserialize(using = LocalDateTimeDeserializer.class)
-    protected LocalDateTime lastLoginAt;
 }
