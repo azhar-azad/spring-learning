@@ -1,0 +1,47 @@
+## CashBox
+    - create
+    - get for id
+    - get total amount for all cash boxes
+
+## Customer
+    - create
+    - get for id
+    - update address
+    - get total due for all customers
+
+## Transaction
+    - create
+    - get all
+    - get all by date
+
+## Category
+    - create
+    - update for id
+    - delete for id
+    - get for id
+
+## Cart
+    - create
+    - get for customer
+
+## CartItem
+    - create
+    - get for id
+
+## Supplier
+    - create
+    - get for id
+    - get for phone
+    - get all
+    - update for id
+    - delete for phone
+
+## SupplyContract
+    - create
+    - get all
+    - get all for supplier
+    - get all for product
+    - get all for date
+    - get for id
+    - update for id
+    - delete for id

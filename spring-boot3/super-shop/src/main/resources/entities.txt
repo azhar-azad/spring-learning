@@ -1,0 +1,63 @@
+## CashBox
+    - id
+    - initialAmount
+    - currentAmount
+    - transactionCount
+
+## Customer
+    - id
+    - name
+    - phone (unique)
+    - email (optional)
+    - address
+    - lifetimeBuyAmount
+    - totalTransactionCount
+    - customerValue (Calculated)
+    - totalDue
+
+## Transaction
+    - id
+    - date
+    - totalAmount
+    - paymentMethod
+    - paidAmount
+    - dueAmount
+    - productReceiver (on behalf shop)
+    - customer_id (FK)
+
+## Category
+    - id
+    - name
+    - description
+
+## Product
+    - id
+    - name
+    - price
+    - stockQuantity
+    - category_id (FK)
+
+## Cart
+    - id
+    - date
+    - totalPrice
+    - customer_id (FK)
+
+## CartItem
+    - id
+    - quantity
+    - subtotalPrice
+    - cart_id (FK)
+    - product_id (FK)
+
+## Supplier
+    - id
+    - name
+    - phone
+
+## SupplyContract
+    - id
+    - supplier_id (FK)
+    - product_id (FK)
+    - quantity
+    - contractDate
