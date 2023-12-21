@@ -1,11 +1,11 @@
 ## CashBox
     - create
-    - get for id
+    - get for boxName
     - get total amount for all cash boxes
 
 ## Customer
     - create
-    - get for id
+    - get for phone
     - update address
     - get total due for all customers
 
@@ -19,6 +19,15 @@
     - update for id
     - delete for id
     - get for id
+
+## Product
+    - create
+    - get all
+    - get all for category
+    - get for id
+    - update for id
+    - delete for id
+    - search by name
 
 ## Cart
     - create
