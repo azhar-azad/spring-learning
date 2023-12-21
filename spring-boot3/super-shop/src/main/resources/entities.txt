@@ -1,12 +1,13 @@
 ## CashBox
     - id
+    - boxName (to uniquely identify)
     - initialAmount
     - currentAmount
     - transactionCount
 
 ## Customer
     - id
-    - name
+    - customerName
     - phone (unique)
     - email (optional)
     - address
@@ -22,20 +23,21 @@
     - paymentMethod
     - paidAmount
     - dueAmount
-    - productReceiver (on behalf shop)
+    - receiverName (on behalf shop)
     - customer_id (FK)
 
 ## Category
     - id
-    - name
+    - categoryName
     - description
 
 ## Product
     - id
-    - name
+    - productName
     - price
     - stockQuantity
     - category_id (FK)
+    - supplier_id (FK)
 
 ## Cart
     - id
@@ -52,12 +54,11 @@
 
 ## Supplier
     - id
-    - name
+    - supplierName
     - phone
 
 ## SupplyContract
     - id
     - supplier_id (FK)
-    - product_id (FK)
     - quantity
     - contractDate
