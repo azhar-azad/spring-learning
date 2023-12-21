@@ -43,4 +43,5 @@ public class Member {
     @JsonSerialize(using = LocalDateTimeSerializer.class)
     @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     protected LocalDateTime lastLoginAt;
+
 }
