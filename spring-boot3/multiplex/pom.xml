@@ -12,7 +12,7 @@
 	<artifactId>multiplex</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>multiplex</name>
-	<description>A movie theater API with login, online ticket selling, show booking. Tech: Spring-Boot, Postgres, Spring security and Spring data JPA</description>
+	<description>A movie theater API with login, online ticket selling, show booking. Tech: Spring-Boot, MySQL, Spring security and Spring data JPA</description>
 	<properties>
 		<java.version>21</java.version>
 	</properties>
@@ -57,10 +57,15 @@
 			<optional>true</optional>
 		</dependency>
 		<dependency>
-			<groupId>org.postgresql</groupId>
-			<artifactId>postgresql</artifactId>
+			<groupId>com.mysql</groupId>
+			<artifactId>mysql-connector-j</artifactId>
 			<scope>runtime</scope>
 		</dependency>
+<!--		<dependency>-->
+<!--			<groupId>org.postgresql</groupId>-->
+<!--			<artifactId>postgresql</artifactId>-->
+<!--			<scope>runtime</scope>-->
+<!--		</dependency>-->
 		<dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>

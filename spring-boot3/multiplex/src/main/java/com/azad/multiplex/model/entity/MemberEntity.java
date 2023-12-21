@@ -5,6 +5,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+
 @NoArgsConstructor
 @Getter
 @Setter
@@ -25,6 +28,12 @@ public class MemberEntity {
 
     @Column(name = "password", nullable = false)
     private String password;
+
+    @Column(name = "user_from", nullable = false)
+    private LocalDate memberFrom;
+
+    @Column(name = "last_login_at")
+    private LocalDateTime lastLoginAt;
 
     private boolean enabled;
     private boolean expired;

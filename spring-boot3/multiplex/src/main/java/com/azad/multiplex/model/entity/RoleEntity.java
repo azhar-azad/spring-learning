@@ -22,7 +22,7 @@ public class RoleEntity {
     private Integer id;
 
     @Column(name = "role_name", unique = true, nullable = false)
-    private RoleType roleName;
+    private String roleName;
 
     @OneToMany(mappedBy = "role", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private List<MemberEntity> members = new ArrayList<>();
