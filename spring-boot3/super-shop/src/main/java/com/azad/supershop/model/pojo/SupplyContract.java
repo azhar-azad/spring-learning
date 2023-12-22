@@ -18,5 +18,8 @@ public class SupplyContract {
     protected ProductUnit unit;
 
     @NotBlank
+    protected double totalCost;
+
+    @NotBlank
     protected LocalDate contractDate;
 }

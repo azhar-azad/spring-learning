@@ -24,6 +24,9 @@ public class SupplyContractEntity {
     private String unit;
 
     @Column(nullable = false)
+    private double totalCost;
+
+    @Column(nullable = false)
     private LocalDate contractDate;
 
     @ManyToOne
