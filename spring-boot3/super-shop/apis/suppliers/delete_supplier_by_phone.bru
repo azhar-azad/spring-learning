@@ -1,0 +1,11 @@
+meta {
+  name: delete_supplier_by_phone
+  type: http
+  seq: 5
+}
+
+delete {
+  url: http://localhost:8080/api/v1/suppliers/byPhone/01234567892
+  body: none
+  auth: none
+}

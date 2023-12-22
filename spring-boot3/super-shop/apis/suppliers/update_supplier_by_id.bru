@@ -1,0 +1,18 @@
+meta {
+  name: update_supplier_by_id
+  type: http
+  seq: 4
+}
+
+put {
+  url: http://localhost:8080/api/v1/suppliers/1
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "supplierName": "test",
+    "phone": "01234567892"
+  }
+}
