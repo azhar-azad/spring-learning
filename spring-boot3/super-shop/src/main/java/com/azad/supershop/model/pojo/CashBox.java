@@ -1,6 +1,7 @@
 package com.azad.supershop.model.pojo;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -11,9 +12,9 @@ public class CashBox {
     @NotBlank
     protected String boxName;
 
-    @NotBlank
-    protected double initialAmount;
+    @NotNull(message = "Initial amount cannot be empty")
+    protected Double initialAmount;
 
-    protected double currentAmount;
-    protected long transactionCount;
+    protected Double currentAmount;
+    protected Long transactionCount;
 }

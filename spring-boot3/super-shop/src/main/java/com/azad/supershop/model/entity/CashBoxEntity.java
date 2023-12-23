@@ -19,8 +19,8 @@ public class CashBoxEntity {
     private String boxName;
 
     @Column(nullable = false)
-    private double initialAmount;
+    private Double initialAmount;
 
-    private double currentAmount;
-    private long transactionCount;
+    private Double currentAmount;
+    private Long transactionCount;
 }

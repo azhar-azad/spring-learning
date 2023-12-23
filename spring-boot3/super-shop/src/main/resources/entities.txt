@@ -1,11 +1,11 @@
-## CashBox
+## CashBox (1)
     - id
     - boxName (to uniquely identify)
     - initialAmount
     - currentAmount
     - transactionCount
 
-## Customer
+## Customer (4)
     - id
     - customerName
     - phone (unique)
@@ -16,7 +16,7 @@
     - customerValue (Calculated)
     - totalDue
 
-## Transaction
+## Transaction (9)
     - id
     - date
     - totalAmount
@@ -26,12 +26,12 @@
     - receiverName (on behalf shop)
     - customer_id (FK)
 
-## Category
+## Category (2)
     - id
     - categoryName
     - description
 
-## Product
+## Product (5)
     - id
     - productName
     - price
@@ -39,26 +39,28 @@
     - category_id (FK)
     - supplier_id (FK)
 
-## Cart
+## Cart (7)
     - id
     - date
     - totalPrice
     - customer_id (FK)
 
-## CartItem
+## CartItem (8)
     - id
     - quantity
     - subtotalPrice
     - cart_id (FK)
     - product_id (FK)
 
-## Supplier
+## Supplier (3)
     - id
     - supplierName
     - phone
 
-## SupplyContract
+## SupplyContract (6)
     - id
     - supplier_id (FK)
     - quantity
+    - unit
+    - totalCost
     - contractDate
