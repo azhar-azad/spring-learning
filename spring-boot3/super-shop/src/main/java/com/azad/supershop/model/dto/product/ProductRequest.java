@@ -12,4 +12,5 @@ import lombok.NoArgsConstructor;
 public class ProductRequest extends Product {
 
     private Long categoryId;
+    private Long supplierId;
 }
