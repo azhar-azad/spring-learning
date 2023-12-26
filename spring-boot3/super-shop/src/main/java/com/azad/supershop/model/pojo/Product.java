@@ -1,6 +1,7 @@
 package com.azad.supershop.model.pojo;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -11,9 +12,9 @@ public class Product {
     @NotBlank
     protected String productName;
 
-    @NotBlank
-    protected double price;
+    @NotNull(message = "Product price cannot be null")
+    protected Double price;
 
-    @NotBlank
-    protected int stockQuantity;
+    @NotNull(message = "Stock quantity cannot be null")
+    protected Integer stockQuantity;
 }

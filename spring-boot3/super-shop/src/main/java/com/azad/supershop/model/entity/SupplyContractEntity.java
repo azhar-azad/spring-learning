@@ -18,13 +18,13 @@ public class SupplyContractEntity {
     private Long id;
 
     @Column(nullable = false)
-    private int quantity;
+    private Integer quantity;
 
     @Column(nullable = false)
     private String unit;
 
     @Column(nullable = false)
-    private double totalCost;
+    private Double totalCost;
 
     @Column(nullable = false)
     private LocalDate contractDate;

@@ -1,6 +1,7 @@
 package com.azad.supershop.repository;
 
 import com.azad.supershop.model.entity.ProductEntity;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -10,5 +11,9 @@ import java.util.Optional;
 @Repository
 public interface ProductRepository extends JpaRepository<ProductEntity, Long> {
 
-    Optional<List<ProductEntity>> findByCategoryId(Long categoryId);
+    Optional<ProductEntity> findByProductName(String productName);
+
+    Optional<List<ProductEntity>> findByCategoryId(Long categoryId, Pageable pageable);
+
+    Optional<List<ProductEntity>> findBySupplierId(Long supplierId);
 }

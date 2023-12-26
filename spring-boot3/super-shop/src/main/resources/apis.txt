@@ -49,7 +49,6 @@
     - create
     - get all
     - get all for supplier
-    - get all for product
     - get all for date
     - get for id
     - update for id

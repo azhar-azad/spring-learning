@@ -19,10 +19,10 @@ public class ProductEntity {
     private String productName;
 
     @Column(nullable = false)
-    private double price;
+    private Double price;
 
     @Column(nullable = false)
-    private int stockQuantity;
+    private Integer stockQuantity;
 
     @ManyToOne
     @JoinColumn(name = "category_id")
