@@ -1,10 +1,10 @@
-package com.azad.prospring5.ch2;
+package com.azad.prospring5;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class Ch2ApplicationTests {
+class Prospring5ApplicationTests {
 
 	@Test
 	void contextLoads() {
