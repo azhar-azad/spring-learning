@@ -1,4 +1,4 @@
-## Chapter 3: Developing Web Applications
+## Chapter 2: Developing Web Applications
 ### Chapter Summary
 - Spring offers a powerful web framework called Spring MVC that can be used to 
 develop the web frontend for a Spring application. 
