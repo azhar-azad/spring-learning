@@ -4,6 +4,13 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 
 /***
+ * This class is replaced with a view controller registered in the WebConfig class. Instead of deleting this class we
+ * are going to
+ *      - remove the @Controller annotation to prevent scanning for this class.
+ *      - remove the @GetMapping annotation just to make sure.
+ */
+
+/***
  * At the center of Spring MVC is the concept of a controller, a class that handles requests and responds with
  * information of some sort. In the case of a browser-facing application, a controller responds by optionally
  * populating model data and passing the request on to a view to produce HTML that's returned to the browser.
@@ -12,7 +19,7 @@ import org.springframework.web.bind.annotation.GetMapping;
  * HomeController is annotated with @Controller, Spring's component scanning automatically discovers it and creates an
  * instance of HomeController as a bean in the Spring application context.
  */
-@Controller
+//@Controller
 public class HomeController {
 
     /***
@@ -21,7 +28,7 @@ public class HomeController {
      * interpreted as the logical name of a view.
      * @return the logical name of a view.
      */
-    @GetMapping("/")
+//    @GetMapping("/")
     public String home() {
 
         /*
