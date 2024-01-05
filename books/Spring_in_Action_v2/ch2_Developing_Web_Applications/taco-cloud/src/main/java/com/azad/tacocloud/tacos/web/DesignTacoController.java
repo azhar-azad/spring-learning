@@ -3,9 +3,11 @@ package com.azad.tacocloud.tacos.web;
 import com.azad.tacocloud.tacos.Ingredient;
 import com.azad.tacocloud.tacos.Taco;
 import com.azad.tacocloud.tacos.TacoOrder;
+import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Arrays;
@@ -117,12 +119,25 @@ public class DesignTacoController {
      * shown to the user. It is prefixed with "redirect:", indicating that this a redirect view. More specifically, it
      * indicates that after processTaco() method completes, the user's browser should be redirected to the relative
      * path /orders/current, which will be handled on the OrderController class.
+     *
+     * @Valid - annotation tells Spring MVC to perform validation on the submitted Taco object after it's bound to the
+     * submitted form data and before the processTaco() method is called.
      * @param taco The fields in the form are bound to properties of a Taco object when the form(design) is submitted.
      * @param tacoOrder
      * @return
      */
     @PostMapping
-    public String processTaco(Taco taco, @ModelAttribute TacoOrder tacoOrder) {
+    public String processTaco(@Valid Taco taco, Errors errors, @ModelAttribute TacoOrder tacoOrder) {
+
+        /*
+        If there are any validation errors, the details of those errors will be captured in an Errors object that's
+        passed into processTaco() method. If there are, the method concludes without processing the Taco and returns
+        the 'design' view name so that the form is redisplayed.
+         */
+        if (errors.hasErrors()) {
+            return "design";
+        }
+
         tacoOrder.addTaco(taco);
         log.info("Processing taco: {}", taco);
 
