@@ -1,15 +1,13 @@
 package com.azad.tacocloud.tacos.web;
 
 import com.azad.tacocloud.tacos.Ingredient;
-import com.azad.tacocloud.tacos.data.IngredientRepository;
+import com.azad.tacocloud.tacos.data.jdbc.JdbcIngredientRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
 import java.util.Map;
-
-import com.azad.tacocloud.tacos.Ingredient.Type;
 
 /***
  * In the form element on the design.html template, we can see several checkbox elements, all with the name
@@ -36,11 +34,11 @@ import com.azad.tacocloud.tacos.Ingredient.Type;
 @Component
 public class IngredientByIdConverter implements Converter<String, Ingredient> {
 
-    private IngredientRepository ingredientRepository;
+    private JdbcIngredientRepository jdbcIngredientRepository;
 
     @Autowired
-    public IngredientByIdConverter(IngredientRepository ingredientRepository) {
-        this.ingredientRepository = ingredientRepository;
+    public IngredientByIdConverter(JdbcIngredientRepository jdbcIngredientRepository) {
+        this.jdbcIngredientRepository = jdbcIngredientRepository;
     }
 
     /***
@@ -51,7 +49,7 @@ public class IngredientByIdConverter implements Converter<String, Ingredient> {
     @Override
     public Ingredient convert(String id) {
 //        return ingredientMap.get(id);
-        return ingredientRepository.findById(id).orElse(null);
+        return jdbcIngredientRepository.findById(id).orElse(null);
     }
 
     /***

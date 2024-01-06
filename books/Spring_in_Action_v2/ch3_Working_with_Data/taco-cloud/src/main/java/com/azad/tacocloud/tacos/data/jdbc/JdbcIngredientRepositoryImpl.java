@@ -1,4 +1,4 @@
-package com.azad.tacocloud.tacos.data;
+package com.azad.tacocloud.tacos.data.jdbc;
 
 import com.azad.tacocloud.tacos.Ingredient;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +19,7 @@ import java.util.Optional;
  * discovered by Spring component scanning and instantiated as a bean in the Spring application context.
  */
 @Repository
-public class JdbcIngredientRepository implements IngredientRepository {
+public class JdbcIngredientRepositoryImpl implements JdbcIngredientRepository {
 
     private JdbcTemplate jdbcTemplate;
 
@@ -30,7 +30,7 @@ public class JdbcIngredientRepository implements IngredientRepository {
     can annotate the constructor with @Autowired.
      */
     @Autowired
-    public JdbcIngredientRepository(JdbcTemplate jdbcTemplate) {
+    public JdbcIngredientRepositoryImpl(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
 

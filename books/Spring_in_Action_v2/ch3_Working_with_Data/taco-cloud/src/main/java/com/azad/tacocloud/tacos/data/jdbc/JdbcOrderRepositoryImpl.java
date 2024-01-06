@@ -1,6 +1,5 @@
-package com.azad.tacocloud.tacos.data;
+package com.azad.tacocloud.tacos.data.jdbc;
 
-import com.azad.tacocloud.tacos.Ingredient;
 import com.azad.tacocloud.tacos.IngredientRef;
 import com.azad.tacocloud.tacos.Taco;
 import com.azad.tacocloud.tacos.TacoOrder;
@@ -19,11 +18,11 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Repository
-public class JdbcOrderRepository implements OrderRepository {
+public class JdbcOrderRepositoryImpl implements JdbcOrderRepository {
 
     private JdbcOperations jdbcOperations;
 
-    public JdbcOrderRepository(JdbcOperations jdbcOperations) {
+    public JdbcOrderRepositoryImpl(JdbcOperations jdbcOperations) {
         this.jdbcOperations = jdbcOperations;
     }
 

@@ -1,7 +1,7 @@
 package com.azad.tacocloud.tacos.web;
 
 import com.azad.tacocloud.tacos.TacoOrder;
-import com.azad.tacocloud.tacos.data.OrderRepository;
+import com.azad.tacocloud.tacos.data.jdbc.JdbcOrderRepository;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -18,10 +18,10 @@ import org.springframework.web.bind.support.SessionStatus;
 @SessionAttributes("tacoOrder")
 public class OrderController {
 
-    private OrderRepository orderRepository;
+    private JdbcOrderRepository jdbcOrderRepository;
 
-    public OrderController(OrderRepository orderRepository) {
-        this.orderRepository = orderRepository;
+    public OrderController(JdbcOrderRepository jdbcOrderRepository) {
+        this.jdbcOrderRepository = jdbcOrderRepository;
     }
 
     /***
@@ -50,7 +50,7 @@ public class OrderController {
         }
 
         log.info("Order submitted: {}", order);
-        TacoOrder saved = orderRepository.save(order);
+        TacoOrder saved = jdbcOrderRepository.save(order);
         log.info("Order saved: {}", saved);
         sessionStatus.setComplete();
 
