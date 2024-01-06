@@ -3,8 +3,10 @@ package com.azad.tacocloud.tacos.web;
 import com.azad.tacocloud.tacos.Ingredient;
 import com.azad.tacocloud.tacos.Taco;
 import com.azad.tacocloud.tacos.TacoOrder;
+import com.azad.tacocloud.tacos.data.IngredientRepository;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
@@ -43,15 +45,41 @@ import com.azad.tacocloud.tacos.Ingredient.Type;
 @SessionAttributes("tacoOrder")
 public class DesignTacoController {
 
+    private final IngredientRepository ingredientRepository;
+
+    @Autowired
+    public DesignTacoController(IngredientRepository ingredientRepository) {
+        this.ingredientRepository = ingredientRepository;
+    }
+
     /***
+     * The addIngredientsToModel() method uses the injected IngredientRepository's findAll() method to fetch all
+     * ingredients from the database. It then filters them into distinct ingredient types before adding them to the
+     * model.
+     * @param model
+     */
+    @ModelAttribute
+    public void addIngredientsToModel(Model model) {
+        List<Ingredient> ingredients = (List<Ingredient>) ingredientRepository.findAll();
+        Type[] types = Ingredient.Type.values();
+        for (Type type: types) {
+            model.addAttribute(type.toString().toLowerCase(), filterByType(ingredients, type));
+        }
+    }
+
+    /***
+     * **********
+     * ch3: This method will not be used as we have introduced the database support now. The @ModelAttribute is removed.
+     * See the addIngredientsToModel() method above.
+     * **********
      * This method will be invoked when a request is handled and will construct a list of Ingredient objects to be put
      * into the model. The list is hardcoded for now.
      * @param model is an object that ferries data between a controller and whatever view is charged with rendering
      *              the data. Ultimately, data that's placed in Model attributes is copied into servlet request
      *              attributes, where the view can find them and use them to render a page in the user's browser.
      */
-    @ModelAttribute
-    public void addIngredientsToModel(Model model) {
+//    @ModelAttribute
+    public void addIngredientsToModelHardcoded(Model model) {
 
         List<Ingredient> ingredients = Arrays.asList(
                 new Ingredient("FLTO", "Flour Tortilla", Type.WRAP),

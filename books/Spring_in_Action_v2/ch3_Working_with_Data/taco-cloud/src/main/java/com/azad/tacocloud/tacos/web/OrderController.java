@@ -1,6 +1,7 @@
 package com.azad.tacocloud.tacos.web;
 
 import com.azad.tacocloud.tacos.TacoOrder;
+import com.azad.tacocloud.tacos.data.OrderRepository;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -16,6 +17,12 @@ import org.springframework.web.bind.support.SessionStatus;
 @RequestMapping("/orders")
 @SessionAttributes("tacoOrder")
 public class OrderController {
+
+    private OrderRepository orderRepository;
+
+    public OrderController(OrderRepository orderRepository) {
+        this.orderRepository = orderRepository;
+    }
 
     /***
      * The orderForm() method will handle HTTP GET requests for /orders/current.
@@ -43,6 +50,8 @@ public class OrderController {
         }
 
         log.info("Order submitted: {}", order);
+        TacoOrder saved = orderRepository.save(order);
+        log.info("Order saved: {}", saved);
         sessionStatus.setComplete();
 
         return "redirect:/";

@@ -6,7 +6,9 @@ import jakarta.validation.constraints.Pattern;
 import lombok.Data;
 import org.hibernate.validator.constraints.CreditCardNumber;
 
+import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /***
@@ -18,7 +20,13 @@ import java.util.List;
  * @Digits - ensures that the value contains exactly three numeric digits.
  */
 @Data
-public class TacoOrder {
+public class TacoOrder implements Serializable {
+
+    private static final long serialVersionUID = 1L;
+
+    private Long id;
+
+    private Date placedAt;
 
     @NotBlank(message = "Delivery name is required")
     private String deliveryName;

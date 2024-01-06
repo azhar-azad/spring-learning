@@ -1,6 +1,8 @@
 package com.azad.tacocloud.tacos.web;
 
 import com.azad.tacocloud.tacos.Ingredient;
+import com.azad.tacocloud.tacos.data.IngredientRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
 
@@ -34,13 +36,35 @@ import com.azad.tacocloud.tacos.Ingredient.Type;
 @Component
 public class IngredientByIdConverter implements Converter<String, Ingredient> {
 
-    private final Map<String, Ingredient> ingredientMap = new HashMap<>();
+    private IngredientRepository ingredientRepository;
+
+    @Autowired
+    public IngredientByIdConverter(IngredientRepository ingredientRepository) {
+        this.ingredientRepository = ingredientRepository;
+    }
+
+    /***
+     * The convert() method simply takes a String and uses it to look up the Ingredient from the ingredientMap.
+     * @param id The id property of Ingredient
+     * @return The Ingredient object with the id passed as argument
+     */
+    @Override
+    public Ingredient convert(String id) {
+//        return ingredientMap.get(id);
+        return ingredientRepository.findById(id).orElse(null);
+    }
 
     /***
      * Because we don't yet have a database from which to pull Ingredient objects, the constructor creates a Map keyed
      * on a String that is the ingredient's ID and whose values are the Ingredient objects.
+     *
+     * ch3: Now that we have a database to fetch the Ingredients, we can simplify this class with a simple call to the
+     * IngredientRepository.findById() method. We don't need the map variable and the hardcoded constructor.
      */
+    private final Map<String, Ingredient> ingredientMap = new HashMap<>();
+
     public IngredientByIdConverter() {
+        /*
         ingredientMap.put("FLTO", new Ingredient("FLTO", "Flour Tortilla", Type.WRAP));
         ingredientMap.put("COTO", new Ingredient("COTO", "Corn Tortilla", Type.WRAP));
         ingredientMap.put("GRBF", new Ingredient("GRBF", "Ground Beef", Type.PROTEIN));
@@ -51,15 +75,6 @@ public class IngredientByIdConverter implements Converter<String, Ingredient> {
         ingredientMap.put("JACK", new Ingredient("JACK", "Monterrey Jack", Type.CHEESE));
         ingredientMap.put("SLSA", new Ingredient("SLSA", "Salsa", Type.SAUCE));
         ingredientMap.put("SRCR", new Ingredient("SRCR", "Sour Cream", Type.SAUCE));
-    }
-
-    /***
-     * The convert() method simply takes a String and uses it to look up the Ingredient from the ingredientMap.
-     * @param id The id property of Ingredient
-     * @return The Ingredient object with the id passed as argument
-     */
-    @Override
-    public Ingredient convert(String id) {
-        return ingredientMap.get(id);
+         */
     }
 }
