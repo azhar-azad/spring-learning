@@ -4,6 +4,7 @@ import com.azad.tacocloud.tacos.Ingredient;
 import com.azad.tacocloud.tacos.Taco;
 import com.azad.tacocloud.tacos.TacoOrder;
 import com.azad.tacocloud.tacos.Ingredient.Type;
+import com.azad.tacocloud.tacos.data.IngredientRepository;
 import com.azad.tacocloud.tacos.data.jdbc.JdbcIngredientRepository;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
@@ -44,11 +45,12 @@ import java.util.stream.Collectors;
 @SessionAttributes("tacoOrder")
 public class DesignTacoController {
 
-    private final JdbcIngredientRepository jdbcIngredientRepository;
+//    private final JdbcIngredientRepository jdbcIngredientRepository;
+    private final IngredientRepository ingredientRepository;
 
     @Autowired
-    public DesignTacoController(JdbcIngredientRepository jdbcIngredientRepository) {
-        this.jdbcIngredientRepository = jdbcIngredientRepository;
+    public DesignTacoController(IngredientRepository ingredientRepository) {
+        this.ingredientRepository = ingredientRepository;
     }
 
     /***
@@ -59,7 +61,7 @@ public class DesignTacoController {
      */
     @ModelAttribute
     public void addIngredientsToModel(Model model) {
-        List<Ingredient> ingredients = (List<Ingredient>) jdbcIngredientRepository.findAll();
+        List<Ingredient> ingredients = (List<Ingredient>) ingredientRepository.findAll();
         Type[] types = Type.values();
         for (Type type: types) {
             model.addAttribute(type.toString().toLowerCase(), filterByType(ingredients, type));
