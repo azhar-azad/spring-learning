@@ -1,6 +1,7 @@
 package com.azad.tacocloud.tacos;
 
 import lombok.Data;
+import org.springframework.data.relational.core.mapping.Table;
 
 /***
  * When we save a TacoOrder, we also must save the Taco objects that go with it. And when we save the Taco objects,
@@ -8,6 +9,7 @@ import lombok.Data;
  * Taco. The IngredientRef class defines that linking between Taco and Ingredient.
  */
 @Data
+@Table
 public class IngredientRef {
 
     private final String ingredient;

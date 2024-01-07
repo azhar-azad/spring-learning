@@ -3,6 +3,8 @@ package com.azad.tacocloud.tacos;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.relational.core.mapping.Table;
 
 import java.util.Date;
 import java.util.List;
@@ -14,8 +16,10 @@ import java.util.List;
  * @Size - annotation is used to specify some attributes regarding length.
  */
 @Data
+@Table
 public class Taco {
 
+    @Id
     private Long id;
 
     private Date createdAt = new Date();
