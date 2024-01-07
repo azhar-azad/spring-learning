@@ -1,4 +1,4 @@
-package com.azad.tacocloud.tacos.data.dataJDBC;
+package com.azad.tacocloud.tacos.data;
 
 import com.azad.tacocloud.tacos.Ingredient;
 import org.springframework.data.repository.CrudRepository;

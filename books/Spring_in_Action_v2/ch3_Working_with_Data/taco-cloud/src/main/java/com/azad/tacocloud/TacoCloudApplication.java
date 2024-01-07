@@ -26,6 +26,7 @@ public class TacoCloudApplication {
 	 * @param args
 	 */
 	public static void main(String[] args) {
+		
 		/*
 		The main() method calls a static run() method on the SpringApplication class, which performs the actual
 		bootstrapping of the application, creating the Spring application context.

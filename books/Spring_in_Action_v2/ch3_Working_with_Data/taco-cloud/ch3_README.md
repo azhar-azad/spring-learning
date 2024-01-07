@@ -89,4 +89,96 @@ alter the build as follows:
     <!-- ... -->
 </dependencies>
 ```
+### Customizing JPA Repositories
+When generating the repository implementation, Spring Data examines each 
+method in the repository interface, parse the method name, and attempt to 
+understand the method's purpose in the context of the persisted object. 
+
+In the case of `TacoOrder` entity, if we need to fetch all the orders 
+delivered to a given ZIP code, we can write the method as:
+
+```java
+List<TacoOrder> findByDeliveryZip(String deliveryZip);
+```
+Spring Data knows that this method is intended to find Orders, because we've
+parameterized `CrudRepository` with `TacoOrder`. The method name,
+`findByDeliveryZip()`, makes it clear that this method should find all 
+`TacoOrder` entities by matching their `deliveryZip` property with the value
+passed in as a parameter to the method. 
+
+Spring Data can handle even more interesting method names as well. Repository
+methods are composed of a _verb_, an optional _subject_, the word _By_, and a
+_predicate_. In the case of `findByDeliveryZip()`, the verb is _find_ and the 
+predicate is _DeliveryZip_; the subject isn't specified and is implied to 
+be a `TacoOrder`. 
+
+Let's consider another, more complex example. Suppose that we need to query 
+for all orders delivered to a given ZIP code within a given date range. In 
+that case, the following method, when added to `OrderRepository`, might 
+prove useful:
+
+```java
+List<TacoOrder> readOrdersByDeliveryZipAndPlacedAtBetween(String deliveryZip, Date startDate, Date endDate);
+```
+As we can see, the verb is _read_. Spring Data also understands _find_, 
+_read_, and _get_ as synonymous for fetching one or more entities. Alternatively, 
+we can also use _count_ as verb if we want the method to return only an `int`
+with the count of matching entities. The subject is optional and, we can give 
+any words there, Spring Data will ignore the subject. 
+
+The predicate refers to two `TacoOrder` properties: `deliveryZip` and 
+`placedAt`. The `deliveryZip` property must be equal to the value passed 
+into the first parameter of the method. The keyword `Between` indicates that 
+the value of `deliveryZip` must fall between the values passed into the last 
+two parameters of the method. 
+
+In addition to an implicit `Equals` operation and the `Between` operation, 
+Spring Data method signatures can also include any of the following operations: 
+- IsAfter, After, IsGreaterThan, GreaterThan
+- IsGreaterThanEqual, GreaterThanEqual
+- IsBefore, Before, IsLessThan, LessThan
+- IsLessThanEqual, LessThanEqual
+- IsBetween, Between
+- IsNull, Null
+- IsNotNull, NotNull
+- IsIn, In
+- IsNotIn, NotIn
+- IsStartingWith, StartingWith, StartsWith
+- IsEndingWith, EndingWith, EndsWith
+- IsContaining, Containing, Contains
+- IsLike, Like
+- IsNotLike, NotLike
+- IsTrue, True
+- IsFalse, False
+- Is, Equals
+- IsNot, Not
+- IgnoringCase, IgnoresCase
+
+As alternatives for IgnoringCase and IgnoresCase, we can place either 
+`AllIgnoringCase` or `AllIgnoresCase` to ignore case for all String 
+comparisons. 
+
+Finally, we can also place `OrderBy` at the end of the method name to sort 
+the results by a specified column. For example, to order by `deliveryTo`
+property, we can use the following code:
+
+```java
+List<TacoOrder> findByDeliveryCityOrderByDeliveryTo(String city);
+```
+
+Although, we can use any queries without any naming convention and this 
+can be useful on a very complex queries. For example
+
+```java
+import org.springframework.data.jpa.repository.Query;
+
+@Query("Order o where o.deliveryCity='Seattle'")
+List<TacoOrder> readOrdersDeliveredInSeattle();
+```
+
 ### Chapter Summary
+- Spring's `JdbcTemplate` greatly simplifies working with JDBC. 
+- `PreparedStatementCreator` and `KeyHolder` can be used together when we 
+need to know the value of a database-generated ID. 
+- Spring Data JDBC and Spring Data JPA make working with relational data as 
+easy as writing a repository interface. 
