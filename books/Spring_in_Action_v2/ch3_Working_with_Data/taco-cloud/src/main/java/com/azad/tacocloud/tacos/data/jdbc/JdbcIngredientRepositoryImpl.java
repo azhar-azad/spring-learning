@@ -1,6 +1,7 @@
 package com.azad.tacocloud.tacos.data.jdbc;
 
-import com.azad.tacocloud.tacos.jdbc.Ingredient;
+import com.azad.tacocloud.tacos.Ingredient;
+import com.azad.tacocloud.tacos.Type;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -84,7 +85,7 @@ public class JdbcIngredientRepositoryImpl implements JdbcIngredientRepository {
         return new Ingredient(
                 row.getString("id"),
                 row.getString("name"),
-                Ingredient.Type.valueOf(row.getString("type")));
+                Type.valueOf(row.getString("type")));
     }
 
     /***
@@ -103,7 +104,7 @@ public class JdbcIngredientRepositoryImpl implements JdbcIngredientRepository {
                 return new Ingredient(
                         rs.getString("id"),
                         rs.getString("name"),
-                        Ingredient.Type.valueOf(rs.getString("type")));
+                        Type.valueOf(rs.getString("type")));
             };
         }, id);
     }

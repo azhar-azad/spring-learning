@@ -1,8 +1,9 @@
 package com.azad.tacocloud.tacos.web;
 
-import com.azad.tacocloud.tacos.jdbc.Ingredient;
-import com.azad.tacocloud.tacos.jdbc.Taco;
-import com.azad.tacocloud.tacos.jdbc.TacoOrder;
+import com.azad.tacocloud.tacos.Ingredient;
+import com.azad.tacocloud.tacos.Taco;
+import com.azad.tacocloud.tacos.TacoOrder;
+import com.azad.tacocloud.tacos.Type;
 import com.azad.tacocloud.tacos.data.jdbc.JdbcIngredientRepository;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
@@ -15,8 +16,6 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
-
-import com.azad.tacocloud.tacos.jdbc.Ingredient.Type;
 
 /***
  * A controller that will do the following:
@@ -61,7 +60,7 @@ public class DesignTacoController {
     @ModelAttribute
     public void addIngredientsToModel(Model model) {
         List<Ingredient> ingredients = (List<Ingredient>) jdbcIngredientRepository.findAll();
-        Type[] types = Ingredient.Type.values();
+        Type[] types = Type.values();
         for (Type type: types) {
             model.addAttribute(type.toString().toLowerCase(), filterByType(ingredients, type));
         }
@@ -98,8 +97,8 @@ public class DesignTacoController {
         method filterByType(). A list of ingredient types is then added as an attribute to the Model object that will
         be passed into showDesignForm() method.
          */
-        Ingredient.Type[] types = Ingredient.Type.values();
-        for (Ingredient.Type type: types) {
+        Type[] types = Type.values();
+        for (Type type: types) {
             model.addAttribute(type.toString().toLowerCase(), filterByType(ingredients, type));
         }
     }
@@ -175,7 +174,7 @@ public class DesignTacoController {
     /*
     Private methods
      */
-    private Iterable<Ingredient> filterByType(List<Ingredient> ingredients, Ingredient.Type type) {
+    private Iterable<Ingredient> filterByType(List<Ingredient> ingredients, Type type) {
         return ingredients.stream()
                 .filter(x -> x.getType().equals(type))
                 .collect(Collectors.toList());

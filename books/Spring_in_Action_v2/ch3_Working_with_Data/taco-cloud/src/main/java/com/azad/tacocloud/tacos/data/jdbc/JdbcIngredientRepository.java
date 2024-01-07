@@ -1,6 +1,6 @@
 package com.azad.tacocloud.tacos.data.jdbc;
 
-import com.azad.tacocloud.tacos.jdbc.Ingredient;
+import com.azad.tacocloud.tacos.Ingredient;
 
 import java.util.Optional;
 

@@ -1,8 +1,8 @@
 package com.azad.tacocloud.tacos.data.jdbc;
 
-import com.azad.tacocloud.tacos.jdbc.IngredientRef;
-import com.azad.tacocloud.tacos.jdbc.Taco;
-import com.azad.tacocloud.tacos.jdbc.TacoOrder;
+import com.azad.tacocloud.tacos.IngredientRef;
+import com.azad.tacocloud.tacos.Taco;
+import com.azad.tacocloud.tacos.TacoOrder;
 import org.springframework.asm.Type;
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jdbc.core.PreparedStatementCreator;

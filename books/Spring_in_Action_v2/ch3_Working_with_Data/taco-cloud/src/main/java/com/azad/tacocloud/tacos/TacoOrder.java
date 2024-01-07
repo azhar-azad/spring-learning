@@ -1,12 +1,11 @@
-package com.azad.tacocloud.tacos.jdbc;
+package com.azad.tacocloud.tacos;
 
+import jakarta.persistence.*;
 import jakarta.validation.constraints.Digits;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import lombok.Data;
 import org.hibernate.validator.constraints.CreditCardNumber;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.relational.core.mapping.Table;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -31,14 +30,17 @@ import java.util.List;
  * the deliveryName property will be automatically mapped to the column named delivery_name. But if we want to
  * explicitly define the column name mapping, we could annotate the property with @Column like this:
  *      @Column("customer_name")
+ * @OneToMany - indicating that the tacos are all specific to this one order. Moreover, the cascade attribute is set to
+ * CascadeType.ALL so that if the order is deleted, its related tacos will also be deleted.
  */
+@Entity
 @Data
-@Table
 public class TacoOrder implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     private Date placedAt;
@@ -67,6 +69,7 @@ public class TacoOrder implements Serializable {
     @Digits(integer = 3, fraction = 0, message = "Invalid CVV")
     private String ccCVV;
 
+    @OneToMany(cascade = CascadeType.ALL)
     private List<Taco> tacos = new ArrayList<>();
 
     public void addTaco(Taco taco) {

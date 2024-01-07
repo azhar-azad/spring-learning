@@ -1,6 +1,6 @@
 package com.azad.tacocloud.tacos.data.jdbc;
 
-import com.azad.tacocloud.tacos.jdbc.TacoOrder;
+import com.azad.tacocloud.tacos.TacoOrder;
 
 /***
  * In our design, TacoOrder and Taco are part of an aggregate in which TacoOrder is the aggregate root. In other words,
