@@ -50,4 +50,43 @@ vararg, which is a raw representation of arguments passed on the command
 line. But `ApplicationRunner` accepts a `ApplicationArguments` parameter
 that offers methods for accessing the arguments as parsed components of the 
 command line. 
+### Adding Spring Data JPA to the Project
+Spring Data JPA is available to Spring Boot applications with the JPA 
+starter. This starter dependency not only brings in Spring Data JPA but 
+also transitively includes Hibernate as the JPA implementation, as shown: 
+```xml
+<dependendies>
+    <!-- ... -->
+    <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-data-jpa</artifactId>
+    </dependency>
+    <!-- ... -->
+</dependendies>
+```
+If we want to use a different JPA implementation, then we'll need to, at 
+least, exclude Hibernate dependency and include the JPA library of our 
+choice. For example, to use EclipseLink instead of Hibernate, we'll need to 
+alter the build as follows: 
+```xml
+<dependencies>
+    <!-- ... -->
+    <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-data-jpa</artifactId>
+        <exclusions>
+            <exclusion>
+                <groupId>org.hibernate</groupId>
+                <artifactId>hibernate-core</artifactId>
+            </exclusion>
+        </exclusions>
+    </dependency>
+    <dependency>
+        <groupId>org.eclipse.persistence</groupId>
+        <artifactId>org.eclipse.persistence.jpa</artifactId>
+        <version>2.7.6</version>
+    </dependency>
+    <!-- ... -->
+</dependencies>
+```
 ### Chapter Summary
