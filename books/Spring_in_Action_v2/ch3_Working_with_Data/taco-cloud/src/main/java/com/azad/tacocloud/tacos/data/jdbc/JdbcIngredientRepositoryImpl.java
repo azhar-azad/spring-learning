@@ -1,6 +1,6 @@
 package com.azad.tacocloud.tacos.data.jdbc;
 
-import com.azad.tacocloud.tacos.Ingredient;
+import com.azad.tacocloud.tacos.jdbc.Ingredient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;

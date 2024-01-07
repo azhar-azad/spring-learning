@@ -1,4 +1,4 @@
-package com.azad.tacocloud.tacos;
+package com.azad.tacocloud.tacos.jdbc;
 
 import lombok.Data;
 import org.springframework.data.relational.core.mapping.Table;

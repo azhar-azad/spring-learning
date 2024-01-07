@@ -1,6 +1,6 @@
 package com.azad.tacocloud.tacos.web;
 
-import com.azad.tacocloud.tacos.TacoOrder;
+import com.azad.tacocloud.tacos.jdbc.TacoOrder;
 import com.azad.tacocloud.tacos.data.jdbc.JdbcOrderRepository;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;

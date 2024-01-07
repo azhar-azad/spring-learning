@@ -1,8 +1,8 @@
 package com.azad.tacocloud.tacos.web;
 
-import com.azad.tacocloud.tacos.Ingredient;
-import com.azad.tacocloud.tacos.Taco;
-import com.azad.tacocloud.tacos.TacoOrder;
+import com.azad.tacocloud.tacos.jdbc.Ingredient;
+import com.azad.tacocloud.tacos.jdbc.Taco;
+import com.azad.tacocloud.tacos.jdbc.TacoOrder;
 import com.azad.tacocloud.tacos.data.jdbc.JdbcIngredientRepository;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
@@ -16,7 +16,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import com.azad.tacocloud.tacos.Ingredient.Type;
+import com.azad.tacocloud.tacos.jdbc.Ingredient.Type;
 
 /***
  * A controller that will do the following:

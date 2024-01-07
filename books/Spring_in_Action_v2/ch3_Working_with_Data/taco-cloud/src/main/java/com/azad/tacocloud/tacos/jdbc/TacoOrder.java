@@ -1,4 +1,4 @@
-package com.azad.tacocloud.tacos;
+package com.azad.tacocloud.tacos.jdbc;
 
 import jakarta.validation.constraints.Digits;
 import jakarta.validation.constraints.NotBlank;

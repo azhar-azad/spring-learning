@@ -1,6 +1,6 @@
 package com.azad.tacocloud.tacos.web;
 
-import com.azad.tacocloud.tacos.Ingredient;
+import com.azad.tacocloud.tacos.jdbc.Ingredient;
 import com.azad.tacocloud.tacos.data.jdbc.JdbcIngredientRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.convert.converter.Converter;
