@@ -40,4 +40,20 @@ As it turns out, Spring Security offers several out-of-the-box implementations o
 
 Or, we can also create our own implementation to suit our application's specific 
 security needs. 
+### Configuration Methods to Define Path Security
+- `access(String)` Allows access if the given Spring Expression Language (SpEL)
+expression evaluates to `true`.
+- `anonymous()` Allows access to anonymous users. 
+- `authenticated()` Allows access to authenticated users. 
+- `denyAll()` Denies access unconditionally. 
+- `fullyAuthenticated()` Allows access if the user is fully authenticated (not remembered).
+- `hasAnyAuthority(String...)` Allows access if the user has any of the given authorities.
+- `hasAnyRole(String...)` Allows access if the user has any of the given roles.
+- `hasAuthority(String)` Allows access if the user has the given authority.
+- `hasIpAddress(String)` Allows access if the request comes from the given IP address.
+- `hasRole(String)` Allows access if the user has the given role.
+- `not()` Negates the effect of any of the other access methods.
+- `permitAll()` Allows access unconditionally.
+- `rememberMe()` Allows access for users who are authenticated via `remember-me`.
+
 ### Chapter Summary 

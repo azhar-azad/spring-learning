@@ -91,6 +91,21 @@ public class SecurityConfig {
      */
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        return http.build();
+        /*
+        The call to authorizeRequest() returns an object (ExpressionUrlAuthorizationConfigurer.ExpressionInterceptUrlRegistry)
+        on which we can specify URL paths and patterns and the security requirements for those paths. In this case, we
+        specify the following two security rules:
+            - Requests for /design and /orders should be for users with a granted authority of ROLE_USER. We don't
+            include the ROLE_ prefix on roles passed to hasRole(); it will be assumed by hasRole().
+            - All requests should be permitted to all users.
+        The order of these rules are important. Security rules declared first take precedence over those declared lower
+        down. If we were to swap the order of those two security rules, all requests would have permitAll() applied to
+        them; the rule for /design and /orders requests would have no effect.
+         */
+        return http
+                .authorizeHttpRequests(auth -> auth
+                        .requestMatchers("/design", "/orders").hasRole("USER")
+                        .requestMatchers("/", "/**").permitAll())
+                .build();
     }
 }
