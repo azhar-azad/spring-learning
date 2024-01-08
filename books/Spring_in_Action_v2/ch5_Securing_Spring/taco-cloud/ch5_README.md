@@ -203,4 +203,47 @@ It's possible to disable CSRF protection support.
 .csrf(AbstractHttpConfigurer::disable)
 ```
 
+### Applying Method Level Security
+We can apply security directly on any method like this:
+
+```java
+import org.springframework.security.access.prepost.PreAuthorize;
+
+@PreAuthorize("hasRole('ADMIN')")
+public void deleteAllOrders() {
+    orderRepository.deleteAll();
+}
+```
+The `@PreAuthorize` annotation takes a SpEL expression, and, if the expression 
+evaluates to false, the method will not be invoked. In the event that 
+`@PreAuthorize` blocks the call, then Spring Security's `AccessDeniedException`
+will be thrown. For `@PreAuthorize` to work, we'll need to enable method
+security. For that, we'll need to annotate the security configuration class with 
+`@EnableMethodSecurity` as follows:
+
+```java
+import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
+
+@Configuration
+@EnableMethodSecurity
+public class SecurityConfig {
+    // ...
+}
+```
+The `@PostAuthorize` annotation works almost the same as the `@PreAuthorize` 
+annotation, except that its expression won't be evaluated until after the target
+method is invoked and returns. This allows the expression to consider the return 
+value of the method in deciding whether to permit the method invocation. 
+For example, if we want to restrict a method (getOrder) from being used expect by admins or 
+by the user who the order belongs to, we can use the annotation like following:
+```java
+import org.springframework.security.access.prepost.PostAuthorize;
+
+@PostAuthorize("hasRole('ADMIN') || " 
+        + "returnObj.user.username == authentication.name")
+public TacoOrder getOrder(long id) {
+    // ...
+}
+```
 ### Chapter Summary 
