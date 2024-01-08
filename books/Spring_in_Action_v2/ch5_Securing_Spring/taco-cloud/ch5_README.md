@@ -56,4 +56,41 @@ expression evaluates to `true`.
 - `permitAll()` Allows access unconditionally.
 - `rememberMe()` Allows access for users who are authenticated via `remember-me`.
 
+### Custom Login Page
+By default, Spring Security listens for login requests at /login and expects that
+the username and password fields be named `username` and `password`. This is 
+configurable, however. For example, the following configuration customizes the 
+path and field names: 
+```java
+.formLogin(formLogin -> formLogin
+        .loginPage("/login")
+        .loginProcessingUrl("/authenticate")
+        .usernameParameter("user")
+        .passwordParameter("pwd"))
+```
+Here, we specify that Spring Security should listen for requests to /authenticate
+to handle login submissions. Also, the username and password fields should now be 
+named `user` and `pwd`.
+
+By default, a successful login will take the user directly to the page that they
+were navigating to when Spring Security determined that they needed to log in. If
+the user were to directly navigate to the login page, a successful login would 
+take them to the root path (for example, the home page). But we can change that 
+by specifying a default success page, as shown below: 
+```java
+.formLogin(formLogin -> formLogin
+        .loginPage("/login")
+        .defaultSuccessUrl("/design))
+```
+As configured here, if the user were to successfully log in after directly going 
+to the login page, they would be directed to the /design page. 
+
+Optionally, we can force the user to the design page after login, even if they 
+were navigating elsewhere prior to logging in, by passing `true` as a second 
+parameter to `defaultSuccessUrl` as follows: 
+```java
+.formLogin(formLogin -> formLogin
+        .loginPage("/login")
+        .defaultSuccessUrl("/design", true))
+```
 ### Chapter Summary 

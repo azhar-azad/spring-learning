@@ -101,11 +101,19 @@ public class SecurityConfig {
         The order of these rules are important. Security rules declared first take precedence over those declared lower
         down. If we were to swap the order of those two security rules, all requests would have permitAll() applied to
         them; the rule for /design and /orders requests would have no effect.
+
+        To replace the build in login page, we first need to tell Spring Security what path our custom login page will
+        be at. That can be done by calling formLogin() method on the HttpSecurity object. The call to loginPage() after
+        that designates the path where our custom login page will be provided. When Spring Security determines that the
+        user is unauthenticated and needs to log in, it will redirect them to this path.
          */
         return http
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/design", "/orders").hasRole("USER")
                         .requestMatchers("/", "/**").permitAll())
+                .formLogin(formLogin -> formLogin
+                        .loginPage("/login")
+                        .defaultSuccessUrl("/design", true))
                 .build();
     }
 }
