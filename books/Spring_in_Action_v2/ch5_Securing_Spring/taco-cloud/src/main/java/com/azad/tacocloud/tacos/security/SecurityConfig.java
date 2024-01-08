@@ -3,6 +3,7 @@ package com.azad.tacocloud.tacos.security;
 import com.azad.tacocloud.tacos.data.UserRepository;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -11,6 +12,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
+import org.springframework.security.web.SecurityFilterChain;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -69,5 +71,26 @@ public class SecurityConfig {
 
             throw new UsernameNotFoundException("User '" + username + "' not found");
         };
+    }
+
+    /***
+     * The security requirements for our application should require that a user be authenticated before designing tacos
+     * or placing orders. But the home page, login page, and registration page should be available to unauthenticated
+     * users.
+     * To configure these security rules, we'll need to declare a SecurityFilterChain bean. The following are among the
+     * many things we can configure with HttpSecurity:
+     *      - Requiring that certain security conditions be met before allowing a request to be served.
+     *      - Configuring a custom login page.
+     *      - Enabling users to log out of application.
+     *      - Configuring cross-site request forgery protection.
+     * @param http An HttpSecurity object, which acts as a builder that can be used to configure how security is handled
+     *             at the web level.
+     * @return Once security configuration is set up via the HttpSecurity object, a call to build() method will create a
+     *      SecurityFilterChain that is returned from the bean method.
+     * @throws Exception
+     */
+    @Bean
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        return http.build();
     }
 }
