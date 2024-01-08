@@ -246,4 +246,29 @@ public TacoOrder getOrder(long id) {
     // ...
 }
 ```
+### Knowing the Application's Users
+We have several ways to determine who the application user is. A few of them: 
+- Inject a `java.security.Principal` object into the controller method. 
+- Inject an `org.springframework.security.core.Authentication` object into the 
+controller method. 
+- Use `org.springframework.security.core.context.SecurityContextHolder` to get 
+at the security context. 
+- Inject an `@AuthenticationPrincipal` annotated method parameter. 
+(`@AuthenticationPrincipal` is from Spring Security's `org.springframework.security.core.annotation` package).
+
+There's one other way of identifying who the authenticated user is. We can obtain
+an `Authentication` object from the security context and then request its 
+principal like this:
+
+```java
+import com.azad.tacocloud.tacos.User;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+
+Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+User user = (User) authentication.getPrincipal();
+```
+The advantage of this approach is it can be used anywhere in the application, not
+just in a controller's handler methods. This makes it suitable for use in lower 
+levels of the code. 
 ### Chapter Summary 
