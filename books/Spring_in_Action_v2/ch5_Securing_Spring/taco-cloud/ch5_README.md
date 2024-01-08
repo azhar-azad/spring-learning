@@ -93,4 +93,82 @@ parameter to `defaultSuccessUrl` as follows:
         .loginPage("/login")
         .defaultSuccessUrl("/design", true))
 ```
+
+### Enabling Third-party Authentication
+To employ this type of authentication in our Spring application, we'll need to 
+add the OAuth2 client starter to the build: 
+```xml
+<dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-oauth2-client</artifactId>
+</dependency>
+```
+Then at the very least, we'll need to configure details about one or more OAuth2
+or OpenID Connect servers that we want to be able to authenticate against. Spring
+Security supports sign-in with Facebook, Google, GitHub, and Okta out of the box,
+but we can configure other clients by specifying a few extra properties. 
+The general set of properties we'll need to set for our application to act as an
+OAuth2/OpenID Connect client follows: 
+```yaml
+spring:
+  security:
+    oauth2:
+      client:
+        registration:
+          <oauth2 or openid provider name>:
+            clientId: <client id>
+            clientSecret: <client secret>
+            scope: <comma-separated list of requested scopes>
+```
+If, however, we've customized security by declaring a SecurityFilterChain bean,
+then we'll need to enable OAuth2 login along with the rest of the security 
+configuration as follows:
+
+```java
+import org.springframework.context.annotation.Bean;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.web.SecurityFilterChain;
+
+@Bean
+public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+    return http
+            .authorizeHttpRequests(auth -> auth
+                    .requestMatchers("/design", "/orders").hasRole("USER")
+                    .anyRequest().permitAll())
+            .formLogin(form -> form.loginPage("/login"))
+            .oauth2Login(oauth2 -> oauth2.loginPage("/login"))
+            .build();
+}
+```
+This will cause the application to always take the user to the application-provided
+login page where they may choose to log in with their username and password as 
+usual. But we can also provide a link on that same login page that offers them 
+the opportunity to log in with Facebook/whatever. Such a link could look like 
+this in the login page's HTML template: 
+```html
+<a th:href="/oauth2/authorization/facebook">Sign in with Facebook</a>
+```
+Just as important as logging in to an application is logging out. To enable 
+logout, we simply need to call `logout` on the `HttpSecurity` object as follows: 
+```java
+.logout()
+```
+This sets up a security filter that inspects POST requests to /logout. Therefore,
+to provide logout capability, we just need to add a logout form and button to the
+views in our application, as shown: 
+```html
+<form method="POST" th:action="@{/logout}">
+    <input type="submit" value="Logout">
+</form>
+```
+When the user clicks the button, their session will be cleared, and they will 
+be logged out of the application. By default, they'll be redirected to the login
+page where they can log in again. But if we'd rather they be sent to a different
+page, we can call `logoutSuccessUrl()` to specify a different post-logout 
+landing page, as shown: 
+```java
+.logout()
+    .logoutSuccessUrl("/")
+```
+In this case, users will be sent to the home page following logout. 
 ### Chapter Summary 
