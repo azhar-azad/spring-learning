@@ -171,4 +171,36 @@ landing page, as shown:
     .logoutSuccessUrl("/")
 ```
 In this case, users will be sent to the home page following logout. 
+
+### Preventing CSRF
+CSRF (Cross-Site Request Forgery) is a common security attack. 
+
+Fortunately, Spring Security has built-in CSRF protection. It's enabled by default
+and we don't need to explicitly configure it. We only need to make sure that any
+forms our application submits include a field named `_csrf` that contains the 
+CSRF token. 
+
+Spring Security even makes that easy by placing the CSRF token in a request 
+attribute with the name `_csrf`. Therefore, we could render the CSRF token in a 
+hidden field with the following in a Thymeleaf template: 
+```html
+<input type="hidden" name="_csrf" th:value="${_csrf.token}">
+```
+If we're using Spring MVC's JSP tag library or Thymeleaf with the Spring Security
+dialect, we needn't even bother explicitly including a hidden field. The hidden 
+field will be rendered automatically for us. 
+
+In Thymeleaf, we just need to make sure that one of the attributes of the `<form>`
+element is prefixed as a Thymeleaf attribute. That's usually not a concern, because
+it's quite common to let Thymeleaf render the path as context relative. For example
+the `th:action` attribute shown next is all we need for Thymeleaf to render the 
+hidden field for us: 
+```html
+<form method="POST" th:action="@{/login}" id="loginForm"></form>
+```
+It's possible to disable CSRF protection support. 
+```java
+.csrf(AbstractHttpConfigurer::disable)
+```
+
 ### Chapter Summary 
