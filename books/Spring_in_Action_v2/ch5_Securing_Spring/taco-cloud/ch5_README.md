@@ -272,3 +272,12 @@ The advantage of this approach is it can be used anywhere in the application, no
 just in a controller's handler methods. This makes it suitable for use in lower 
 levels of the code. 
 ### Chapter Summary 
+- Spring Security autoconfiguration is a great way to get started with security, 
+but most applications will need to explicitly configure security to meet their
+unique security requirements. 
+- User details can be managed in user backed by relational databases, LDAP, or 
+completely custom implementations. 
+- Spring Security automatically protects against CSRF attacks. 
+- Information about the authenticated user can be obtained via the 
+`SecurityContext` object (returned from `SecurityContextHolder.getContext()`) 
+or injected into controllers using `@AuthenticationPrincipal`. 
