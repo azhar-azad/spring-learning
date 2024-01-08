@@ -32,6 +32,8 @@ import java.util.List;
  *      @Column("customer_name")
  * @OneToMany - indicating that the tacos are all specific to this one order. Moreover, the cascade attribute is set to
  * CascadeType.ALL so that if the order is deleted, its related tacos will also be deleted.
+ * @ManyToOne - annotation on the User property indicates that an order belongs to a single user, and, conversely,
+ * that a user may have many orders.
  */
 @Entity
 @Data
@@ -71,6 +73,12 @@ public class TacoOrder implements Serializable {
 
     @OneToMany(cascade = CascadeType.ALL)
     private List<Taco> tacos = new ArrayList<>();
+
+    /*
+    To achieve a connection between an TacoOrder entity and a User entity
+     */
+    @ManyToOne
+    private User user;
 
     public void addTaco(Taco taco) {
         this.tacos.add(taco);

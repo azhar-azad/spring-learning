@@ -1,9 +1,11 @@
 package com.azad.tacocloud.tacos.web;
 
 import com.azad.tacocloud.tacos.TacoOrder;
+import com.azad.tacocloud.tacos.User;
 import com.azad.tacocloud.tacos.data.OrderRepository;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -41,13 +43,18 @@ public class OrderController {
      *                      created their first taco. By calling setComplete() on the sessionStatus, we are
      *                      ensuring that the session is cleaned up and ready for a new order the next time the user
      *                      creates a taco.
+     * @param user We can accept a User object in the method, with annotating it with @AuthenticationPrinciple so that
+     *             it will be the authentication's principal.
      * @return This method will return the process to the root path. 
      */
     @PostMapping
-    public String processOrder(@Valid TacoOrder order, Errors errors, SessionStatus sessionStatus) {
+    public String processOrder(@Valid TacoOrder order, Errors errors,
+                               SessionStatus sessionStatus, @AuthenticationPrincipal User user) {
         if (errors.hasErrors()) {
             return "orderForm";
         }
+
+        order.setUser(user);
 
         log.info("Order submitted: {}", order);
         TacoOrder saved = orderRepository.save(order);
