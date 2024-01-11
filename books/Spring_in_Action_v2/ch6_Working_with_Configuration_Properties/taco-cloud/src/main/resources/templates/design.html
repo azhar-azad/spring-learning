@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Taco Cloud</title>
+    <link rel="stylesheet" th:href="@{/styles.css}" />
+</head>
+<body>
+    <h1>Design your taco!</h1>
+    <img th:src="@{/images/TacoCloud.jpg}" alt="Taco cloud logo">
+
+    <!--
+    The form has no action. Without an action specified, the form would submit an HTTP request back to the same
+    URL that presented the form.
+    -->
+    <form method="POST" th:object="${taco}">
+        <div class="grid">
+            <div class="ingredient-group" id="wraps">
+                <h3>Designate your wrap:</h3>
+                <!--
+                The th:each iterates over a collection of elements, rendering the HTML once for each item in the
+                collection. We are using the th:each on the <div> tag to repeat rendering of the <div> for each item
+                in the collection found in the wrap request attribute. On each iteration, the ingredient item is bound
+                to a Thymeleaf variable named ingredient.
+                -->
+                <div th:each="ingredient : ${wrap}">
+                    <!--
+                    The checkbox uses th:value to set the rendered <input> element's 'value' attribute to the value
+                    found in the ingredient's 'id' property.
+                    The th:field attribute ultimately sets the <input> element's 'name' attribute and is used to
+                    remember whether the checkbox is checked.
+                    -->
+                    <input type="checkbox" th:field="*{ingredients}" th:value="${ingredient.id}" />
+                    <!--
+                     The th:text attribute is a Thymeleaf namespace attribute that performs the replacement of the
+                     value on the ${...} area. The ${} operator tells it to use the value of a request attribute
+                     ("ingredient.name" in this case).
+                     -->
+                    <span th:text="${ingredient.name}">INGREDIENT</span><br/>
+                </div>
+            </div>
+
+            <div class="ingredient-group" id="proteins">
+                <h3>Pick your protein:</h3>
+                <div th:each="ingredient : ${protein}">
+                    <input type="checkbox" th:field="*{ingredients}" th:value="${ingredient.id}" />
+                    <span th:text="${ingredient.name}">INGREDIENT</span><br/>
+                </div>
+            </div>
+
+            <div class="ingredient-group" id="cheeses">
+                <h3>Choose your cheese:</h3>
+                <div th:each="ingredient : ${cheese}">
+                    <input type="checkbox" th:field="*{ingredients}" th:value="${ingredient.id}" />
+                    <span th:text="${ingredient.name}">INGREDIENT</span><br/>
+                </div>
+            </div>
+
+            <div class="ingredient-group" id="veggies">
+                <h3>Determine your veggies:</h3>
+                <div th:each="ingredient : ${veggies}">
+                    <input type="checkbox" th:field="*{ingredients}" th:value="${ingredient.id}" />
+                    <span th:text="${ingredient.name}">INGREDIENT</span><br/>
+                </div>
+            </div>
+
+            <div class="ingredient-group" id="sauces">
+                <h3>Select your sauce:</h3>
+                <div th:each="ingredient : ${sauce}">
+                    <input type="checkbox" th:field="*{ingredients}" th:value="${ingredient.id}" />
+                    <span th:text="${ingredient.name}">INGREDIENT</span><br/>
+                </div>
+            </div>
+        </div>
+
+        <span class="validationError"
+              th:if="${#fields.hasErrors('ingredients')}"
+              th:errors="*{ingredients}">Ingredient Count Error</span>
+
+        <div>
+            <h3>Name your taco creation:</h3>
+            <input type="text" th:field="*{name}"/>
+            <span class="validationError"
+                  th:if="${#fields.hasErrors('name')}"
+                  th:errors="*{name}">Name Error</span>
+            <br/>
+
+            <button>Submit Your Taco</button>
+        </div>
+    </form>
+</body>
+</html>
