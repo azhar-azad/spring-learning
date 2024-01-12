@@ -202,3 +202,372 @@ We can even embed that placeholder amid other text, as shown below:
 greeting: 
   welcome: You are using ${spring.application.name}.
 ```
+
+### Creating Our Own Configuration Properties
+To support property injection of configuration properties, Spring Boot provides the 
+`@ConfigurationProperties` annotation. When placed on any Spring bean, it specifies 
+that the properties of that bean can be injected from properties in the Spring 
+environment. 
+
+To demonstrate, suppose that we've added the following method to `OrderController` to
+list the authenticated user's past orders:
+
+```java
+import com.azad.tacocloud.tacos.User;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+
+@GetMapping
+public String ordersForUser(@AuthenticationPrincipal User user, Model model) {
+    model.addAttribute("orders", orderRepository.findByUserOrderByPlacedAtDesc(user));
+    return "orderList";
+}
+```
+Along with that, we've also added the next necessary `findByUserOrderByPlacedAtDesc()`
+method to `OrderRepository`:
+
+```java
+import com.azad.tacocloud.tacos.TacoOrder;
+import com.azad.tacocloud.tacos.User;
+
+import java.util.List;
+
+List<TacoOrder> findByUserOrderByPlacedAtDesc(User user);
+```
+As written, this controller method may be useful after the user has placed a handful 
+of orders. A few order displayed in the browser are useful; a never-ending list of 
+hundreds of orders is just noise. Let's say we want to limit the number of orders 
+displayed to the most recent 20 orders. We do that by change the method to following:
+
+```java
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+
+@GetMapping
+public String ordersForUser(@AuthenticationPrincipal User user, Model model) {
+    Pageable pageable = PageRequest.of(0, 20);
+    model.addAttribute("orders", orderRepository.findByUserOrderByPlacedAtDesc(user, pageable));
+    return "orderList";
+}
+```
+Along with the corresponding changes to `OrderRepository`, as shown next:
+
+```java
+import org.springframework.data.domain.Pageable;
+
+List<TacoOrder> findByUserOrderByPlacedAtDesc(User user, Pageable pageable);
+```
+`Pageable` is Spring Data's way of selecting some subset of the results by a page 
+number and page size. Although this works, but we've hardcoded the page size. 
+
+Rather than hardcode the page size, we can set it with a custom configuration property. 
+First, we need to add a new property called `pageSize` to `OrderController`, and then 
+annotate `OrderController` with `@ConfigurationProperties` as shown next:
+
+```java
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.SessionAttributes;
+
+@Controller
+@RequestMapping("/orders")
+@SessionAttributes("order")
+@ConfigurationProperties(prefix = "taco.orders")
+public class OrderController {
+    private int pageSize = 20;
+    
+    public void setPageSize(int pageSize) {
+        this.pageSize = pageSize;
+    }
+    // ...
+    @GetMapping
+    public String ordersForUser(@AuthenticationPrincipal User user, Model model) {
+        Pageable pageable = PageRequest.of(0, pageSize);
+        model.addAttribute("orders", orderRepository.findByUserOrderByPlacedAtDesc(user, pageable));
+        return "orderList";
+    }
+}
+```
+The `@ConfigurationProperties`'s prefix attribute is set to `taco.orders`, which 
+means that when setting the `pageSize` property, we need to use a configuration 
+property named `taco.orders.pageSize`. We could set this property in the properties 
+file: 
+```yaml
+taco: 
+  orders: 
+    pageSize: 10
+```
+
+#### Defining configuration property holders
+There's nothing that says `@ConfigurationProperties` must be set on a controller or 
+any other specific kind of bean. `@ConfigurationProperties` are in fact often placed 
+on beans whose sole purpose in the application is to be holders of configuration data. 
+
+In the case of the `pageSize` property in `OrderController`, we could extract it to 
+a separate class.
+
+```java
+import lombok.Data;
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.stereotype.Component;
+
+@Component
+@ConfigurationProperties(prefix = "taco.orders")
+@Data
+public class OrderProps {
+    private int pageSize = 20;
+}
+```
+The next step is to inject the `OrderProps` bean into `OrderController`. This means, 
+removing the `pageSize` property from `OrderController` and instead injecting and 
+using the `OrderProps` bean, as shown next:
+
+```java
+private OrderProps props;
+
+public OrderController(OrderRepository orderRepository, OrderProps props) {
+    this.orderRepository = orderRepository;
+    this.props = props;
+}
+// ...
+@GetMapping
+public String ordersForUser(@AuthenticationPrincipal User user, Model model) {
+    Pageable pageable = PageRequest.of(0, props.getPageSize());
+    model.addAttribute("orders", orderRepository.findByUserOrderByPlacedAtDesc(user, pageable));
+    return "orderList";
+}
+```
+Let's pretend that we're using the `pageSize` property in several other beans when 
+we decide it would be best to apply some validation to that property to limit its 
+value to no less than 5 and no more than 25. Without a holder bean, we'd have to 
+apply validation annotations to `OrderController`, the `pageSize` property, and all
+other classes using that property. But because we've extracted `pageSize` into 
+`OrderProps`, we only must make the changes to `OrderProps`, as shown next:
+
+```java
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
+
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.stereotype.Component;
+import org.springframework.validation.annotation.Validated;
+
+import lombok.Data;
+
+@Component
+@ConfigurationProperties(prefix = "taco.orders")
+@Data
+@Validated
+public class OrderProps {
+    @Min(value = 5, message = "must be between 5 and 25")
+    @Max(value = 25, message = "must be between 5 and 25")
+    private int pageSize = 20;
+}
+```
+
+#### Declaring configuration property metadata
+To create metadata for our custom configuration properties, we'll need to create a 
+file under the **META-INF** (e.g., in the project under src/main/resources/META-INF)
+named `additional-spring-configuration-metadata.json`. The following JSON code sample 
+shows what the metadata might look like: 
+```json
+{
+  "properties": [
+    {
+      "name": "taco.orders.page-size",
+      "type": "java.lang.Integer",
+      "description": "Sets the maximum number of orders to display in a list."
+    }
+  ]
+}
+```
+### Configuring with Profiles
+When applications are deployed to different runtime environments, usually some 
+configuration details differ such as database connection configurations. One way to 
+configure properties uniquely in one environment over another is to use environment
+variables to specify configuration properties instead of defining them in 
+`application.properties` and `appliation.yml`. 
+
+For instance, during development we can lean on the autoconfigured embedded H2 database. 
+But in production, we can set database configuration properties as environment variables
+like this: 
+```shell
+% export SPRING_DATASOURCE_URL=jdbc:mysql://localhost/tacocloud
+% export SPRING_DATASOURCE_USERNAME=tacouser
+% export SPRING_DATASOURCE_PASSWORD=tacopassword
+```
+Although this wil work, but its cumbersome and there's no good way to track changes 
+to environment variables or to easily roll back changes if there's a mistake. Instead,
+we can take advantage of Spring profiles. 
+
+Profiles are type of conditional configuration where different beans, configuration 
+classes, and configuration properties are applied or ignored based on what profiles 
+are active at run time. 
+
+#### Defining profile-specific properties
+One way to define profile-specific properties is to create yet another properties or 
+YAML file containing only the properties for production. The name of the file should 
+follow this convention: application-{profile name}.yml or application-{profile-name}.properties.
+Then we can specify the configuration properties appropriate to that profile. For 
+example, we could create a new file named application-prod.yml that contains the 
+following properties: 
+```yaml
+spring: 
+  datasource: 
+    url: jdbc:mysql://localhost/tacocloud
+    username: tacouser
+    password: tacopassword
+logging: 
+  level: 
+    tacos: WARN
+```
+Another way to specify profile-specific properties works only with YAML configuration. 
+It involves placing profile-specific properties alongside non-profiled properties in 
+application.yml, separated by three hyphens and the `spring.profiles` property to 
+name the profile. When applying the production properties to application.yml in this 
+way, the entire application.yml would look like this: 
+```yaml
+logging: 
+  level: 
+    tacos: DEBUG
+
+---
+spring: 
+  profiles: prod
+
+  datasource: 
+    url: jdbc:mysql://localhost/tacocloud
+    username: tacouser
+    password: tacopassword
+
+logging: 
+  level: 
+    tacos: WARN
+```
+This application.yml file is divided into two sections by a set of triple hyphens
+(---). 
+
+#### Activating profiles
+All it takes to make a profile active is to include it in the list of profile names 
+given to the `spring.profiles.active` property. For example, we could set it in 
+application.yml like this: 
+```yaml
+spring: 
+  profiles: 
+    active: 
+      - prod
+```
+But that's perhaps the worst possible way to set an active profile. If we set the active
+profile in application.yml, then that profile becomes the default profile, and we achieve
+none of the benefits of using profiles to separate the production-specific properties 
+from development properties. Instead, the recommended way is that we set the active 
+profile(s) with environment variables. On the production environment, we would set 
+`SPRING_PROFILES_ACTIVE` like this: 
+```shell
+% export SPRING_PROFILES_ACTIVE=prod
+```
+From then on, any application deployed to that machine will have the `prod` profile active.
+
+If we're running the application as an executable JAR file, we might also set the active 
+profile with a command-line argument like this: 
+```shell
+% java -jar taco-cloud.jar --spring.profiles.active=prod
+```
+We can specify more than one active profile. Often, this is with a comma-separated list. 
+```shell
+% export SPRING_PROFILES_ACTIVE=prod,audit,qa
+```
+But in YAML, we'd specify it as a list like this: 
+```yaml
+spring: 
+  profiles: 
+    active: 
+      - prod
+      - audit
+      - qa
+```
+If we deploy a Spring application to Cloud Foundry, a profile named cloud is automatically
+activated for us. In that case, we'll want to be sure to specify production-specific 
+properties under the `cloud` profile. 
+
+#### Conditionally creating beans with profiles
+Normally, any bean declared in a Java configuration class is created, regardless of which
+profile is active. But suppose we need some beans to be created only if a certain profile 
+is active. In that case, the `@Profile` annotation can designate beans as being applicable
+to only a given profile. 
+
+For instance, suppose we have a `CommandLineRunner` bean declared in `TacoCloudApplication`
+that's used to load the embedded database with ingredient data when the application starts.
+To prevent the ingredient data from being loaded every time the application starts in 
+a production deployment, we could annotate the `CommandLineRunner` bean method with 
+`@Profile` like this:
+
+```java
+import com.azad.tacocloud.tacos.data.IngredientRepository;
+import com.azad.tacocloud.tacos.data.UserRepository;
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Profile;
+import org.springframework.security.crypto.password.PasswordEncoder;
+
+@Bean
+@Profile("dev")
+public CommandLineRunner dataLoader(IngredientRepository repo, UserRepository userRep, PasswordEncoder encoder) {
+    // ...
+}
+```
+Or suppose that we need the `CommandLineRunner` created if either the `dev` profile or 
+`qa` profile is active. In that case, we can list the profiles for which the bean should 
+be created like so:
+
+```java
+@Bean
+@Profile({"dev", "qa"})
+public CommandLineRunner dataLoader(IngredientRepository repo, UserRepository userRep, PasswordEncoder encoder) {
+    // ...
+}
+```
+It would be even more convenient if that `CommandLineRunner` bean were always created 
+unless the `prod` profile is active. In that case, we can apply `@Profile` like this:
+
+```java
+@Bean
+@Profile("!prod")
+public CommandLineRunner dataLoader(IngredientRepository repo, UserRepository userRep, PasswordEncoder encoder) {
+    // ...
+}
+```
+Here, the exclamation mark (!) negates the profile name. 
+
+It's also possible to use `@Profile` on an entire `@COnfiguration`-annotated class. For 
+example, suppose that we were to extract the `CommandLineRunner` bean into a separate 
+configuration class named `DevelopmentConfig`. Then we could annotate like this:
+
+```java
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
+
+@Profile({"!prod", "!qa"})
+@Configuration
+public class DevelopmentConfig {
+    @Bean
+    public CommandLineRunner dataLoader(IngredientRepository repo, UserRepository userRep, PasswordEncoder encoder) {
+        // ...
+    }
+}
+```
+Here the `CommandLineRunner` bean (as well as any other beans defined in `DevelopmentConfig`)
+will be created only if neither the `prod` nor `qa` profile is active. 
+
+### Chapter Summary
+- We can annotate Spring beans with `@ConfigurationProperties` to enable injection of 
+values from one of several property sources. 
+- Configuration properties can be set in command-line arguments, environment variables, 
+JVM system properties, properties files, or YAML files, among other options. 
+- Use configuration properties to override autoconfiguration settings, including the 
+ability to specify a data source URL and logging levels. 
+- Spring profiles can be used with property sources to conditionally set configuration 
+properties based on the active profile(s). 
