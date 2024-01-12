@@ -1,0 +1,14 @@
+## Category
+    - name
+    - type [NEED, WANT, SAVING]
+    - subCategoryList
+    - amount
+    - totalAmount
+
+## SubCategory
+    - name
+    - amount
+
+## Budget
+    - categoryList
+    -
