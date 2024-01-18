@@ -108,5 +108,9 @@ application that it can use to gain authenticated access to an API.
 is secured by OAuth 2. The resource server restricts access to its resources 
 unless the request provides a valid access token with the necessary permission
 scope. 
+- _The client application_ - The client application is an application that wants
+to consume an API but needs permission to do so. 
+- _The user_ - This is the human who uses the client application and grants the
+application permission to access the resource server's API on their behalf. 
 ### Chapter Summary
 
