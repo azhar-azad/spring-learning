@@ -30,9 +30,9 @@ import java.util.Optional;
  * API. The origins attribute accepts an array, however, so we can also specify multiple values,
  * like @CrossOrigin(origins={"http://tacocloud:8080", "http://tacocloud.com"}).
  */
-//@RestController
-//@RequestMapping(path = "/api/tacos", produces = "application/json")
-//@CrossOrigin(origins = "http://tacocloud:8080")
+@RestController
+@RequestMapping(path = "/api/tacos", produces = "application/json")
+@CrossOrigin(origins = "http://tacocloud:8080")
 public class TacoController {
 
     private TacoRepository tacoRepo;
