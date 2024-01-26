@@ -1,6 +1,6 @@
-package com.azad.tacocloud.tacos.kitchen;
+package com.azad.tacos.kitchen;
 
-import com.azad.tacocloud.tacos.TacoOrder;
+import com.azad.tacos.TacoOrder;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
