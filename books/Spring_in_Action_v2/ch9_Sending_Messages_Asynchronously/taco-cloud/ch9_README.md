@@ -431,5 +431,115 @@ and `receiveAndConvert()` methods block until a message arrives or until the
 time-out expires. But even with a non-zero time-out, our code will need to be 
 ready to deal with a `null` return. 
 
+### Messaging with Kafka
+Kafka is designed to run in a cluster, affording great scalability. And by 
+partitioning its topics across all instances in the cluster, it's very resilient. 
+Whereas RabbitMQ deals with queues in exchanges, Kafka utilizes topics only to 
+offer pub/sub messaging. 
+
+Kafka topics are replicated across all brokers in the cluster. Each node in the 
+cluster acts as a leader for one or more topics, bing responsible for that topic's
+data replicating it to the other nodes in the cluster.
+![Kafka_cluster_composed_of_multiple_brokers](src/main/resources/images/9_2.png)
+
+#### Setting up Spring for Kafka messaging
+To start using Kafka for messaging, we'll need to add the appropriate dependencies
+to our build. Unlike the JMS and RabbitMQ options, however, there isn't a Spring 
+Boot starter for Kafka. We'll need only one dependency. This one dependency 
+brings everything we need for Kafka to the project. Its presence will trigger 
+Spring Boot autoconfiguration for Kafka that will, among other things, arrange for 
+a `KafkaTemplate` in the Spring application context. `KafkaTemplate` defaults to 
+work with a Kafka broker on localhost, listening on port 9092. 
+```xml
+<dependency>
+    <groupId>org.springframework.kafka</groupId>
+    <artifactId>spring-kafka</artifactId>
+</dependency>
+```
+The `spring.kafka.bootstrap-servers` property sets the location of one or more 
+Kafka servers used to establish an initial connection to the Kafka cluster. 
+```yaml
+spring: 
+  kafka: 
+    bootstrap-servers: 
+      - kafka.tacocloud.com:9092
+```
+Notice that `spring.kafka.bootstrap-servers` is plural and accepts a list. As such, 
+we can provide it with multiple Kafka servers in the cluster, as shown next: 
+```yaml
+spring: 
+  kafka: 
+    bootstrap-servers: 
+      - kafka.tacocloud.com:9092
+      - kafka.tacocloud.com:9093
+      - kafka.tacocloud.com:9094
+```
+These configurations are for Kafka bootstrap servers on a host named 
+kafka.tacocloud.com. If we're running our Kafka cluster locally (which is likely
+during development), then we'll want to use localhost instead, shown next: 
+```yaml
+spring: 
+  kafka: 
+    bootstrap-servers: 
+      - localhost:9092
+```
+
+#### Sending messages with KafkaTemplate
+Lets consider its methods for sending messages:
+
+```java
+import org.apache.kafka.clients.producer.ProducerRecord;
+import org.springframework.kafka.support.SendResult;
+import org.springframework.messaging.Message;
+
+ListenableFuture<SendResult<K, V>> send(String topic, V data);
+ListenableFuture<SendResult<K, V>> send(String topic, K key, V data);
+ListenableFuture<SendResult<K, V>> send(String topic, Integer partition, K key, V data);
+ListenableFuture<SendResult<K, V>> send(String topic, Integer partition, Long timestamp, K key, V data);
+ListenableFuture<SendResult<K, V>> send(ProducerRecord<K, V> record);
+ListenableFuture<SendResult<K, V>> send(Message<?> message);
+
+ListenableFuture<SendResult<K, V>> sendDefault(V data);
+ListenableFuture<SendResult<K, V>> sendDefault(K key, V data);
+ListenableFuture<SendResult<K, V>> sendDefault(Integer partition, K key, V data);
+ListenableFuture<SendResult<K, V>> sendDefault(Integer partition, Long timestamp, K key, V data);
+```
+There are no `convertAndSend()` methods. That's because `KafkaTemplate` is typed
+with generics and is able to deal with domain types directly when sending messages. 
+In a way, all of the `send()` methods are doing the job of `convertAndSend()`. 
+About the parameters: 
+- The topic to which to send the message (required for `send()`)
+- A partition to which to write the topic (optional)
+- A key to send on the record (optional)
+- A timestamp (optional; defaults to `System.currentTimeMillis()`)
+- The payload (required)
+- The `ProducerRecord` is little more than a type that captures all the preceding 
+parameters in a single object. 
+
+If we set a default topic, we can add it in the application.yml. 
+```yaml
+spring: 
+  kafka: 
+    bootstrap-servers: 
+      - localhost:9092
+    template: 
+      default-topic: tacocloud.orders.topic
+```
+
+#### Writing Kafka Listeners
+Aside from the unique method signatures for `send()` and `sendDefault()`, 
+`KafkaTemplate` differs from `JmsTemplate` and `RabbitTemplate` in that it doesn't
+offer any methods for receiving messages. That means the only way to consume 
+messages from a Kafka topic using Spring is to write a message listener. 
+
 ### Chapter Summary
+- Asynchronous messaging provides a layer of indirection between communicating 
+applications, which allows for looser coupling and greater scalability. 
+- Spring supports asynchronous messaging with JMS, RabbitMQ, or Apache Kafka. 
+- Applications can use template-based clients (`JmsTemplate`, `RabbitTemplate`, 
+or `KafkaTemplate`) to send messages via a message broker. 
+- Receiving applications can consume messages in a pull-based model using the same
+template-based clients. 
+- Messages can also be pushed to consumers by applying message listeners 
+annotations (`@JmsListener`, `@RabbitListener`, or `@KafkaListener`) to bean methods. 
 
