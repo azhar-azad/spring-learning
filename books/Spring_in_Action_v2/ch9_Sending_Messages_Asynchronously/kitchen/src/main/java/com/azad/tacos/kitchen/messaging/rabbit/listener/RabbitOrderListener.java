@@ -1,7 +1,7 @@
-package com.azad.tacocloud.tacos.kitchen.messaging.rabbit.listener;
+package com.azad.tacos.kitchen.messaging.rabbit.listener;
 
-import com.azad.tacocloud.tacos.TacoOrder;
-import com.azad.tacocloud.tacos.kitchen.KitchenUI;
+import com.azad.tacos.TacoOrder;
+import com.azad.tacos.kitchen.KitchenUI;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;

@@ -1,7 +1,7 @@
-package com.azad.tacocloud.tacos.kitchen.messaging.kafka.listener;
+package com.azad.tacos.kitchen.messaging.kafka.listener;
 
-import com.azad.tacocloud.tacos.TacoOrder;
-import com.azad.tacocloud.tacos.kitchen.KitchenUI;
+import com.azad.tacos.TacoOrder;
+import com.azad.tacos.kitchen.KitchenUI;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,7 +1,7 @@
-package com.azad.tacocloud.tacos.kitchen.messaging.rabbit;
+package com.azad.tacos.kitchen.messaging.rabbit;
 
-import com.azad.tacocloud.tacos.TacoOrder;
-import com.azad.tacocloud.tacos.kitchen.messaging.OrderReceiver;
+import com.azad.tacos.TacoOrder;
+import com.azad.tacos.kitchen.messaging.OrderReceiver;
 import org.springframework.amqp.core.Message;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.amqp.support.converter.MessageConverter;

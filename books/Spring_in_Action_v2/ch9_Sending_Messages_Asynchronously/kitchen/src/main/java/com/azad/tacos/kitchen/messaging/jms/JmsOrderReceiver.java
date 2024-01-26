@@ -1,7 +1,7 @@
-package com.azad.tacocloud.tacos.kitchen.messaging.jms;
+package com.azad.tacos.kitchen.messaging.jms;
 
-import com.azad.tacocloud.tacos.TacoOrder;
-import com.azad.tacocloud.tacos.kitchen.messaging.OrderReceiver;
+import com.azad.tacos.TacoOrder;
+import com.azad.tacos.kitchen.messaging.OrderReceiver;
 import jakarta.jms.JMSException;
 import jakarta.jms.Message;
 import org.springframework.beans.factory.annotation.Autowired;
