@@ -121,5 +121,40 @@ Reactor also provides some great testing support.
 </dependency>
 ```
 
-### Chapter Summary
+### Applying Common Reactive Operations
+`Flux` and `Mono` are the most essential building blocks provided by Reactor, 
+and the operations those two reactive types offer are the mortar that binds 
+them together to create pipelines through which data can flow. `Flux` and `Mono`
+offer more than 500 operations, which can be loosely categorized as follows: 
+- Creation
+- Combination
+- Transformation
+- Logic
 
+_Look for code and instructions on the Test classes_
+
+#### Creating reactive types
+- from objects: `just()`
+- from collections: `fromArray()`, `fromIterable()`, `fromStream()`
+- generating data: `range(start, end)`, `interval(duration)`
+
+#### Combining reactive types
+- Merging reactive types: `mergeWith()`, `zippedFlux()`, `zip()`
+- Selecting the first reactive type to publish: `firstWithSignal()`
+
+#### Transforming and filtering reactive streams
+- Filtering data - `skip()`, `take()`, `filter()`, `distinct()`
+- Mapping reactive data - `map()`, `flatMap()`
+- Buffering data - `buffer()`, `collectList()`, `collectMap()`
+
+#### Performing logic operations on reactive types
+- `all()`, `any()`
+
+### Chapter Summary
+- Reactive programming involves creating pipelines through which data flows. 
+- The Reactive Streams specification defines four types: `Publisher`, `Subscriber`, `Subscription`,
+and `Processor` (which is a combination of `Publisher` and `Subscriber`).
+- Project Reactor implements Reactive Streams and abstracts stream definitions into two primary
+types, `Flux` and `Mono`, each of which offers several hundred operations. 
+- Spring leverages Reactor to create reactive controllers, repositories, REST clients, and other 
+reactive framework support. 
