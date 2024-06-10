@@ -35,6 +35,28 @@
 			<scope>runtime</scope>
 		</dependency>
 
+		<!-- ch5 -->
+		<!--
+		 In order to generate metadata using the annotation processor, enabling the IDE to connect the dots
+		 between @ConfigurationProperties classes and related properties defined in the application.yml file,
+		 we add the following dependency.
+		 -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-configuration-processor</artifactId>
+			<optional>true</optional>
+		</dependency>
+		<!--
+		The spring-boot-starter-actuator dependency provides the necessary capabilities; to do so, it brings
+		with it both Actuator itself and Micrometer, along with autoconfiguration capabilities to slide into
+		place within a Spring Boot application with nearly zero effort.
+		Exposes an endpoint like: http://localhost:8080/actuator
+		-->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-actuator</artifactId>
+		</dependency>
+
 		<dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
