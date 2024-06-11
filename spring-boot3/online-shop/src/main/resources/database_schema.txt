@@ -1,0 +1,59 @@
+-- Product Table
+CREATE TABLE Product (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    description TEXT,
+    price DECIMAL(10, 2) NOT NULL
+);
+
+-- Inventory Table
+CREATE TABLE Inventory (
+    id SERIAL PRIMARY KEY,
+    product_id INT NOT NULL,
+    quantity INT NOT NULL,
+    FOREIGN KEY (product_id) REFERENCES Product(id)
+);
+
+-- User Table
+CREATE TABLE User (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    email VARCHAR(255) NOT NULL UNIQUE
+);
+
+-- Order Table
+CREATE TABLE "Order" (
+    id SERIAL PRIMARY KEY,
+    user_id INT NOT NULL,
+    order_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES User(id)
+);
+
+-- OrderItem Table
+CREATE TABLE OrderItem (
+    id SERIAL PRIMARY KEY,
+    order_id INT NOT NULL,
+    product_id INT NOT NULL,
+    quantity INT NOT NULL,
+    price DECIMAL(10, 2) NOT NULL,
+    FOREIGN KEY (order_id) REFERENCES "Order"(id),
+    FOREIGN KEY (product_id) REFERENCES Product(id)
+);
+
+-- Supplier Table
+CREATE TABLE Supplier (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    contact_information TEXT
+);
+
+-- Restock Table
+CREATE TABLE Restock (
+    id SERIAL PRIMARY KEY,
+    supplier_id INT NOT NULL,
+    product_id INT NOT NULL,
+    quantity INT NOT NULL,
+    restock_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (supplier_id) REFERENCES Supplier(id),
+    FOREIGN KEY (product_id) REFERENCES Product(id)
+);

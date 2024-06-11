@@ -1,0 +1,42 @@
+spring:
+  application:
+    name: online-shop
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/online_shop_db
+    username: postgres
+    password: N3v3r4#Postgres
+    jpa:
+      properties:
+        hibernate:
+          dialect: org.hibernate.dialect.PostgreSQLDialect
+          jdbc:
+            lob:
+              non_contextual_creation: true
+
+# API
+api:
+  version: v1
+
+# Defaults
+default:
+  page:
+    number: 1
+  result:
+    limit: 25
+  sort:
+    order: asc
+
+# Security
+security:
+  auth:
+    base: EMAIL
+  jwt:
+    secret: x3n0m1at23g4v4n
+    subject: User_Details
+    claim: UserID
+    issuer: com.azad.onlineshop
