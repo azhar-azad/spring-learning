@@ -1,5 +1,6 @@
 package com.azad.online_shop.service;
 
+import com.azad.online_shop.exception.UnauthorizedAccessException;
 import com.azad.online_shop.model.contant.RoleType;
 import com.azad.online_shop.model.dto.users.LoginRequest;
 import com.azad.online_shop.model.dto.users.UserDto;
@@ -64,16 +65,16 @@ public class AuthService {
     public UserDto registerUser(UserDto dto) {
 
         if (dto.getRoleName() == null || dto.getRoleName().isEmpty())
-            dto.setRoleName(RoleType.USER.name().toLowerCase());
+            dto.setRoleName(RoleType.USER.name().toUpperCase());
 
         if (dto.getRoleName().equalsIgnoreCase(RoleType.ADMIN.name())) {
             if (!loggedInUserIsAdmin())
-                throw new RuntimeException("Only admins can create a new admin user");
+                throw new UnauthorizedAccessException("Only admins can create a new admin user");
         }
 
         dto.setPassword(passwordEncoder.encode(dto.getPassword()));
 
-        RoleEntity role = roleRepository.findByRoleName(dto.getRoleName())
+        RoleEntity role = roleRepository.findByRoleName(dto.getRoleName().toUpperCase())
                 .orElseThrow(() -> new RuntimeException("Role not found with name: " + dto.getRoleName()));
 
         UserEntity user = modelMapper.map(dto, UserEntity.class);
@@ -108,6 +109,7 @@ public class AuthService {
 
     public void resetPassword(String updatedPassword) {
         UserEntity loggedInUser = getLoggedInUser();
+
         String encodedPass = passwordEncoder.encode(updatedPassword);
         loggedInUser.setPassword(encodedPass);
 
@@ -116,7 +118,13 @@ public class AuthService {
 
     public UserEntity getLoggedInUser() {
         String email = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        return securityUtils.getUserByEmail(email);
+        UserEntity loggedInUser;
+        try {
+            loggedInUser = securityUtils.getUserByEmail(email);
+        } catch (UsernameNotFoundException e) {
+            throw new UnauthorizedAccessException("User not found with email: " + email);
+        }
+        return loggedInUser;
     }
 
     public String generateAndGetJwtToken(String email) {
@@ -152,6 +160,14 @@ public class AuthService {
     }
 
     private boolean loggedInUserIsAdmin() {
-        return getLoggedInUser().getRole().getRoleName().equalsIgnoreCase(RoleType.ADMIN.name());
+        UserEntity loggedInUser;
+        try {
+            loggedInUser = getLoggedInUser();
+        } catch (UnauthorizedAccessException e) {
+            return false;
+        }
+        if (loggedInUser == null)
+            return false;
+        return loggedInUser.getRole().getRoleName().equalsIgnoreCase(RoleType.ADMIN.name());
     }
 }

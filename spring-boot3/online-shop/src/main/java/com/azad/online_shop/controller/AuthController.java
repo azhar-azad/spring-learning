@@ -1,5 +1,6 @@
 package com.azad.online_shop.controller;
 
+import com.azad.online_shop.exception.UnauthorizedAccessException;
 import com.azad.online_shop.model.dto.users.LoginRequest;
 import com.azad.online_shop.model.dto.users.RegistrationRequest;
 import com.azad.online_shop.model.dto.users.UserDto;
@@ -48,8 +49,10 @@ public class AuthController {
         UserDto registeredDto;
         try {
             registeredDto = authService.registerUser(dto);
+        } catch (UnauthorizedAccessException ex) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         } catch (RuntimeException ex) {
-            return ResponseEntity.internalServerError().build();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
 
         String token = authService.generateAndGetJwtToken(registeredDto.getEmail());
@@ -65,10 +68,9 @@ public class AuthController {
                     Collections.singletonMap("TOKEN", authService.generateAndGetJwtToken(authenticatedEmail)),
                     HttpStatus.ACCEPTED);
         } catch (AuthenticationException ex) {
-            return new ResponseEntity<>(Collections.singletonMap("AUTHENTICATION ERROR", ex.getLocalizedMessage()),
-                    HttpStatus.UNAUTHORIZED);
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         } catch (RuntimeException ex) {
-            return ResponseEntity.internalServerError().build();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
 
@@ -79,7 +81,7 @@ public class AuthController {
         try {
             loggedInUser = authService.getLoggedInUser();
         } catch (RuntimeException ex) {
-            return ResponseEntity.internalServerError().build();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
 
         return new ResponseEntity<>(modelMapper.map(loggedInUser, UserResponse.class),
@@ -91,8 +93,10 @@ public class AuthController {
 
         try {
             authService.deleteUser();
+        } catch (UnauthorizedAccessException ex) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         } catch (RuntimeException ex) {
-            return ResponseEntity.internalServerError().build();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
 
         return ResponseEntity.ok("User deleted");
@@ -103,8 +107,10 @@ public class AuthController {
 
         try {
             authService.resetPassword(request.getPassword());
+        } catch (UnauthorizedAccessException ex) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         } catch (RuntimeException ex) {
-            return ResponseEntity.internalServerError().build();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
 
         return ResponseEntity.accepted().build();

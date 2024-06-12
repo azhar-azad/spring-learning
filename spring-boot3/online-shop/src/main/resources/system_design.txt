@@ -50,39 +50,64 @@
 
 ## Endpoints
 #1 /products
-    - Create single product                                 POST /products
-    - Get all products (with pagination support)            GET /products
-    - Get single product by productId                       GET /products/productId
-    - Update product entity                                 PUT /products/productId
-    - Update product price only                             PATCH /products/productId
-    - Delete product entry (will deduct from inventories)   DELETE /products/productId
+    - Create single product
+            POST /products
+    - Get all products (with pagination support)
+            GET /products
+    - Get single product by productId
+            GET /products/productId
+    - Update product entity
+            PUT /products/productId
+    - Update product price only
+            PATCH /products/productId
+    - Delete product entry (will deduct from inventories)
+            DELETE /products/productId
 #2 /inventories
     - While creating a product and inventory entry should be created if not exists
-    - Get all inventory (will include product name)         GET /inventories
-    - Get single inventory by inventoryId                   GET /inventories/inventoryId
-    - Get single inventory by product name                  GET /inventories/byProduct/productName
-    - Update inventory by inventoryId                       PUT /inventories/inventoryId
-    - Update inventory by product name                      PUT /inventories/byProduct/productName
-    - Delete inventory by inventoryId                       DELETE /inventories/inventoryId
-    - Delete inventory by product name                      DELETE /inventories/byProduct/productName
+    - Get all inventory (will include product name)
+            GET /inventories
+    - Get single inventory by inventoryId
+            GET /inventories/inventoryId
+    - Get single inventory by product name
+            GET /inventories/byProduct/productName
+    - Update inventory by inventoryId
+            PUT /inventories/inventoryId
+    - Update inventory by product name
+            PUT /inventories/byProduct/productName
+    - Delete inventory by inventoryId
+            DELETE /inventories/inventoryId
+    - Delete inventory by product name
+            DELETE /inventories/byProduct/productName
 #3 /auth
-    - Register user                                         POST /auth/register
-    - Login user                                            POST /auth/login
-    - Change email                                          PUT /auth/email
-    - Reset password                                        PUT /auth/password
+    - Register user
+            POST /auth/register
+    - Login user
+            POST /auth/login
+    - Change email
+            PUT /auth/email
+    - Reset password
+            PUT /auth/password
 #4 /users
-    - Update user                                           PUT /users
-    - Delete user                                           DELETE /users
-    - Add address                                           POST /users/address
-    - Update address                                        PUT /users/address
+    - Update user
+            PUT /users
+    - Delete user
+            DELETE /users
+    - Add address
+            POST /users/address
+    - Update address
+            PUT /users/address
 #5 /orders
-    - Create a single order                                 POST /orders
+    - Create a single order
+            POST /orders
     - Get all orders by userId (with pagination support, include OrderItems)
-                                                            GET /orders
+            GET /orders
     - Get all orders for a product name (with pagination support, include OrderItems)
-                                                            GET /orders/productName
-    - Delete a single order by orderId                      DELETE /orders/orderId
+            GET /orders/productName
+    - Delete a single order by orderId
+            DELETE /orders/orderId
 #6 /suppliers
-    - Register a supplier                                   POST /suppliers
-    - Restock a product                                     POST /suppliers/productName
+    - Register a supplier
+            POST /suppliers
+    - Restock a product
+            POST /suppliers/productName
 
