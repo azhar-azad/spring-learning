@@ -138,6 +138,8 @@ public class AuthService {
 
         Supplier<UserEntity> superAdminCreator = () -> {
             UserEntity admin = new UserEntity();
+            admin.setFirstName("Super");
+            admin.setLastName("Admin");
             admin.setEmail("superadmin@gmail.com");
             admin.setPassword(passwordEncoder.encode("1234"));
             admin.setRole(adminRole);
