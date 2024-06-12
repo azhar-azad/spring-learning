@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @NoArgsConstructor
 @Data
 @Entity
@@ -20,4 +22,7 @@ public class SupplierEntity {
 
     @Column(name = "contact_info", nullable = false)
     private String contactInfo;
+
+    @OneToMany(mappedBy = "supplier", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<RestockEntity> restocks;
 }
