@@ -28,7 +28,7 @@ public class Utils {
     }
 
     public static String generateProductName(String name, String brand, String size) {
-        return brand + " " + name + " " + size;
+        return getSpacesReplacedWith_(brand.toUpperCase() + " " + name.toUpperCase() + " " + size.toUpperCase());
     }
 
     public static Pageable getPageable(PagingAndSorting ps) {
@@ -50,5 +50,9 @@ public class Utils {
             sortBy = sortBy.ascending();
 
         return sortBy;
+    }
+
+    private static String getSpacesReplacedWith_(String str) {
+        return str.replaceAll("\\s+", "_");
     }
 }

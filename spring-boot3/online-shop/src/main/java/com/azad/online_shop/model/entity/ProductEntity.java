@@ -17,7 +17,7 @@ public class ProductEntity {
     @Column(name = "product_id")
     private Long id;
 
-    @Column(name = "product_name", nullable = false, unique = true)
+    @Column(name = "product_name", nullable = false)
     private String productName;
 
     @Column(name = "description")
@@ -32,7 +32,7 @@ public class ProductEntity {
     @Column(name = "price", nullable = false)
     private Double price;
 
-    @Column(name = "product_unique_name", nullable = false)
+    @Column(name = "product_unique_name", nullable = false, unique = true)
     private String productUniqueName;
 
     @OneToOne(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.LAZY)

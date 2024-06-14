@@ -1,9 +1,9 @@
 package com.azad.online_shop.controller;
 
+import com.azad.online_shop.common.Utils;
 import com.azad.online_shop.model.dto.products.ProductDto;
 import com.azad.online_shop.model.dto.products.ProductRequest;
 import com.azad.online_shop.model.dto.products.ProductResponse;
-import com.azad.online_shop.model.pojo.Product;
 import com.azad.online_shop.service.ProductService;
 import jakarta.validation.Valid;
 import org.modelmapper.ModelMapper;
@@ -35,6 +35,7 @@ public class ProductController {
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping
     public ResponseEntity<ProductResponse> createProduct(@Valid @RequestBody ProductRequest req) {
+        Utils.logInfo(ProductController.class, "POST /api/v1/products");
         ProductDto productDto = modelMapper.map(req, ProductDto.class);
 
         ProductDto savedProduct;
