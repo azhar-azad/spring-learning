@@ -11,6 +11,9 @@ import com.azad.online_shop.repository.UserRepository;
 import com.azad.online_shop.security.SecurityUtils;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.LazyInitializationExcludeFilter;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -20,11 +23,27 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Arrays;
+import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.BiFunction;
+import java.util.function.Function;
 import java.util.function.Supplier;
 
 @Service
 public class AuthService {
+
+    @Value("${security.auth.roles}")
+    private String[] confDefinedRoles;
+
+    @Value("${security.auth.super_admin.email}")
+    private String superAdminEmail;
+
+    @Value("${security.auth.super_admin.first_name}")
+    private String superAdminFirstName;
+
+    @Value("${security.auth.super_admin.last_name}")
+    private String superAdminLastName;
 
     private ModelMapper modelMapper;
 
@@ -36,6 +55,7 @@ public class AuthService {
 
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
+    private LazyInitializationExcludeFilter scheduledBeanLazyInitializationExcludeFilter;
 
     public AuthService(UserRepository userRepository, RoleRepository roleRepository) {
         this.userRepository = userRepository;
@@ -132,23 +152,24 @@ public class AuthService {
     }
 
     public void authInit() {
-        BiFunction<RoleType, Integer, RoleEntity> roleCreator = (roleName, id) -> {
+        Function<RoleType, RoleEntity> roleCreator = (roleName) -> {
             RoleEntity role = new RoleEntity();
-            role.setId(id);
             role.setRoleName(roleName.name());
             return roleRepository.save(role);
         };
 
         RoleEntity adminRole = roleRepository.findByRoleName(RoleType.ADMIN.name())
-                .orElse(roleCreator.apply(RoleType.ADMIN, 1));
-        roleRepository.findByRoleName(RoleType.USER.name())
-                .orElse(roleCreator.apply(RoleType.USER, 2));
+                    .orElse(roleCreator.apply(RoleType.ADMIN));
+
+        Arrays.asList(confDefinedRoles).forEach(roleName ->
+            roleRepository.findByRoleName(roleName)
+                    .orElse(roleCreator.apply(RoleType.valueOf(roleName))));
 
         Supplier<UserEntity> superAdminCreator = () -> {
             UserEntity admin = new UserEntity();
-            admin.setFirstName("Super");
-            admin.setLastName("Admin");
-            admin.setEmail("superadmin@gmail.com");
+            admin.setFirstName(superAdminFirstName);
+            admin.setLastName(superAdminLastName);
+            admin.setEmail(superAdminEmail);
             admin.setPassword(passwordEncoder.encode("1234"));
             admin.setRole(adminRole);
             admin.setUserFrom(LocalDate.now());
@@ -156,7 +177,7 @@ public class AuthService {
             return userRepository.save(admin);
         };
 
-        userRepository.findByEmail("superadmin@gmail.com").orElseGet(superAdminCreator);
+        userRepository.findByEmail(superAdminEmail).orElseGet(superAdminCreator);
     }
 
     private boolean loggedInUserIsAdmin() {

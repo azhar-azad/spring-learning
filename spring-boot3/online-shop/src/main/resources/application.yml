@@ -35,6 +35,13 @@ default:
 security:
   auth:
     base: EMAIL
+    roles:
+      - ADMIN
+      - USER
+    super_admin:
+      email: superadmin@gmail.com
+      first_name: Super
+      last_name: Admin
   jwt:
     secret: x3n0m1at23g4v4n
     subject: User_Details
