@@ -1,0 +1,26 @@
+spring:
+  application:
+    name=moviepedia
+  datasource:
+    url: jdbc:mysql://localhost:3306/moviepedia_db
+    username: root
+    password: N3v3r4#Mysql
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: false
+
+# security
+auth_base: EMAIL
+jwt_secret: x3n0m1at23g4v4n
+test_admin_id: testadmin@gmail.com
+test_admin_pass: 1234
+
+# api
+api_version: v1
+default_page_number: 1
+default_result_limit: 25
+default_sort_order: asc
