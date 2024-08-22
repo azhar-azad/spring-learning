@@ -23,7 +23,6 @@ public class GenreService {
     public void initGenres() {
         Set<GenreName> genreNameSet = EnumSet.allOf(GenreName.class);
         for (GenreName genreName : genreNameSet) {
-
             Optional<GenreEntity> byName = repository.findByName(genreName.name());
             if (byName.isEmpty()) {
                 repository.save(new GenreEntity(genreName.name()));

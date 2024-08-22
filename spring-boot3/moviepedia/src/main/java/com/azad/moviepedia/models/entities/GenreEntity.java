@@ -4,6 +4,9 @@ import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.HashSet;
+import java.util.Set;
+
 @Entity
 @Table(name = "genres")
 @Data
@@ -20,6 +23,9 @@ public class GenreEntity {
 
     @Column(name = "movie_count", nullable = false)
     private Integer movieCount;
+
+    @ManyToMany(mappedBy = "genres")
+    private Set<MovieEntity> movies = new HashSet<>();
 
     public GenreEntity(String name) {
         this.name = name;
