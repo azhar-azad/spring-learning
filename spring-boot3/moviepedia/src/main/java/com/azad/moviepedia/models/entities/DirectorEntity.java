@@ -36,6 +36,9 @@ public class DirectorEntity {
     @Column(name = "age", nullable = false)
     private String age;
 
+    @ManyToMany(mappedBy = "directors")
+    private Set<MovieEntity> movies = new HashSet<>();
+
     @OneToMany(mappedBy = "director")
     private Set<AwardEntity> awards = new HashSet<>();
 }

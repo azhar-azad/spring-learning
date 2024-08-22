@@ -37,6 +37,18 @@ public class MovieEntity {
     @Column(name = "total_votes")
     private Long totalVotes;
 
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinTable(name = "movie_director",
+            joinColumns = @JoinColumn(name = "movie_id"),
+            inverseJoinColumns = @JoinColumn(name = "director_id"))
+    private Set<DirectorEntity> directors = new HashSet<>();
+
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinTable(name = "movie_writer",
+            joinColumns = @JoinColumn(name = "movie_id"),
+            inverseJoinColumns = @JoinColumn(name = "writer_id"))
+    private Set<WriterEntity> writers = new HashSet<>();
+
     @OneToMany(mappedBy = "movie", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<MovieCastEntity> movieCasts = new HashSet<>();
 

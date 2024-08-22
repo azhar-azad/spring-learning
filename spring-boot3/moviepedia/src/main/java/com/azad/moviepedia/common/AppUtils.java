@@ -1,18 +1,9 @@
 package com.azad.moviepedia.common;
 
-import com.azad.moviepedia.controllers.WriterRestController;
-import com.azad.moviepedia.models.dtos.responses.WriterResponse;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.hateoas.CollectionModel;
-import org.springframework.hateoas.EntityModel;
-import org.springframework.hateoas.IanaLinkRelations;
-import org.springframework.hateoas.LinkRelation;
-import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
@@ -20,9 +11,6 @@ import java.time.Period;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
-
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @Component
 public class AppUtils {

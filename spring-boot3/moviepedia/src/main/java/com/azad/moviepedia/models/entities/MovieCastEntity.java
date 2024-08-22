@@ -13,10 +13,12 @@ public class MovieCastEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @MapsId("movieId")
+    @JoinColumn(name = "movie_id")
     private MovieEntity movie;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @MapsId("castId")
+    @JoinColumn(name = "cast_id")
     private CastEntity cast;
 
     @Column(name = "character_name")

@@ -36,6 +36,9 @@ public class WriterEntity {
     @Column(name = "age", nullable = false)
     private String age;
 
+    @ManyToMany(mappedBy = "writers")
+    private Set<MovieEntity> movies = new HashSet<>();
+
     @OneToMany(mappedBy = "writer")
     private Set<AwardEntity> awards = new HashSet<>();
 }
