@@ -24,5 +24,6 @@ public enum GenreName {
     SURVIVAL,
     THRILLER,
     WAR,
-    WESTERN
+    WESTERN,
+    UNDEFINED
 }

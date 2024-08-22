@@ -1,5 +1,6 @@
 package com.azad.moviepedia.models.dtos;
 
+import com.azad.moviepedia.models.constants.GenreName;
 import com.azad.moviepedia.models.pojos.Cast;
 import com.azad.moviepedia.models.pojos.Director;
 import com.azad.moviepedia.models.pojos.Movie;
@@ -18,8 +19,12 @@ public class MovieDto extends Movie {
     private Set<Long> directorIds;
     private Set<Long> writerIds;
     private Set<Long> castIds;
+    private Set<Long> awardIds;
 
-    private Set<Director> directors;
-    private Set<Writer> writers;
-    private Set<Cast> casts;
+    private Set<GenreName> genres;
+
+    private Set<DirectorDto> directors;
+    private Set<WriterDto> writers;
+    private Set<CastDto> casts;
+    private Set<AwardDto> awards;
 }
