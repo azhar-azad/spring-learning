@@ -11,5 +11,6 @@ import java.util.Set;
 public class CastDto extends Cast {
 
     private Long id;
-    private Set<AwardDto> award;
+    private Set<AwardDto> awards;
+    private String characterName;
 }

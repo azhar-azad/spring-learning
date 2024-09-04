@@ -16,12 +16,7 @@ public class MovieDto extends Movie {
 
     private Long id;
 
-    private Set<Long> directorIds;
-    private Set<Long> writerIds;
-    private Set<Long> castIds;
-    private Set<Long> awardIds;
-
-    private Set<GenreName> genres;
+    private Set<String> genres;
 
     private Set<DirectorDto> directors;
     private Set<WriterDto> writers;

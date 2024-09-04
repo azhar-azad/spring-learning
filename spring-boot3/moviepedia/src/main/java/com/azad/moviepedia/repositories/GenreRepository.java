@@ -1,5 +1,6 @@
 package com.azad.moviepedia.repositories;
 
+import com.azad.moviepedia.models.constants.GenreName;
 import com.azad.moviepedia.models.entities.GenreEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 
