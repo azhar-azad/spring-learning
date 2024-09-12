@@ -1,0 +1,54 @@
+1. Class Diagram Overview
+Classes:
+    User (Represents library users)
+    Book (Represents books in the library)
+    Author (Represents authors of books)
+    Category (Represents categories/genres of books)
+    Loan (Represents the borrowing of books)
+    Reservation (Represents the reservation of books)
+    Review (Represents user reviews and ratings for books)
+    Notification (Represents notifications sent to users)
+    Admin (Inherits from User, represents admins with special permissions)
+
+2. Class Diagram Details
+    - User
+        id: Long
+        username: String
+        password: String
+        email: String
+        role: Role (Enum: USER, ADMIN)
+        createdAt: LocalDateTime
+        updatedAt: LocalDateTime
+        Relationships:
+        One-to-Many with Loan
+        One-to-Many with Reservation
+        One-to-Many with Review
+        One-to-Many with Notification
+
+    - Book
+        id: Long
+        title: String
+        isbn: String
+        publicationYear: int
+        totalCopies: int
+        availableCopies: int
+        Relationships:
+        Many-to-Many with Author
+        Many-to-One with Category
+        One-to-Many with Loan
+        One-to-Many with Reservation
+        One-to-Many with Review
+
+    - Author
+      id: Long
+      name: String
+      Relationships:
+      Many-to-Many with Book
+
+      - Category
+
+      Attributes:
+      id: Long
+      name: String
+      Relationships:
+      One-to-Many with Book

@@ -1,0 +1,28 @@
+spring:
+  application:
+    name: onlinelibrary
+
+  datasource:
+    url: jdbc:mysql://localhost:3306/onlinelibrary_db
+    username: root
+    password: N3v3r4#Mysql
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+
+api_version: v1
+default_page_number: 1
+default_result_limit: 25
+default_sort_order: asc
+  
+auth_base: EMAIL
+jwt_secret: Lky273rAmxbE9xTg
+jwt_subject: Online_Library_User_Details
+jwt_claim: UserID
+jwt_issuer: com.azad.onlinelibrary
+
