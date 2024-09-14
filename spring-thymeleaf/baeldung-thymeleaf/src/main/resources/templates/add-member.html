@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Add Member</title>
+</head>
+<body>
+    <!--
+    We've used the @{/addmember} URL expression to specify the form's action attribute
+    and the ${} variable expressions for embedding dynamic content in the template,
+    such as the values of the name and email fields and the post-validation errors.
+    -->
+    <form action="#" th:action="@{/addmember}" th:object="${member}" method="post">
+        <label for="name">Name</label>
+        <input type="text" th:field="*{name}" id="name" placeholder="Name">
+        <span th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></span>
+
+        <label for="email">Email</label>
+        <input type="text" th:field="*{email}" id="email" placeholder="Email">
+        <span th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></span>
+
+        <input type="submit" value="Add Member">
+    </form>
+</body>
+</html>
