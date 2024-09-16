@@ -1,0 +1,14 @@
+spring:
+  application:
+    name: tennis-score-api
+  datasource:
+    url: jdbc:mysql://localhost:3306/tennis_scoreboard_db
+    username: root
+    password: N3v3r4#Mysql
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        format_sql: true
+    show-sql: false

@@ -1,0 +1,40 @@
+vue create project-name
+
+router:
+    npm install vue-router@4
+    src/router.js
+        import { createWebHistory, createRouter } from "vue-router"
+        const routes =  [
+          {
+            path: "/",
+            alias: "/tutorials",
+            name: "tutorials",
+            component: () => import("./components/TutorialsList")
+          },
+          {
+            path: "/tutorials/:id",
+            name: "tutorial-details",
+            component: () => import("./components/Tutorial")
+          },
+          {
+            path: "/add",
+            name: "add",
+            component: () => import("./components/AddTutorial")
+          }
+        ];
+
+        const router = createRouter({
+          history: createWebHistory(),
+          routes,
+        });
+
+        export default router;
+    src/main.js
+        import router from './router'
+        createApp(App).use(router).mount('#app')
+
+bootstrap and other dependency:
+    npm install bootstrap@4.6.0 jquery popper.js
+    src/main.js
+        import 'bootstrap'
+        import 'bootstrap/dist/css/bootstrap.min.css'
