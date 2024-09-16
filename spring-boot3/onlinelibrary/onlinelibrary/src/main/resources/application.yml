@@ -16,7 +16,7 @@ spring:
         format_sql: true
 
 api_version: v1
-default_page_number: 1
+default_page_number: 1s
 default_result_limit: 25
 default_sort_order: asc
   
@@ -25,4 +25,3 @@ jwt_secret: Lky273rAmxbE9xTg
 jwt_subject: Online_Library_User_Details
 jwt_claim: UserID
 jwt_issuer: com.azad.onlinelibrary
-
