@@ -12,3 +12,9 @@ spring:
       hibernate:
         format_sql: true
     show-sql: false
+
+# API
+api_version: v1
+default_page_number: 1
+default_result_limit: 25
+default_sort_order: asc
